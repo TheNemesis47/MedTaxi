@@ -1,4 +1,4 @@
-package com.example.medtaxi;
+package com.example.medtaxi.singleton;
 
 import java.sql.*;
 

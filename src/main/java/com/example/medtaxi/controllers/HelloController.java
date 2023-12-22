@@ -1,15 +1,18 @@
-package com.example.medtaxi;
+package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.MedTaxi;
+import com.example.medtaxi.singleton.Database;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
+import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 
 public class HelloController {
     @FXML
@@ -35,7 +38,11 @@ public class HelloController {
 
 
     @FXML
-    protected void onHelloButtonClick() throws SQLException {
+    protected void onHelloButtonClick(ActionEvent event) throws Exception {
+        MedTaxi.cambiaScena("login.fxlm", (Stage) ((Node) event.getSource()).getScene().getWindow());
+
+
+        /*
         welcomeText.setText("Immissione nel db");
         String nomeu = nome.getText();
         String cognomeu = cognome.getText();
@@ -56,5 +63,6 @@ public class HelloController {
         Database db = Database.getInstance();
 
         db.RegistrazioneUtente(nomeu, cognomeu, telefonou, dataNascita, viau, comuneu, cittau, emailu, passu);
+        */
     }
 }
