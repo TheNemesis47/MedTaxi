@@ -9,28 +9,21 @@ import javafx.stage.Stage;
 import javax.swing.text.View;
 import java.util.Objects;
 
+
 public class MedTaxi extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage stage) {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("benvenuto.fxml")));
+            Parent root = FXMLLoader.load(getClass().getResource("benvenuto.fxml"));
             Scene scene = new Scene(root);
             scene.getStylesheets().add(Objects.requireNonNull(this.getClass().getResource("style.css")).toExternalForm());
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("MedTaxi");
-            primaryStage.show();
+            stage.setScene(scene);
+            stage.setTitle("MedTaxi");
+            stage.show();
         } catch (Throwable e){
             e.printStackTrace();
         }
-    }
-
-    public static void cambiaScena(String fxml, Stage stage) throws Exception{
-        Parent root = FXMLLoader.load(Objects.requireNonNull(View.class.getResource(fxml)));
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(Objects.requireNonNull(View.class.getResource("style.css")).toExternalForm());
-        stage.setScene(scene);
-        stage.show();
     }
     public static void main(String[] args) {
         launch(args);
