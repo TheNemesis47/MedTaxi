@@ -1,37 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefHeight="559.0" prefWidth="738.0" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="com.example.medtaxi.controllers.HelloController">
-  <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-  </padding>
-   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nome" />
-   <TextField fx:id="nome" />
-   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="cognome" />
-   <TextField fx:id="cognome" />
-   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="telefono" />
-   <TextField fx:id="telefono" />
-   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="data" />
-   <DatePicker fx:id="data" />
-   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="via" />
-   <TextField fx:id="via" />
-   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="comune" />
-   <TextField fx:id="comune" />
-   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="citta" />
-   <TextField fx:id="citta" />
-   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="email" />
-   <TextField fx:id="email" />
-   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="pass" />
-   <PasswordField fx:id="psw" />
-
-  <Label fx:id="welcomeText" />
-  <Button onAction="#onHelloButtonClick" text="Hello!" />
-</VBox>
+<AnchorPane fx:id="sfondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.medtaxi.controllers.BenvenutoContr">
+   <children>
+      <Text layoutX="526.0" layoutY="560.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scegli l'ambulanza adatta a te!">
+         <font>
+            <Font name="Arial Bold" size="60.0" />
+         </font>
+      </Text>
+      <Text fill="#000000b2" layoutX="561.0" layoutY="636.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imposta il punto di partenza ed il punto di arrivo insieme alla">
+         <font>
+            <Font name="Arial" size="30.0" />
+         </font>
+      </Text>
+      <Text fill="#000000b2" layoutX="542.0" layoutY="671.0" strokeType="OUTSIDE" strokeWidth="0.0" text="data del trasporto per ottenere la lista di ambulanze disponibili." wrappingWidth="836.0">
+         <font>
+            <Font name="Arial" size="30.0" />
+         </font>
+      </Text>
+      <Button fx:id="btnLogin" layoutX="542.0" layoutY="825.0" mnemonicParsing="false" onAction="#switchToLoginScene" prefHeight="49.0" prefWidth="273.0" styleClass="whiteButton" text="Login" textAlignment="CENTER" textFill="#1c8eff">
+         <font>
+            <Font name="Arial" size="40.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <styleClass>
+            <String fx:value="whiteButton" />
+         </styleClass>
+      </Button>
+      <Button fx:id="btnReg" layoutX="1105.0" layoutY="823.0" mnemonicParsing="false" onAction="#switchToRegisterScene" prefHeight="58.0" prefWidth="273.0" stylesheets="@style.css" text="Registrati" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Arial" size="40.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <styleClass>
+            <String fx:value="blueButton" />
+         </styleClass>
+      </Button>
+      <Pane fx:id="banner" prefHeight="457.0" prefWidth="1920.0" stylesheets="@style.css">
+         <children>
+            <Circle fill="WHITE" layoutX="960.0" layoutY="236.0" radius="100.0" stroke="WHITE" strokeType="INSIDE" />
+            <ImageView fitHeight="115.0" fitWidth="199.0" layoutX="884.0" layoutY="171.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/MedTaxiLogo.png" />
+               </image></ImageView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
