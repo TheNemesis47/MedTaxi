@@ -1,6 +1,10 @@
 package com.example.medtaxi.singleton;
 
+import javafx.scene.control.PasswordField;
+
 import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 public class Database {
     private String host = "127.0.0.1";
@@ -11,7 +15,7 @@ public class Database {
 
     private static Database instance;
 
-    private Database() {
+    public Database() {
     }
 
     public static Database getInstance() {
@@ -26,14 +30,14 @@ public class Database {
         return DriverManager.getConnection(url, username, password);
     }
 
-    public void RegistrazioneUtente(String nome, String cognome, int telefono, String data, String via, String comune, String citta, String email, String psw) throws SQLException {
+    public void RegistrazioneUtente(String nome, String cognome, double telefono, String data, String via, String comune, String citta, String email, String psw) throws SQLException {
         Connection connection = getConnection();
 
         String sql = "INSERT INTO utente (nome, cognome, telefono, data, via, comune, citta, email, psw) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, nome);
             statement.setString(2, cognome);
-            statement.setInt(3, telefono);
+            statement.setDouble(3, telefono);
             java.sql.Date sqlDate = java.sql.Date.valueOf(data);
             statement.setDate(4, sqlDate);
             statement.setString(5, via);

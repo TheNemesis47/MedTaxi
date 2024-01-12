@@ -16,31 +16,26 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.medtaxi.controllers.BenvenutoContr">
+<AnchorPane fx:id="sfondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.medtaxi.controllers.BenvenutoContr">
    <children>
-      <Text layoutX="1057.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Conosciamoci meglio!">
+      <Text layoutX="1408.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I tuoi dati">
          <font>
-            <Font name="Arial Bold" size="60.0" />
+            <Font name="Arial Bold" size="89.0" />
          </font>
       </Text>
-      <Text fill="#000000b2" layoutX="1451.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inserisci i tuoi dati.">
+      <TextField fx:id="comune" layoutX="1399.0" layoutY="460.0" prefHeight="36.0" prefWidth="400.0" promptText="Comune di residenza">
          <font>
-            <Font name="Arial" size="30.0" />
-         </font>
-      </Text>
-      <TextField fx:id="comune" layoutX="1297.0" layoutY="500.0" prefHeight="36.0" prefWidth="400.0" promptText="Comune">
-         <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <TextField fx:id="via" layoutX="1297.0" layoutY="454.0" prefHeight="36.0" prefWidth="400.0" promptText="Via">
+      <TextField fx:id="via" layoutX="956.0" layoutY="459.0" prefHeight="36.0" prefWidth="400.0" promptText="Via di residenza">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <Button layoutX="1545.0" layoutY="782.0" mnemonicParsing="false" onAction="#registrazione" prefHeight="48.0" prefWidth="152.0" text="Registrati" textAlignment="CENTER" textFill="#1c8eff">
+      <Button layoutX="1501.0" layoutY="879.0" mnemonicParsing="false" onAction="#registrazione" prefHeight="45.0" prefWidth="288.0" text="Registrati" textAlignment="CENTER" textFill="#1c8eff">
          <font>
-            <Font name="Arial" size="25.0" />
+            <Font name="Arial Bold" size="34.0" />
          </font>
          <cursor>
             <Cursor fx:constant="DEFAULT" />
@@ -49,62 +44,80 @@
             <String fx:value="blueButton" />
          </styleClass>
       </Button>
-      <Pane fx:id="banner" layoutX="242.0" layoutY="206.0" prefHeight="600.0" prefWidth="600.0" stylesheets="@style.css">
-         <children>
-            <Circle fill="WHITE" layoutX="300.0" layoutY="300.0" radius="100.0" stroke="WHITE" strokeType="INSIDE" />
-            <ImageView fitHeight="115.0" fitWidth="199.0" layoutX="224.0" layoutY="235.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Images/MedTaxiLogo.png" />
-               </image>
-            </ImageView>
-         </children>
-      </Pane>
-      <TextField fx:id="telefono" layoutX="1298.0" layoutY="364.0" prefHeight="36.0" prefWidth="400.0" promptText="Num. di telefono">
+      <TextField fx:id="telefono" layoutX="955.0" layoutY="372.0" prefHeight="36.0" prefWidth="400.0" promptText="Numero di telefono">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <TextField fx:id="cognome" layoutX="1297.0" layoutY="319.0" prefHeight="36.0" prefWidth="400.0" promptText="Cognome">
+      <TextField fx:id="cognome" layoutX="1398.0" layoutY="286.0" prefHeight="36.0" prefWidth="400.0" promptText="Cognome">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <TextField fx:id="nome" layoutX="1297.0" layoutY="274.0" prefHeight="36.0" prefWidth="400.0" promptText="Nome">
+      <TextField fx:id="nome" layoutX="956.0" layoutY="287.0" prefHeight="36.0" prefWidth="400.0" promptText="Nome">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <TextField fx:id="citta" layoutX="1298.0" layoutY="545.0" prefHeight="36.0" prefWidth="400.0" promptText="Cittá">
+      <TextField fx:id="citta" layoutX="1399.0" layoutY="549.0" prefHeight="36.0" prefWidth="400.0" promptText="Cittá di residenza">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <TextField fx:id="email" layoutX="1297.0" layoutY="590.0" prefHeight="36.0" prefWidth="400.0" promptText="Email">
+      <TextField fx:id="email" layoutX="957.0" layoutY="635.0" prefHeight="36.0" prefWidth="400.0" promptText="Email">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <TextField fx:id="remail" layoutX="1297.0" layoutY="635.0" prefHeight="36.0" prefWidth="400.0" promptText="Ripeti email">
+      <TextField fx:id="remail" layoutX="1398.0" layoutY="635.0" prefHeight="36.0" prefWidth="400.0" promptText="Ripeti l'email">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <TextField fx:id="rpsw" layoutX="1298.0" layoutY="725.0" prefHeight="36.0" prefWidth="400.0" promptText="Ripeti la tua password">
+      <TextField fx:id="rpsw" layoutX="1395.0" layoutY="724.0" prefHeight="36.0" prefWidth="400.0" promptText="Ripeti la password">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <DatePicker fx:id="data" layoutX="1497.0" layoutY="414.0" prefHeight="25.0" prefWidth="200.0" />
-      <Hyperlink layoutX="1451.0" layoutY="795.0" onAction="#switchToLoginScene" text="Giá registrato?" />
-      <PasswordField fx:id="psw" layoutX="1298.0" layoutY="680.0" prefHeight="36.0" prefWidth="400.0" promptText="Inserisci una password">
+      <DatePicker fx:id="data" layoutX="1400.0" layoutY="372.0" prefHeight="62.0" prefWidth="400.0" promptText="Data di nascita" />
+      <Hyperlink layoutX="1278.0" layoutY="883.0" onAction="#switchToLoginScene" text="Giá registrato?">
          <font>
-            <Font name="Arial" size="18.0" />
+            <Font size="30.0" />
+         </font></Hyperlink>
+      <PasswordField fx:id="psw" layoutX="958.0" layoutY="723.0" prefHeight="36.0" prefWidth="400.0" promptText="Password">
+         <font>
+            <Font name="Arial" size="32.0" />
          </font>
       </PasswordField>
-      <Label fx:id="errorReg" layoutX="1484.0" layoutY="850.0">
+      <Label fx:id="errorReg" layoutX="1473.0" layoutY="906.0">
          <font>
             <Font name="Arial" size="20.0" />
          </font>
       </Label>
+      <Pane fx:id="banner" layoutX="-6.0" prefHeight="1080.0" prefWidth="600.0" stylesheets="@style.css">
+         <children>
+            <Circle fill="WHITE" layoutX="289.0" layoutY="427.0" radius="200.0" stroke="WHITE" strokeType="INSIDE" />
+            <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="154.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/MedTaxiLogo.png" />
+               </image>
+            </ImageView>
+            <Text fill="WHITE" layoutX="37.0" layoutY="717.0" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Registrazione">
+               <font>
+                  <Font name="Arial Bold" size="80.0" />
+               </font>
+            </Text>
+            <Text fill="#ffffffb2" layoutX="133.0" layoutY="781.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inserisci i tuoi dati">
+               <font>
+                  <Font name="Arial" size="40.0" />
+               </font>
+            </Text>
+            <Text fill="#ffffffb2" layoutX="53.0" layoutY="832.0" strokeType="OUTSIDE" strokeWidth="0.0" text="per avanzare in questa fase.">
+               <font>
+                  <Font name="Arial" size="40.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

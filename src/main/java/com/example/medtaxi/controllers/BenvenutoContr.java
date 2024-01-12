@@ -8,19 +8,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.Period;
-
+import java.sql.Statement;
+import java.sql.ResultSet;
 
 public class BenvenutoContr {
 
@@ -49,14 +48,13 @@ public class BenvenutoContr {
     @FXML
     private TextField rpsw;
 
-
     private Stage stage;
     private Scene scene;
     private Parent root;
 
     public void switchToLoginScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/login.fxml"));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -64,7 +62,15 @@ public class BenvenutoContr {
 
     public void switchToRegisterScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/register.fxml"));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void switchToHomeScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/home.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -72,10 +78,10 @@ public class BenvenutoContr {
 
 
     @FXML
-    protected void registrazione() throws SQLException {
+    protected void registrazione(ActionEvent event) throws SQLException, IOException {
         String nomeu = nome.getText();
         String cognomeu = cognome.getText();
-        int telefonou = Integer.parseInt(telefono.getText());
+        double telefonou = Double.parseDouble(telefono.getText());
         String viau = via.getText();
         String comuneu = comune.getText();
         String cittau = citta.getText();
@@ -100,9 +106,56 @@ public class BenvenutoContr {
 
         if (age < 18 || !passu.equals(rpswu) || !emailu.equals(remailu)) {
             errorReg.setText("Errore nella registrazione");
-        }else {
+        } else {
             errorReg.setText("Registrazione avvenuta con successo");
             db.RegistrazioneUtente(nomeu, cognomeu, telefonou, dataNascita, viau, comuneu, cittau, emailu, passu);
+        }
+
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/home.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    @FXML
+    public void loginButtonOnAction(ActionEvent event) throws SQLException {
+        if (remail.getText().isBlank() == false && rpsw.getText().isBlank() == false){
+            try {
+                Database connectNow = new Database();
+                Connection connectDB = connectNow.getConnection();
+
+                String emailValue = remail.getText();
+                String passwordValue = rpsw.getText();
+
+                String verifyLogin = "SELECT count(1) FROM utente WHERE email = ? AND psw = ?";
+
+                try (PreparedStatement preparedStatement = connectDB.prepareStatement(verifyLogin)) {
+                    preparedStatement.setString(1, emailValue);
+                    preparedStatement.setString(2, passwordValue);
+
+                    try (ResultSet queryResult = preparedStatement.executeQuery()) {
+                        if (queryResult.next()) {
+                            if (queryResult.getInt(1) == 1) {
+                                errorReg.setText("Benvenuto!");
+
+                                root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/home.fxml"));
+                                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                scene = new Scene(root);
+                                stage.setScene(scene);
+                                stage.show();
+                            } else {
+                                errorReg.setText("Login errato, riprova.");
+                            }
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } catch (SQLException ec) {
+                ec.printStackTrace();
+            }
+        }else{
+            errorReg.setText("Perfavore, inserisci email e password!");
         }
 
     }
