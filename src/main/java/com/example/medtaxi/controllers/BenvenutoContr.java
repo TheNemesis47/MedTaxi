@@ -53,6 +53,7 @@ public class BenvenutoContr {
     private Parent root;
 
     public void switchToLoginScene(ActionEvent event) throws IOException {
+
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/login.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -111,7 +112,7 @@ public class BenvenutoContr {
             db.RegistrazioneUtente(nomeu, cognomeu, telefonou, dataNascita, viau, comuneu, cittau, emailu, passu);
         }
 
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/home.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/home.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -138,7 +139,13 @@ public class BenvenutoContr {
                             if (queryResult.getInt(1) == 1) {
                                 errorReg.setText("Benvenuto!");
 
-                                root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/home.fxml"));
+                                String nomeDaPassare = remail.getText();
+                                System.out.println(nomeDaPassare);
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/home.fxml"));
+                                root = loader.load();
+
+                                HomeContr homeController = loader.getController();
+                                homeController.displayName(nomeDaPassare);
                                 stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                                 scene = new Scene(root);
                                 stage.setScene(scene);

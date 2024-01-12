@@ -20,7 +20,7 @@
             <Font name="Arial Bold" size="89.0" />
          </font>
       </Text>
-      <Button layoutX="1502.0" layoutY="687.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="45.0" prefWidth="288.0" styleClass="blueButton" text="Entra" textAlignment="CENTER" textFill="#1c8eff">
+      <Button fx:id="entraBTN" layoutX="1502.0" layoutY="687.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="45.0" prefWidth="288.0" styleClass="blueButton" text="Entra" textAlignment="CENTER" textFill="#1c8eff">
          <font>
             <Font name="Arial Bold" size="34.0" />
          </font>
