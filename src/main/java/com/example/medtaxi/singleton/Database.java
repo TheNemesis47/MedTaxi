@@ -1,10 +1,9 @@
 package com.example.medtaxi.singleton;
 
-import javafx.scene.control.PasswordField;
-
-import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class Database {
     private String host = "127.0.0.1";

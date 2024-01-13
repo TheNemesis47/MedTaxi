@@ -6,9 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javax.swing.text.View;
 import java.util.Objects;
-
 
 public class MedTaxi extends Application {
 
@@ -25,8 +23,6 @@ public class MedTaxi extends Application {
             e.printStackTrace();
         }
     }
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) {launch(args);}
 }
 

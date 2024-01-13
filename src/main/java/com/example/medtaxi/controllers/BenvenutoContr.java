@@ -1,26 +1,25 @@
 package com.example.medtaxi.controllers;
-import com.example.medtaxi.singleton.Database;
 
-import com.example.medtaxi.MedTaxi;
+import com.example.medtaxi.singleton.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.time.Period;
-import java.sql.Statement;
-import java.sql.ResultSet;
-
 public class BenvenutoContr {
 
     @FXML
@@ -109,7 +108,6 @@ public class BenvenutoContr {
             errorReg.setText("Errore nella registrazione");
         } else {
             errorReg.setText("Registrazione avvenuta con successo");
-            db.RegistrazioneUtente(nomeu, cognomeu, telefonou, dataNascita, viau, comuneu, cittau, emailu, passu);
         }
 
         root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/home.fxml"));
@@ -118,52 +116,75 @@ public class BenvenutoContr {
         stage.setScene(scene);
         stage.show();
     }
-    @FXML
-    public void loginButtonOnAction(ActionEvent event) throws SQLException {
-        if (remail.getText().isBlank() == false && rpsw.getText().isBlank() == false){
-            try {
-                Database connectNow = new Database();
-                Connection connectDB = connectNow.getConnection();
 
-                String emailValue = remail.getText();
-                String passwordValue = rpsw.getText();
+    private boolean verifyLogin(String verifyType, String verifyLogin, String fxmlPathHome, String fxmlPathAzienda, String errorMessage, ActionEvent event) throws SQLException, IOException {
+        Database connectNow = new Database();
+        Connection connectDB = connectNow.getConnection();
 
-                String verifyLogin = "SELECT count(1) FROM utente WHERE email = ? AND psw = ?";
+        String emailValue = remail.getText();
+        String passwordValue = rpsw.getText();
 
-                try (PreparedStatement preparedStatement = connectDB.prepareStatement(verifyLogin)) {
-                    preparedStatement.setString(1, emailValue);
-                    preparedStatement.setString(2, passwordValue);
+        try (PreparedStatement typeStatement = connectDB.prepareStatement(verifyType)) {
+            typeStatement.setString(1, emailValue);
+            typeStatement.setString(2, passwordValue);
 
-                    try (ResultSet queryResult = preparedStatement.executeQuery()) {
-                        if (queryResult.next()) {
-                            if (queryResult.getInt(1) == 1) {
+            try (ResultSet typeResult = typeStatement.executeQuery()) {
+                if (typeResult.next()) {
+                    String tipou = typeResult.getString("tipo");
+
+                    try (PreparedStatement loginStatement = connectDB.prepareStatement(verifyLogin)) {
+                        loginStatement.setString(1, emailValue);
+                        loginStatement.setString(2, passwordValue);
+
+                        try (ResultSet loginResult = loginStatement.executeQuery()) {
+                            if (loginResult.next() && loginResult.getInt(1) == 1) {
                                 errorReg.setText("Benvenuto!");
 
-                                String nomeDaPassare = remail.getText();
-                                System.out.println(nomeDaPassare);
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/home.fxml"));
+                                FXMLLoader loader = new FXMLLoader();
+                                if ("2".equals(tipou)) {
+                                    loader.setLocation(getClass().getResource(fxmlPathAzienda));
+                                } else {
+                                    loader.setLocation(getClass().getResource(fxmlPathHome));
+                                }
+
                                 root = loader.load();
 
                                 HomeContr homeController = loader.getController();
-                                homeController.displayName(nomeDaPassare);
+                                homeController.displayName(emailValue);
+
                                 stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                                 scene = new Scene(root);
                                 stage.setScene(scene);
                                 stage.show();
+
+                                return true;
                             } else {
-                                errorReg.setText("Login errato, riprova.");
+                                errorReg.setText(errorMessage);
                             }
                         }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
                 }
-            } catch (SQLException ec) {
-                ec.printStackTrace();
             }
-        }else{
-            errorReg.setText("Perfavore, inserisci email e password!");
         }
+        return false;
+    }
 
+    @FXML
+    public void loginButtonOnAction(ActionEvent event) {
+        if (!remail.getText().isBlank() && !rpsw.getText().isBlank()) {
+            try {
+                String verifyTypeQuery = "SELECT tipo FROM utente WHERE email = ? AND psw = ?";
+                String verifyLoginQueryHome = "SELECT count(1) FROM utente WHERE email = ? AND psw = ?";
+
+                if (verifyLogin(verifyTypeQuery, verifyLoginQueryHome, "/com/example/medtaxi/home.fxml", "/com/example/medtaxi/home_aziende.fxml", "Login errato, riprova.", event)) {
+                    return;
+                }
+
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            errorReg.setText("Per favore, inserisci email e password!");
+        }
     }
 }
