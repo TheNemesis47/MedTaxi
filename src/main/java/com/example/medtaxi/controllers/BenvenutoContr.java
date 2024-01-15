@@ -68,15 +68,6 @@ public class BenvenutoContr {
         stage.show();
     }
 
-    public void switchToHomeScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/home.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-
     @FXML
     protected void registrazione(ActionEvent event) throws SQLException, IOException {
         String nomeu = nome.getText();
@@ -108,9 +99,16 @@ public class BenvenutoContr {
             errorReg.setText("Errore nella registrazione");
         } else {
             errorReg.setText("Registrazione avvenuta con successo");
+            db.RegistrazioneUtente(nomeu, cognomeu, telefonou, dataNascita, viau, comuneu, cittau, emailu, passu);
         }
 
-        root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/home.fxml"));
+        String nomeDaPassare = remail.getText();
+        System.out.println(nomeDaPassare);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/home.fxml"));
+        root = loader.load();
+
+        HomeContr homeController = loader.getController();
+        homeController.displayName(nomeDaPassare);
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -130,7 +128,7 @@ public class BenvenutoContr {
 
             try (ResultSet typeResult = typeStatement.executeQuery()) {
                 if (typeResult.next()) {
-                    String tipou = typeResult.getString("tipo");
+                    String tipou = typeResult.getString("client_type");
 
                     try (PreparedStatement loginStatement = connectDB.prepareStatement(verifyLogin)) {
                         loginStatement.setString(1, emailValue);
@@ -173,7 +171,7 @@ public class BenvenutoContr {
     public void loginButtonOnAction(ActionEvent event) {
         if (!remail.getText().isBlank() && !rpsw.getText().isBlank()) {
             try {
-                String verifyTypeQuery = "SELECT tipo FROM utente WHERE email = ? AND psw = ?";
+                String verifyTypeQuery = "SELECT client_type FROM utente WHERE email = ? AND psw = ?";
                 String verifyLoginQueryHome = "SELECT count(1) FROM utente WHERE email = ? AND psw = ?";
 
                 if (verifyLogin(verifyTypeQuery, verifyLoginQueryHome, "/com/example/medtaxi/home.fxml", "/com/example/medtaxi/home_aziende.fxml", "Login errato, riprova.", event)) {
