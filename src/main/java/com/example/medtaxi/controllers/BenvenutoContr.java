@@ -65,7 +65,7 @@ public class BenvenutoContr {
     }
 
     public void switchToRegisterScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/register.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/homeAz.fxml"));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
 
         stage.setResizable(false);
