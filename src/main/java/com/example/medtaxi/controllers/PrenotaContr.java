@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -14,12 +15,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.security.SecureRandom;
 
 public class PrenotaContr {
 
-    private Stage stage;
-    private Scene scene;
+    @FXML
+    private ComboBox<String> fasceOrarieComboBox;
 
     @FXML
     private TextField nome_paziente;
@@ -42,6 +45,9 @@ public class PrenotaContr {
     @FXML
     private TextField mattina_sera;
 
+    private Stage stage;
+    private Scene scene;
+
     private String generateRandomString(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?#*";
         StringBuilder randomString = new StringBuilder(length);
@@ -54,6 +60,27 @@ public class PrenotaContr {
 
         return randomString.toString();
     }
+
+    @FXML
+    public void initialize() {
+        // Popola la ComboBox con le fasce orarie
+        popolaFasceOrarie();
+    }
+
+    private void popolaFasceOrarie() {
+        List<String> fasceOrarie = new ArrayList<>();
+        for (int ora = 0; ora <= 23; ora++) {
+            for (int minuto = 0; minuto < 60; minuto += 30) {
+                String orario = String.format("%02d:%02d", ora, minuto);
+                fasceOrarie.add(orario);
+            }
+        }
+        fasceOrarieComboBox.getItems().addAll(fasceOrarie);
+
+        // Impostazione di un valore predefinito (può essere opzionale)
+        fasceOrarieComboBox.setValue("00:00");
+    }
+
     @FXML
     protected void prenotazione(ActionEvent event) {
         try {
@@ -64,31 +91,47 @@ public class PrenotaContr {
             String cognomex = cognome_paziente.getText();
             String indirizzox = indirizzo_partenza.getText();
             String indirizzoxx = indirizzo_arrivo.getText();
-            String mattina_serax = mattina_sera.getText();
 
+            // Recupera l'orario selezionato dalla ComboBox delle fasce orarie
+            String orarioSelezionato = fasceOrarieComboBox.getValue();
+
+            // Determina la fascia oraria (mattina o sera)
+            String fasciaOraria = determinaFasciaOraria(orarioSelezionato);
+
+            // Genera un codice casuale
             String codice = generateRandomString(6);
 
-            // Dichiarazione e inizializzazione del caricatore
+            // Carica la scena successiva
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/prenotazione_completata.fxml"));
-
-            // Caricamento della scena successiva
             Parent root = loader.load();
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
 
-            // Accesso al controller della scena successiva dopo il caricamento
+            // Accesso al controller della scena successiva
             PrenotaCContr prenotaCContr = loader.getController();
             prenotaCContr.displayName(codice);
 
-            // Eseguire la registrazione dopo l'accesso al controller della scena successiva
+            // Esegui la registrazione nel database
             Database db = Database.getInstance();
-            db.RegistrazionePrenotazione(nomex, cognomex, numerox, dataTrasportox, indirizzox, indirizzoxx, mattina_serax, codice);
+            db.RegistrazionePrenotazione(nomex, cognomex, numerox, dataTrasportox, indirizzox, indirizzoxx, fasciaOraria, codice);
         } catch (NumberFormatException e) {
-            e.printStackTrace();  // Puoi gestire l'eccezione in modo più specifico
+            e.printStackTrace();  // Gestire l'eccezione in modo specifico
         } catch (SQLException | IOException e) {
-            e.printStackTrace();  // Puoi gestire l'eccezione in modo più specifico
+            e.printStackTrace();  // Gestire l'eccezione in modo specifico
+        }
+    }
+
+    private String determinaFasciaOraria(String orario) {
+        // Esempio di logica per determinare se è mattina o sera
+        String[] orarioArray = orario.split(":");
+        int ora = Integer.parseInt(orarioArray[0]);
+
+        if (ora >= 0 && ora < 14) {
+            return "mattina";
+        } else {
+            return "sera";
         }
     }
 }
