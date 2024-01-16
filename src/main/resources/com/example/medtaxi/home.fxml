@@ -12,7 +12,7 @@
    <children>
       <Pane fx:id="banner" prefHeight="250.0" prefWidth="1920.0" stylesheets="@style.css">
          <children>
-            <ImageView layoutX="1742.0" layoutY="88.0" smooth="false">
+            <ImageView fx:id="notificationImage" fitHeight="133.0" fitWidth="120.0" layoutX="1740.0" layoutY="63.0" smooth="false">
                <image>
                   <Image url="@Images/Home/notification_6065205.png" />
                </image>
@@ -34,10 +34,6 @@
             <Image url="@Images/Home/croci.png" />
          </image>
       </ImageView>
-      <Label fx:id="nameLabel" layoutX="160.0" layoutY="300.0" text="name">
-         <font>
-            <Font size="61.0" />
-         </font>
-      </Label>
+      <Pane fx:id="panenotifiche" layoutX="1203.0" layoutY="85.0" prefHeight="758.0" prefWidth="520.0" styleClass="paneNotifiche" visible="false" />
    </children>
 </AnchorPane>

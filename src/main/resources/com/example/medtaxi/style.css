@@ -1,4 +1,6 @@
-#banner{
+/* style.css */
+
+#banner {
     -fx-background-image: url("Images/croci.png");
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover;
@@ -7,28 +9,50 @@
     -fx-border-radius: 20;
 }
 
-#sfondo{
-    -fx-background-color: WHITE;
+#sfondo {
+    -fx-background-color: #ffffff; /* Modificato il colore di sfondo in bianco */
 }
 
-.blueButton{
+.blueButton {
     -fx-background-radius: 15;
     -fx-border-radius: 15;
     -fx-border-color: #3b3b3b;
     -fx-border-width: 1;
     -fx-background-color: #1c8eff;
     -fx-text-fill: #ffffff;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.2) , 10, 0 , 0 , 2 );
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 2);
 }
 
-.whiteButton{
+.whiteButton {
     -fx-background-radius: 15;
     -fx-border-radius: 15;
     -fx-border-color: #3b3b3b;
     -fx-border-width: 1;
     -fx-background-color: #ffffff;
     -fx-text-fill: #1c8eff;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.2) , 10, 0 , 0 , 2 );
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 2);
 }
 
+.paneNotifiche {
+    -fx-background-color: #f9f9f9;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #d0d0d0; /* Modificato il colore del bordo a una tonalità più chiara */
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
+}
 
+.notification-label {
+    -fx-font-size: 14px;
+    -fx-fill: black; /* Colore del testo */
+}
+
+.time-label {
+    -fx-font-size: 12px;
+    -fx-fill: #555555; /* Colore del testo */
+}
+
+.notification-pane {
+    -fx-border-width: 1px;
+    -fx-border-color: #CCCCCC; /* Colore del bordo */
+}
