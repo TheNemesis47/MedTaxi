@@ -1,4 +1,6 @@
-#banner{
+/* style.css */
+
+#banner {
     -fx-background-image: url("Images/croci.png");
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover;
@@ -7,28 +9,56 @@
     -fx-border-radius: 20;
 }
 
-#sfondo{
-    -fx-background-color: WHITE;
+#sfondo {
+    -fx-background-color: #ffffff; /* Modificato il colore di sfondo in bianco */
 }
 
-.blueButton{
+.blueButton {
     -fx-background-radius: 15;
     -fx-border-radius: 15;
     -fx-border-color: #3b3b3b;
     -fx-border-width: 1;
     -fx-background-color: #1c8eff;
     -fx-text-fill: #ffffff;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.2) , 10, 0 , 0 , 2 );
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 2);
 }
 
-.whiteButton{
+.whiteButton {
     -fx-background-radius: 15;
     -fx-border-radius: 15;
     -fx-border-color: #3b3b3b;
     -fx-border-width: 1;
     -fx-background-color: #ffffff;
     -fx-text-fill: #1c8eff;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.2) , 10, 0 , 0 , 2 );
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 2);
 }
+
+.SecondWhiteButton {
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-border-color: #3b3b3b;
+    -fx-border-width: 1;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1a8cff;
+    -fx-font-family: "Arial";
+    -fx-font-weight: bold;
+    -fx-font-size: 30px; /* Mantieni la stessa dimensione del testo a 75px */
+    -fx-pref-width: 655;
+    -fx-pref-height: 80;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 2);
+    -fx-cursor: hand; /* Cambia il cursore quando sopra il bottone */
+    -fx-transition: all 0.3s;
+}
+
+.SecondWhiteButton:hover {
+    -fx-text-fill: #ffffff; /* Cambia il colore del testo a bianco */
+    -fx-background-color: #1a8cff; /* Cambia il colore di riempimento a #1a8cff */
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-font-size: 30px; /* Mantieni la stessa dimensione del testo a 75px */
+}
+
+
+
 
 

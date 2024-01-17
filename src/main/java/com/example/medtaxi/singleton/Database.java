@@ -49,4 +49,25 @@ public class Database {
             connection.close();
         }
     }
+
+    public void RegistrazionePrenotazione(String nome, String cognome, double telefono, String data, String indirizzo_part, String indirizzo_arrivo, String mattina_sera, String code_track) throws SQLException {
+        Connection connection = getConnection();
+
+        String sql = "INSERT INTO prenotazione (nome_trasportato, cognome_trasportato, indirizzo_partenza, indirizzo_arrivo, giorno_trasporto, numero_cellulare, mattina_sera, code_track) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, nome);
+            statement.setString(2, cognome);
+            statement.setString(3, indirizzo_part);
+            statement.setString(4, indirizzo_arrivo);
+            java.sql.Date sqlDate = java.sql.Date.valueOf(data);
+            statement.setDate(5, sqlDate);
+            statement.setDouble(6, telefono);
+            statement.setString(7, mattina_sera);
+            statement.setString(8,code_track);
+            statement.executeUpdate();
+        } finally {
+            connection.close();
+        }
+    }
+
 }
