@@ -102,7 +102,7 @@ public class PrenotaContr {
             String codice = generateRandomString(6);
 
             // Carica la scena successiva
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/prenotazione_completata.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/prenotazione_completata.fxml"));
             Parent root = loader.load();
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);

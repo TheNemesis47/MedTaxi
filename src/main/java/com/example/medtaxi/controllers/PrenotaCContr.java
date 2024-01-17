@@ -20,7 +20,7 @@ public class PrenotaCContr {
     private Label trackCode;
 
     public void switchToHomeScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/home.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

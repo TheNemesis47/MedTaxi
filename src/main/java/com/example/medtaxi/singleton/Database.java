@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import com.example.medtaxi.classi.User;
+import java.sql.ResultSet;
+
 
 public class Database {
     private String host = "127.0.0.1";
@@ -68,6 +71,35 @@ public class Database {
         } finally {
             connection.close();
         }
+    }
+
+    public User getUtenteByEmail(String email) throws SQLException {
+        Connection connection = getConnection();
+        User user = null;
+
+        String sql = "SELECT * FROM utente WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, email);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    user = new User(email);
+                    user.setNome(resultSet.getString("nome"));
+                    user.setCognome(resultSet.getString("cognome"));
+                    user.setTelefono(resultSet.getDouble("telefono"));
+                    user.setVia(resultSet.getString("via"));
+                    user.setComune(resultSet.getString("comune"));
+                    user.setCitta(resultSet.getString("citta"));
+                    user.setDataNascita(resultSet.getDate("data").toLocalDate());
+                    user.setEmail(resultSet.getString("email"));
+                    user.setPassword(resultSet.getString("psw"));
+                }
+            }
+        } finally {
+            connection.close();
+        }
+
+        return user;
     }
 
 }

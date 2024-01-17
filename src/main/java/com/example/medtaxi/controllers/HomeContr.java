@@ -1,5 +1,6 @@
 package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.classi.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,14 +19,15 @@ public class HomeContr {
     private Stage stage;
 
     public void SwitchToPrenotaScene (ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/prenota.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/prenota.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
 
-    public void displayName(String mail) {
-        helloText.setText("Ciao " + mail);
+    public void displayName(User utente) {
+        String nomeUtente = utente.getNome();
+        helloText.setText("Ciao " + (nomeUtente != null ? nomeUtente : "Nome non disponibile"));
     }
 }

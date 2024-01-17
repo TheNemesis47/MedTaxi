@@ -1,69 +1,59 @@
 package com.example.medtaxi.controllers;
 
-import com.example.medtaxi.azienda.ParcoAuto;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import com.example.medtaxi.classi.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.util.Duration;
+import javafx.stage.Stage;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.io.IOException;
 
 public class HomeAZContr {
 
     @FXML
-    private ListView<String> listView;
-    @FXML
-    private Button modDispAmbBTN;
-    @FXML
-    private Button parcoAutoBTN;
-    @FXML
-    private Button annPrenBTN;
-    @FXML
-    private Button storPrenBTN;
-    @FXML
-    private Pane panelBase2;
+    private Label helloTextAz;
 
+    private Stage stage;
 
-    public void initialize() {
-        // Supponendo che tu abbia un riferimento a un'istanza di ParcoAuto
-        ParcoAuto parcoAuto = new ParcoAuto();
-
-        // Supponendo che tu abbia già l'ID dell'azienda
-        String pivaAzienda = "1234567890";
-
-        // Ottieni le targhe delle ambulanze per l'azienda specificata
-        List<String> targheAmbulanze = parcoAuto.getTargheAmbulanze(pivaAzienda);
-
-        // Aggiungi le targhe alla ListView
-        listView.getItems().addAll(targheAmbulanze);
+    public void displayName(User utente) {
+        String nomeUtente = utente.getNome();
+        helloTextAz.setText("Ciao " + (nomeUtente != null ? nomeUtente : "Nome non disponibile"));
     }
 
-
-    private String getCurrentDateTime() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return now.format(formatter);
+    public void SwitchToDisponibilita (ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/disponibilita.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
-
-
-
-    @FXML
-    public void mostraNascondiPannello() {
-        // Cambia la visibilità del pannello quando viene cliccato il bottone
-        panelBase2.setVisible(!panelBase2.isVisible());
-        this.initialize();
+    public void SwitchToParcoAuto (ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/parco_auto.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
+
+    public void SwitchToPrenotazioni (ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/prenotazioni.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void SwitchToStoricoPrenotazioni (ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/storico_prenotazioni.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
 }

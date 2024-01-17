@@ -1,5 +1,6 @@
 package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.classi.User;
 import com.example.medtaxi.singleton.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,7 +54,7 @@ public class BenvenutoContr {
 
     public void switchToLoginScene(ActionEvent event) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/login.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -61,7 +62,7 @@ public class BenvenutoContr {
     }
 
     public void switchToRegisterScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/register.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/register.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -102,20 +103,21 @@ public class BenvenutoContr {
             db.RegistrazioneUtente(nomeu, cognomeu, telefonou, dataNascita, viau, comuneu, cittau, emailu, passu);
         }
 
-        String nomeDaPassare = remail.getText();
-        System.out.println(nomeDaPassare);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/home.fxml"));
+        User utente = new User(emailu);
+
+        System.out.println(utente.getNome());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/home.fxml"));
         root = loader.load();
 
         HomeContr homeController = loader.getController();
-        homeController.displayName(nomeDaPassare);
+        homeController.displayName(utente);
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
 
-    private boolean verifyLogin(String verifyType, String verifyLogin, String fxmlPathHome, String fxmlPathAzienda, String errorMessage, ActionEvent event) throws SQLException, IOException {
+    private void verifyLogin(String verifyType, String verifyLogin, String fxmlPathHome, String fxmlPathAzienda, String errorMessage, ActionEvent event) throws SQLException, IOException {
         Database connectNow = new Database();
         Connection connectDB = connectNow.getConnection();
 
@@ -138,24 +140,25 @@ public class BenvenutoContr {
                             if (loginResult.next() && loginResult.getInt(1) == 1) {
                                 errorReg.setText("Benvenuto!");
 
+                                User utente = new User(emailValue);
+
                                 FXMLLoader loader = new FXMLLoader();
-                                if ("2".equals(tipou)) {
-                                    loader.setLocation(getClass().getResource(fxmlPathAzienda));
-                                } else {
-                                    loader.setLocation(getClass().getResource(fxmlPathHome));
-                                }
+                                loader.setLocation(getClass().getResource("2".equals(tipou) ? fxmlPathAzienda : fxmlPathHome));
 
                                 root = loader.load();
 
-                                HomeContr homeController = loader.getController();
-                                homeController.displayName(emailValue);
+                                if ("2".equals(tipou)) {
+                                    HomeAZContr homeAZContr = loader.getController();
+                                    homeAZContr.displayName(utente);
+                                } else {
+                                    HomeContr homeController = loader.getController();
+                                    homeController.displayName(utente);
+                                }
 
                                 stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                                 scene = new Scene(root);
                                 stage.setScene(scene);
                                 stage.show();
-
-                                return true;
                             } else {
                                 errorReg.setText(errorMessage);
                             }
@@ -164,7 +167,6 @@ public class BenvenutoContr {
                 }
             }
         }
-        return false;
     }
 
     @FXML
@@ -174,9 +176,7 @@ public class BenvenutoContr {
                 String verifyTypeQuery = "SELECT client_type FROM utente WHERE email = ? AND psw = ?";
                 String verifyLoginQueryHome = "SELECT count(1) FROM utente WHERE email = ? AND psw = ?";
 
-                if (verifyLogin(verifyTypeQuery, verifyLoginQueryHome, "/com/example/medtaxi/home.fxml", "/com/example/medtaxi/home_aziende.fxml", "Login errato, riprova.", event)) {
-                    return;
-                }
+                verifyLogin(verifyTypeQuery, verifyLoginQueryHome, "/com/example/medtaxi/utente/home.fxml", "/com/example/medtaxi/azienda/homeAz.fxml", "Login errato, riprova.", event);
 
             } catch (SQLException | IOException e) {
                 e.printStackTrace();
