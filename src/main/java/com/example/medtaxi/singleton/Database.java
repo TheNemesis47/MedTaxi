@@ -6,6 +6,16 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import com.example.medtaxi.classi.User;
 import java.sql.ResultSet;
+import com.example.medtaxi.classi.Azienda;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import com.example.medtaxi.classi.Prenotazione;
+
 
 
 public class Database {
@@ -102,4 +112,63 @@ public class Database {
         return user;
     }
 
+    public Azienda getAziendaByEmail(String email) throws SQLException {
+        Connection connection = getConnection();
+        Azienda azienda = null;
+
+        String sql = "SELECT * FROM azienda WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, email);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    azienda = new Azienda();
+                    azienda.setNome(resultSet.getString("nome"));
+                    azienda.setPiva(resultSet.getString("piva"));
+                    azienda.setTelefono(resultSet.getDouble("telefono"));
+                    azienda.setIndirizzo(resultSet.getString("indirizzo"));
+                    azienda.setComune(resultSet.getString("comune"));
+                    azienda.setProvincia(resultSet.getString("provincia"));
+                    azienda.setCap(resultSet.getInt("cap"));
+                    azienda.setEmail(resultSet.getString("email"));
+                    azienda.setPassword(resultSet.getString("psw"));
+                    azienda.setId(resultSet.getInt("id"));
+                }
+            }
+        } finally {
+            connection.close();
+        }
+
+        return azienda;
+    }
+
+    public Prenotazione getPrenotazioneByEmail(String email) throws SQLException {
+        Connection connection = getConnection();
+        Prenotazione prenotazione = null;
+
+        String sql = "SELECT * FROM prenotazione WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, email);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    prenotazione = new Prenotazione(
+                            resultSet.getString("nome_trasportato"),
+                            resultSet.getString("cognome_trasportato"),
+                            resultSet.getString("indirizzo_partenza"),
+                            resultSet.getString("indirizzo_arrivo"),
+                            resultSet.getDate("giorno_trasporto").toLocalDate(),
+                            resultSet.getDouble("numero_cellulare"),
+                            resultSet.getString("mattina_sera"),
+                            resultSet.getString("code_track"),
+                            resultSet.getString("p_iva")
+                    );
+                }
+            }
+        } finally {
+            connection.close();
+        }
+
+        return prenotazione;
+    }
 }

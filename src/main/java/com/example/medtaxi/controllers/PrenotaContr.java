@@ -128,7 +128,7 @@ public class PrenotaContr {
         String[] orarioArray = orario.split(":");
         int ora = Integer.parseInt(orarioArray[0]);
 
-        if (ora >= 0 && ora < 14) {
+        if (ora >= 6 && ora < 18) {
             return "mattina";
         } else {
             return "sera";

@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import com.example.medtaxi.classi.Azienda;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,12 +17,11 @@ public class HomeAZContr {
 
     @FXML
     private Label helloTextAz;
-
     private Stage stage;
 
-    public void displayName(User utente) {
-        String nomeUtente = utente.getNome();
-        helloTextAz.setText("Ciao " + (nomeUtente != null ? nomeUtente : "Nome non disponibile"));
+    public void displayName(Azienda azienda) {
+        String nomeAzienda = azienda.getNome();
+        helloTextAz.setText("Ciao " + (nomeAzienda != null ? nomeAzienda : "Nome non disponibile"));
     }
 
     public void SwitchToDisponibilita (ActionEvent event) throws IOException {

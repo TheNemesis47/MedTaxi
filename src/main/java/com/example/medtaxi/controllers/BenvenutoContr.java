@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
+import com.example.medtaxi.classi.Azienda;
 public class BenvenutoContr {
 
     @FXML
@@ -140,17 +141,17 @@ public class BenvenutoContr {
                             if (loginResult.next() && loginResult.getInt(1) == 1) {
                                 errorReg.setText("Benvenuto!");
 
-                                User utente = new User(emailValue);
-
                                 FXMLLoader loader = new FXMLLoader();
                                 loader.setLocation(getClass().getResource("2".equals(tipou) ? fxmlPathAzienda : fxmlPathHome));
 
                                 root = loader.load();
 
                                 if ("2".equals(tipou)) {
+                                    Azienda azienda = new Azienda(emailValue);
                                     HomeAZContr homeAZContr = loader.getController();
-                                    homeAZContr.displayName(utente);
+                                    homeAZContr.displayName(azienda);
                                 } else {
+                                    User utente = new User(emailValue);
                                     HomeContr homeController = loader.getController();
                                     homeController.displayName(utente);
                                 }
