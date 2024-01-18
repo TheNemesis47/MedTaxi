@@ -31,7 +31,7 @@
             <Font name="System Bold" size="40.0" />
          </font>
       </Button>
-      <Text fill="#000000b2" layoutX="474.0" layoutY="482.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Il tuo codice di track è">
+      <Text fill="#000000b2" layoutX="388.0" layoutY="481.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Il codice dell'ambulanza è">
          <font>
             <Font name="Arial Bold" size="90.0" />
          </font>

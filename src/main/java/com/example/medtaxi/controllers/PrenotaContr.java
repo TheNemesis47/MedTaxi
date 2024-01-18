@@ -123,6 +123,14 @@ public class PrenotaContr {
         }
     }
 
+    public void switchToNextScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/seleziona_ambulanza.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     private String determinaFasciaOraria(String orario) {
         // Esempio di logica per determinare se è mattina o sera
         String[] orarioArray = orario.split(":");

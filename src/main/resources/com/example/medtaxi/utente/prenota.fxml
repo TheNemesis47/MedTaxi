@@ -28,37 +28,37 @@
             <Cursor fx:constant="DISAPPEAR" />
          </cursor>
       </Text>
-      <TextField fx:id="nome_paziente" layoutX="90.0" layoutY="389.0" prefHeight="36.0" prefWidth="400.0" promptText="Nome del paziente">
+      <TextField fx:id="nome_paziente" layoutX="493.0" layoutY="398.0" prefHeight="36.0" prefWidth="400.0" promptText="Nome del paziente">
          <font>
             <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <TextField fx:id="indirizzo_partenza" layoutX="95.0" layoutY="537.0" prefHeight="36.0" prefWidth="400.0" promptText="Indirizzo di partenza">
+      <TextField fx:id="indirizzo_partenza" layoutX="492.0" layoutY="485.0" prefHeight="36.0" prefWidth="400.0" promptText="Indirizzo di partenza">
          <font>
             <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <DatePicker fx:id="data_trasporto" layoutX="93.0" layoutY="690.0" prefHeight="62.0" prefWidth="406.0" promptText="Data del trasporto" />
-      <TextField fx:id="cognome_paziente" layoutX="558.0" layoutY="388.0" prefHeight="36.0" prefWidth="400.0" promptText="Cognome del paziente">
+      <DatePicker fx:id="data_trasporto" layoutX="493.0" layoutY="575.0" prefHeight="62.0" prefWidth="406.0" promptText="Data del trasporto" />
+      <TextField fx:id="cognome_paziente" layoutX="961.0" layoutY="397.0" prefHeight="36.0" prefWidth="400.0" promptText="Cognome del paziente">
          <font>
             <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <TextField fx:id="indirizzo_arrivo" layoutX="561.0" layoutY="535.0" prefHeight="36.0" prefWidth="400.0" promptText="Indirizzo d'arrivo">
+      <TextField fx:id="indirizzo_arrivo" layoutX="961.0" layoutY="483.0" prefHeight="36.0" prefWidth="400.0" promptText="Indirizzo d'arrivo">
          <font>
             <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <TextField fx:id="numero_cellulare" layoutX="325.0" layoutY="859.0" prefHeight="36.0" prefWidth="400.0" promptText="Numero di cellulare">
+      <TextField fx:id="numero_cellulare" layoutX="495.0" layoutY="663.0" prefHeight="36.0" prefWidth="400.0" promptText="Numero di cellulare">
          <font>
             <Font name="Arial" size="32.0" />
          </font>
       </TextField>
-      <Button layoutX="1358.0" layoutY="861.0" mnemonicParsing="false" onAction="#prenotazione" prefHeight="50.0" prefWidth="476.0" styleClass="blueButton" text="Prenota trasferimento">
+      <Button layoutX="686.0" layoutY="821.0" mnemonicParsing="false" onAction="#switchToNextScene" prefHeight="50.0" prefWidth="476.0" styleClass="blueButton" text="Seleziona ambulanza">
          <font>
             <Font name="System Bold" size="40.0" />
          </font>
       </Button>
-      <ComboBox fx:id="fasceOrarieComboBox" layoutX="558.0" layoutY="689.0" prefHeight="62.0" prefWidth="406.0" promptText="Orario" />
+      <ComboBox fx:id="fasceOrarieComboBox" layoutX="958.0" layoutY="574.0" prefHeight="62.0" prefWidth="406.0" promptText="Orario" />
    </children>
 </AnchorPane>
