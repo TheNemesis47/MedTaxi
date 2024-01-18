@@ -35,7 +35,7 @@
             <Font size="31.0" />
          </font>
       </Button>
-      <Button layoutX="48.0" layoutY="556.0" mnemonicParsing="false" styleClass="SecondWhiteButton" text="Traccia ambulanza">
+      <Button layoutX="48.0" layoutY="556.0" mnemonicParsing="false" onAction="#trackAmbulance" styleClass="SecondWhiteButton" text="Traccia ambulanza">
          <font>
             <Font size="31.0" />
          </font>

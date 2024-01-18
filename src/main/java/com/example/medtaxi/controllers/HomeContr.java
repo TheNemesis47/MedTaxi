@@ -26,6 +26,14 @@ public class HomeContr {
         stage.show();
     }
 
+    public void trackAmbulance(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/track.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public void displayName(User utente) {
         String nomeUtente = utente.getNome();
         helloText.setText("Ciao " + (nomeUtente != null ? nomeUtente : "Nome non disponibile"));

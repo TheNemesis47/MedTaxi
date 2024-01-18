@@ -11,20 +11,32 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<junit.version>5.9.2</junit.version>  </properties>
+    <junit.version>5.9.2</junit.version>
+  </properties>
 
   <dependencies>
+    <!-- Dipendenze JavaFX -->
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
       <version>21-ea+24</version>
     </dependency>
+
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
       <version>21-ea+24</version>
     </dependency>
-<dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-swing</artifactId>
+      <version>21-ea+24</version>  <!-- Assicurati che la versione corrisponda alle altre dipendenze JavaFX -->
+    </dependency>
+
+
+    <!-- Dipendenza FormsFX -->
+    <dependency>
       <groupId>com.dlsc.formsfx</groupId>
       <artifactId>formsfx-core</artifactId>
       <version>11.6.0</version>
@@ -35,7 +47,9 @@
         </exclusion>
       </exclusions>
     </dependency>
-<dependency>
+
+    <!-- Dipendenze JUnit -->
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>${junit.version}</version>
@@ -46,7 +60,21 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
-    </dependency>  </dependencies>
+    </dependency>
+
+    <!-- Dipendenza JXMapViewer2 -->
+    <dependency>
+      <groupId>org.jxmapviewer</groupId>
+      <artifactId>jxmapviewer2</artifactId>
+      <version>2.8</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.redlink.geocoding</groupId>
+      <artifactId>geocoding-osm</artifactId>
+      <version>2.1.1</version>
+    </dependency>
+  </dependencies>
 
   <build>
     <plugins>
