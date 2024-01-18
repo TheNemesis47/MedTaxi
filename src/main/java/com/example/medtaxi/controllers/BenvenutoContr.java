@@ -1,6 +1,6 @@
 package com.example.medtaxi.controllers;
 
-import com.example.medtaxi.classi.User;
+import com.example.medtaxi.singleton.User;
 import com.example.medtaxi.singleton.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -104,7 +104,8 @@ public class BenvenutoContr {
             db.RegistrazioneUtente(nomeu, cognomeu, telefonou, dataNascita, viau, comuneu, cittau, emailu, passu);
         }
 
-        User utente = new User(emailu);
+        User.initInstance(emailu);
+        User utente = User.getInstance();
 
         System.out.println(utente.getNome());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/home.fxml"));
@@ -119,7 +120,7 @@ public class BenvenutoContr {
     }
 
     private void verifyLogin(String verifyType, String verifyLogin, String fxmlPathHome, String fxmlPathAzienda, String errorMessage, ActionEvent event) throws SQLException, IOException {
-        Database connectNow = new Database();
+        Database connectNow = Database.getInstance();
         Connection connectDB = connectNow.getConnection();
 
         String emailValue = remail.getText();
@@ -151,7 +152,8 @@ public class BenvenutoContr {
                                     HomeAZContr homeAZContr = loader.getController();
                                     homeAZContr.displayName(azienda);
                                 } else {
-                                    User utente = new User(emailValue);
+                                    User.initInstance(emailValue);
+                                    User utente = User.getInstance();
                                     HomeContr homeController = loader.getController();
                                     homeController.displayName(utente);
                                 }

@@ -1,6 +1,5 @@
 package com.example.medtaxi.controllers;
 
-import com.example.medtaxi.classi.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -1,5 +1,7 @@
 package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.singleton.User;
+import com.example.medtaxi.reti.Client;
 import com.example.medtaxi.singleton.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,9 +43,6 @@ public class PrenotaContr {
 
     @FXML
     private TextField numero_cellulare;
-
-    @FXML
-    private TextField mattina_sera;
 
     private Stage stage;
     private Scene scene;
@@ -124,6 +123,16 @@ public class PrenotaContr {
     }
 
     public void switchToNextScene(ActionEvent event) throws IOException {
+        Client client = new Client();
+
+        //converto data
+        LocalDate dataSelezionata = data_trasporto.getValue();
+        String fasciaOrariaSelezionata = fasceOrarieComboBox.getValue();
+
+        String oraScelta = determinaFasciaOraria(fasceOrarieComboBox.getValue());
+        client.inviaPrenotazione(nome_paziente.getText(), cognome_paziente.getText(), User.getInstance().getEmail(), indirizzo_partenza.getText(), indirizzo_arrivo.getText(),
+                dataSelezionata.toString(), oraScelta, numero_cellulare.getText());
+
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/seleziona_ambulanza.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);

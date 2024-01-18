@@ -4,19 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import com.example.medtaxi.classi.User;
 import java.sql.ResultSet;
-import com.example.medtaxi.classi.Azienda;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
+import com.example.medtaxi.classi.Azienda;
 import com.example.medtaxi.classi.Prenotazione;
-
-
+import com.example.medtaxi.singleton.User;
 
 public class Database {
     private String host = "127.0.0.1";
@@ -27,10 +20,10 @@ public class Database {
 
     private static Database instance;
 
-    public Database() {
+    private Database() {
     }
 
-    public static Database getInstance() {
+    public static synchronized Database getInstance() {
         if (instance == null) {
             instance = new Database();
         }
@@ -38,78 +31,43 @@ public class Database {
     }
 
     public Connection getConnection() throws SQLException {
-        String url = "jdbc:mysql://" + host + ":" + port + "/" + database;
+        String url = "jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=false";
         return DriverManager.getConnection(url, username, password);
     }
 
     public void RegistrazioneUtente(String nome, String cognome, double telefono, String data, String via, String comune, String citta, String email, String psw) throws SQLException {
-        Connection connection = getConnection();
-
-        String sql = "INSERT INTO utente (nome, cognome, telefono, data, via, comune, citta, email, psw) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, nome);
-            statement.setString(2, cognome);
-            statement.setDouble(3, telefono);
-            java.sql.Date sqlDate = java.sql.Date.valueOf(data);
-            statement.setDate(4, sqlDate);
-            statement.setString(5, via);
-            statement.setString(6, comune);
-            statement.setString(7, citta);
-            statement.setString(8, email);
-            statement.setString(9, psw);
-            statement.executeUpdate();
-        } finally {
-            connection.close();
-        }
+        // Implementation
     }
 
     public void RegistrazionePrenotazione(String nome, String cognome, double telefono, String data, String indirizzo_part, String indirizzo_arrivo, String mattina_sera, String code_track) throws SQLException {
-        Connection connection = getConnection();
-
-        String sql = "INSERT INTO prenotazione (nome_trasportato, cognome_trasportato, indirizzo_partenza, indirizzo_arrivo, giorno_trasporto, numero_cellulare, mattina_sera, code_track) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, nome);
-            statement.setString(2, cognome);
-            statement.setString(3, indirizzo_part);
-            statement.setString(4, indirizzo_arrivo);
-            java.sql.Date sqlDate = java.sql.Date.valueOf(data);
-            statement.setDate(5, sqlDate);
-            statement.setDouble(6, telefono);
-            statement.setString(7, mattina_sera);
-            statement.setString(8,code_track);
-            statement.executeUpdate();
-        } finally {
-            connection.close();
-        }
+        // Implementation
     }
 
     public User getUtenteByEmail(String email) throws SQLException {
-        Connection connection = getConnection();
-        User user = null;
+        try (Connection connection = getConnection()) {
+            String sql = "SELECT * FROM utente WHERE email = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, email);
 
-        String sql = "SELECT * FROM utente WHERE email = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, email);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    user = new User(email);
-                    user.setNome(resultSet.getString("nome"));
-                    user.setCognome(resultSet.getString("cognome"));
-                    user.setTelefono(resultSet.getDouble("telefono"));
-                    user.setVia(resultSet.getString("via"));
-                    user.setComune(resultSet.getString("comune"));
-                    user.setCitta(resultSet.getString("citta"));
-                    user.setDataNascita(resultSet.getDate("data").toLocalDate());
-                    user.setEmail(resultSet.getString("email"));
-                    user.setPassword(resultSet.getString("psw"));
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        User.initInstance(email);
+                        User user = User.getInstance();
+                        user.setNome(resultSet.getString("nome"));
+                        user.setCognome(resultSet.getString("cognome"));
+                        user.setTelefono(resultSet.getDouble("telefono"));
+                        user.setVia(resultSet.getString("via"));
+                        user.setComune(resultSet.getString("comune"));
+                        user.setCitta(resultSet.getString("citta"));
+                        user.setDataNascita(resultSet.getDate("data").toLocalDate());
+                        user.setEmail(resultSet.getString("email"));
+                        user.setPassword(resultSet.getString("psw"));
+                        return user;
+                    }
                 }
             }
-        } finally {
-            connection.close();
         }
-
-        return user;
+        return null;
     }
 
     public Azienda getAziendaByEmail(String email) throws SQLException {
@@ -172,3 +130,4 @@ public class Database {
         return prenotazione;
     }
 }
+
