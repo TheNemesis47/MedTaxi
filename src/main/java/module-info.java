@@ -9,6 +9,7 @@ module com.example.medtaxi {
     requires com.dlsc.formsfx;
     requires org.jxmapviewer.jxmapviewer2;
     requires io.redlink.geocoding.osm;
+    requires javafx.web;
 
     opens com.example.medtaxi to javafx.fxml;
     exports com.example.medtaxi;

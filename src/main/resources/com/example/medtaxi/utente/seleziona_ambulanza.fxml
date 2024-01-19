@@ -2,13 +2,13 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="sfondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../style.css"
-            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.medtaxi.controllers.SelezionaContr">
+<AnchorPane fx:id="sfondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.medtaxi.controllers.SelezionaContr">
    <children>
       <Pane fx:id="banner" prefHeight="250.0" prefWidth="1920.0" stylesheets="@../style.css" />
       <Text fill="#ffffffb2" layoutX="377.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AMBULANZE DISPONIBILI">
@@ -24,5 +24,6 @@
             <Font name="System Bold" size="40.0" />
          </font>
       </Button>
+      <ListView fx:id="listAmb" layoutX="590.0" layoutY="300.0" prefHeight="522.0" prefWidth="713.0" />
    </children>
 </AnchorPane>

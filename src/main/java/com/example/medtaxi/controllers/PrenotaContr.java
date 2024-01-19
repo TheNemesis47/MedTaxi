@@ -124,16 +124,27 @@ public class PrenotaContr {
 
     public void switchToNextScene(ActionEvent event) throws IOException {
         Client client = new Client();
+        List<String> ambulanzeDisponibili = new ArrayList<>();
 
         //converto data
         LocalDate dataSelezionata = data_trasporto.getValue();
         String fasciaOrariaSelezionata = fasceOrarieComboBox.getValue();
 
         String oraScelta = determinaFasciaOraria(fasceOrarieComboBox.getValue());
-        client.inviaPrenotazione(nome_paziente.getText(), cognome_paziente.getText(), User.getInstance().getEmail(), indirizzo_partenza.getText(), indirizzo_arrivo.getText(),
+        ambulanzeDisponibili = client.inviaPrenotazione(nome_paziente.getText(), cognome_paziente.getText(), User.getInstance().getEmail(), indirizzo_partenza.getText(), indirizzo_arrivo.getText(),
                 dataSelezionata.toString(), oraScelta, numero_cellulare.getText());
+        for (String ambulanza : ambulanzeDisponibili) {
+            System.out.println(ambulanza);
+        }
 
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/seleziona_ambulanza.fxml"));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/seleziona_ambulanza.fxml"));
+        Parent root = loader.load();
+
+        // Imposta la lista di ambulanze disponibili nel controller della nuova scena
+        SelezionaContr selezionaContr = loader.getController();
+        selezionaContr.setAmbulanzeDisponibili(ambulanzeDisponibili);
+
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

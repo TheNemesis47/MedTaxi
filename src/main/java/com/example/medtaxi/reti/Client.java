@@ -3,6 +3,8 @@ package com.example.medtaxi.reti;
 import java.io.*;
 import java.net.*;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Client {
     private Socket s;
@@ -13,7 +15,8 @@ public class Client {
         // Costruttore rimane lo stesso
     }
 
-    public void inviaPrenotazione(String nome, String cognome, String email, String partenza, String arrivo, String giorno1, String orario, String cellulare) throws IOException {
+    public List<String> inviaPrenotazione(String nome, String cognome, String email, String partenza, String arrivo, String giorno1, String orario, String cellulare) throws IOException {
+        List<String> ambulanzeDisponibili = new ArrayList<>();
         try {
             s = new Socket("localhost", 12346);
             pr = new PrintWriter(s.getOutputStream(), true);
@@ -36,13 +39,18 @@ public class Client {
             // Leggi la risposta dal server
             String risposta;
             while ((risposta = bf.readLine()) != null) {
-                System.out.println("server: " + risposta);
+                if (risposta.equals("END_OF_LIST")) { //  "END_OF_LIST"  il segnale di fine
+                    break;
+                }
+                ambulanzeDisponibili.add(risposta);
             }
+
         } catch (ConnectException e) {
-            System.out.println("Server non trovato");
+            System.out.println("Server not found");
         } finally {
             if (s != null) s.close();
         }
+        return ambulanzeDisponibili;
     }
 }
 

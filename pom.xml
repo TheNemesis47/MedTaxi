@@ -33,6 +33,12 @@
       <artifactId>javafx-swing</artifactId>
       <version>21-ea+24</version>  <!-- Assicurati che la versione corrisponda alle altre dipendenze JavaFX -->
     </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-web</artifactId>
+      <version>21-ea+24</version> <!-- Sostituisci con la versione corretta di JavaFX -->
+    </dependency>
+
 
 
     <!-- Dipendenza FormsFX -->
