@@ -9,10 +9,11 @@ import javafx.stage.Stage;
 public class TrackContr {
 
     @FXML
-    private WebView webView;
+    private WebView mappa;
 
     public void initialize() {
-        webView.getEngine().load("/com/example/medtaxi/Mappa/Mappa.html"); // Percorso del file HTML con la mappa
+        mappa.getEngine().load(getClass().getResource("/com/example/medtaxi/Mappa/Mappa.html").toExternalForm());
     }
+
 }
 

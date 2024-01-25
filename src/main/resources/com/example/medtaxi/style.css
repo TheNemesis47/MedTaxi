@@ -58,6 +58,39 @@
     -fx-font-size: 30px; /* Mantieni la stessa dimensione del testo a 75px */
 }
 
+.textfield-custom-inserimento-targa {
+    -fx-pref-width: 400px;
+    -fx-pref-height: 50px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 2);
+    -fx-alignment: center; /* Centra il testo sia in orizzontale che in verticale */
+}
+
+
+.myImage {
+    -fx-min-width: 104px;
+    -fx-max-width: 104px;
+    -fx-min-height: 104px;
+    -fx-max-height: 104px;
+}
+
+.indietroButton {
+    -fx-background-color: #ffffff; /* Sfondo bianco */
+    -fx-border-radius: 30; /* Bordi tondeggiante curvo */
+    -fx-background-radius: 30; /* Bordi tondeggiante curvo */
+    -fx-border-color: #1c8eff; /* Colore del bordo blu */
+    -fx-border-width: 2; /* Spessore del bordo */
+    -fx-text-fill: #1c8eff; /* Colore del testo blu */
+    -fx-font-size: 18px; /* Dimensione del testo */
+    -fx-font-weight: bold; /* Testo in grassetto */
+}
+
+.indietroButton:pressed {
+    -fx-background-color: #1c8eff; /* Cambia lo sfondo a blu quando premuto */
+    -fx-text-fill: #ffffff; /* Cambia il testo a bianco quando premuto */
+}
+
+
 
 
 

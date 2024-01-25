@@ -34,8 +34,8 @@ public class HomeContr {
         stage.show();
     }
 
-    public void displayName(User utente) {
-        String nomeUtente = utente.getNome();
-        helloText.setText("Ciao " + (nomeUtente != null ? nomeUtente : "Nome non disponibile"));
+    public void displayName() {
+        User utente = User.getInstance();
+        helloText.setText("Ciao " + (utente.getNome() != null ? utente.getNome() : "Nome non disponibile"));
     }
 }

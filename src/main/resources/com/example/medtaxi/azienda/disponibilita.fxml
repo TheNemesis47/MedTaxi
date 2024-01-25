@@ -1,15 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="sfondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.medtaxi.controllers.DisponibilitaContr">
    <children>
-      <Text layoutX="324.0" layoutY="646.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scegli l'ambulanza adatta a te!">
+      <Pane fx:id="banner" layoutX="10.0" layoutY="10.0" prefHeight="250.0" prefWidth="1920.0" stylesheets="@../style.css" />
+      <ImageView fitHeight="2817.0" fitWidth="1068.0" layoutX="486.0" layoutY="-736.0" preserveRatio="true">
+         <image>
+            <Image url="@../Images/Home/croci.png" />
+         </image>
+      </ImageView>
+      <Text fill="#ffffffb2" layoutX="432.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MODIFICA DISPONIBILITà">
          <font>
-            <Font name="Arial Bold" size="91.0" />
+            <Font name="Arial Bold" size="90.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="DISAPPEAR" />
+         </cursor>
       </Text>
+      <Button layoutX="24.0" layoutY="986.0" mnemonicParsing="false" onAction="#switchBack" prefHeight="45.0" prefWidth="241.0" styleClass="indietroButton" text="Torna indietro" />
+      <DatePicker fx:id="data" layoutX="657.0" layoutY="403.0" prefHeight="69.0" prefWidth="650.0" promptText="Data da modificare" />
+      <Button fx:id="aggiunti" layoutX="662.0" layoutY="676.0" mnemonicParsing="false" onAction="#aggiungidisponibilita" prefHeight="74.0" prefWidth="652.0" text="Aggiungi disponibilità">
+         <font>
+            <Font size="33.0" />
+         </font>
+         <styleClass>
+            <String fx:value="blueButton" />
+            <String fx:value="SecondWhiteButton" />
+         </styleClass>
+      </Button>
+      <Button fx:id="rimuovi" layoutX="661.0" layoutY="771.0" mnemonicParsing="false" onAction="#rimuovidisponibilita" prefHeight="74.0" prefWidth="435.0" text="Rimuovi disponibilità">
+         <font>
+            <Font size="33.0" />
+         </font>
+         <styleClass>
+            <String fx:value="blueButton" />
+            <String fx:value="SecondWhiteButton" />
+            <String fx:value="whiteButton" />
+         </styleClass>
+      </Button>
+      <Label fx:id="advice" layoutX="649.0" layoutY="914.0" prefHeight="114.0" prefWidth="669.0">
+         <font>
+            <Font name="Arial" size="30.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

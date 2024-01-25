@@ -7,7 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import com.example.medtaxi.classi.Azienda;
+import com.example.medtaxi.singleton.Azienda;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,13 +18,21 @@ public class HomeAZContr {
     private Label helloTextAz;
     private Stage stage;
 
-    public void displayName(Azienda azienda) {
-        String nomeAzienda = azienda.getNome();
-        helloTextAz.setText("Ciao " + (nomeAzienda != null ? nomeAzienda : "Nome non disponibile"));
+    public void displayName() {
+        Azienda azienda = Azienda.getInstance();
+        helloTextAz.setText("Ciao " + (azienda.getNome() != null ? azienda.getNome() : "Nome non disponibile"));
     }
 
     public void SwitchToDisponibilita (ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/disponibilita.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void switchBack (ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/login.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);

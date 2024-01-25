@@ -71,6 +71,7 @@
                   <Font name="Arial" size="40.0" />
                </font>
             </Text>
+            <Button layoutX="13.0" layoutY="980.0" mnemonicParsing="false" onAction="#switchBack" prefHeight="45.0" prefWidth="241.0" styleClass="indietroButton" text="Torna indietro" />
          </children>
       </Pane>
    </children>

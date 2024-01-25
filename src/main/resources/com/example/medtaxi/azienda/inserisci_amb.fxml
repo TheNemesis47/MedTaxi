@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="sfondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.medtaxi.controllers.InserisciAmbContr">
+   <children>
+      <Pane fx:id="banner" layoutX="-36.0" layoutY="-22.0" prefHeight="282.0" prefWidth="1966.0" stylesheets="@../style.css" />
+      <ImageView fitHeight="2817.0" fitWidth="1068.0" layoutX="486.0" layoutY="-736.0" preserveRatio="true">
+         <image>
+            <Image url="@../Images/Home/croci.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="insert_targa" layoutX="748.0" layoutY="617.0" prefHeight="50.0" prefWidth="331.0" promptText="Targa ambulanza da inserire" styleClass="textfield-custom-inserimento-targa">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </TextField>
+      <Text fill="#ffffffb2" layoutX="190.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PARCO AUTO - Inserisci Ambulanza">
+         <font>
+            <Font name="Arial Bold" size="90.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="DISAPPEAR" />
+         </cursor>
+      </Text>
+      <Button fx:id="registraAmbulanza" layoutX="775.0" layoutY="711.0" mnemonicParsing="false" onAction="#registraAmbulanzaonDB" prefHeight="38.0" prefWidth="340.0" styleClass="blueButton" text="Inserisci">
+         <font>
+            <Font name="System Bold" size="39.0" />
+         </font>
+      </Button>
+      <Text layoutX="414.0" layoutY="555.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inserisci la targa dell'ambulanza">
+         <font>
+            <Font name="Arial" size="80.0" />
+         </font>
+      </Text>
+      <Button layoutX="24.0" layoutY="986.0" mnemonicParsing="false" onAction="#switchBack" prefHeight="45.0" prefWidth="241.0" styleClass="indietroButton" text="Torna indietro" />
+   </children>
+</AnchorPane>

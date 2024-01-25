@@ -6,10 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.example.medtaxi.classi.Azienda;
 import com.example.medtaxi.classi.Prenotazione;
-import com.example.medtaxi.singleton.User;
 
 public class Database {
     private String host = "127.0.0.1";
@@ -36,11 +36,44 @@ public class Database {
     }
 
     public void RegistrazioneUtente(String nome, String cognome, double telefono, String data, String via, String comune, String citta, String email, String psw) throws SQLException {
-        // Implementation
+        Connection connection = getConnection();
+
+        String sql = "INSERT INTO utente (nome, cognome, telefono, data, via, comune, citta, email, psw) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, nome);
+            statement.setString(2, cognome);
+            statement.setDouble(3, telefono);
+            java.sql.Date sqlDate = java.sql.Date.valueOf(data);
+            statement.setDate(4, sqlDate);
+            statement.setString(5, via);
+            statement.setString(6, comune);
+            statement.setString(7, citta);
+            statement.setString(8, email);
+            statement.setString(9, psw);
+            statement.executeUpdate();
+        } finally {
+            connection.close();
+        }
     }
 
     public void RegistrazionePrenotazione(String nome, String cognome, double telefono, String data, String indirizzo_part, String indirizzo_arrivo, String mattina_sera, String code_track) throws SQLException {
-        // Implementation
+        Connection connection = getConnection();
+
+        String sql = "INSERT INTO prenotazione (nome_trasportato, cognome_trasportato, indirizzo_partenza, indirizzo_arrivo, giorno_trasporto, numero_cellulare, mattina_sera, code_track) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, nome);
+            statement.setString(2, cognome);
+            statement.setString(3, indirizzo_part);
+            statement.setString(4, indirizzo_arrivo);
+            java.sql.Date sqlDate = java.sql.Date.valueOf(data);
+            statement.setDate(5, sqlDate);
+            statement.setDouble(6, telefono);
+            statement.setString(7, mattina_sera);
+            statement.setString(8, code_track);
+            statement.executeUpdate();
+        } finally {
+            connection.close();
+        }
     }
 
     public User getUtenteByEmail(String email) throws SQLException {
@@ -129,5 +162,79 @@ public class Database {
 
         return prenotazione;
     }
-}
 
+    public void RegistrazioneAmbulanza(String partitaIVA, String nomeAzienda, String targa) throws SQLException {
+        Connection connection = getConnection();
+        String sql = "INSERT INTO parco_auto (partitaiva, nome_azienda, targa) VALUES (?, ?, ?)";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, partitaIVA);
+            statement.setString(2, nomeAzienda);
+            statement.setString(3, targa);
+            statement.executeUpdate();
+        } finally {
+            connection.close();
+        }
+    }
+
+    public void RimuoviAmbulanza(String targaAmbulanza, String partitaivaaziendaloggata) throws SQLException {
+        Connection connection = getConnection();
+        String sql = "DELETE FROM parco_auto WHERE targa = ? AND partitaiva = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, targaAmbulanza);
+            statement.setString(2, partitaivaaziendaloggata);
+            statement.executeUpdate();
+        } finally {
+            connection.close();
+        }
+    }
+
+    public List<String> getTargheAzienda(String partitaIVA) throws SQLException {
+        List<String> targheAzienda = new ArrayList<>();
+        Connection connection = getConnection();
+
+        String sql = "SELECT targa FROM parco_auto WHERE partitaiva = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, partitaIVA);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    String targa = resultSet.getString("targa");
+                    targheAzienda.add(targa);
+                }
+            }
+        } finally {
+            connection.close();
+        }
+
+        return targheAzienda;
+    }
+
+
+    public void aggiungiDisponibilita(LocalDate data) throws SQLException {
+        Connection connection = getConnection();
+        String sql = "UPDATE disponibilita SET disp_mattina = disp_mattina + 1, disp_sera = disp_sera + 1 WHERE data = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            java.sql.Date sqlDate = java.sql.Date.valueOf(data);
+            statement.setDate(1, sqlDate);
+            statement.executeUpdate();
+        } finally {
+            connection.close();
+        }
+    }
+
+    public void rimuoviDisponibilita(LocalDate data) throws SQLException {
+        Connection connection = getConnection();
+        String sql = "UPDATE disponibilita SET disp_mattina = disp_mattina - 1, disp_sera = disp_sera - 1 WHERE data = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            java.sql.Date sqlDate = java.sql.Date.valueOf(data);
+            statement.setDate(1, sqlDate);
+            statement.executeUpdate();
+        } finally {
+            connection.close();
+        }
+    }
+}

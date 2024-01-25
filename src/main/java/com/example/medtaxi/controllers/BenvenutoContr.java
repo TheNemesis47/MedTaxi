@@ -21,9 +21,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
-import com.example.medtaxi.classi.Azienda;
-public class BenvenutoContr {
+import com.example.medtaxi.singleton.Azienda;
 
+import javax.swing.text.html.ImageView;
+
+public class BenvenutoContr {
     @FXML
     private Label errorReg;
     @FXML
@@ -56,6 +58,15 @@ public class BenvenutoContr {
     public void switchToLoginScene(ActionEvent event) throws IOException {
 
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/login.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void switchBack(ActionEvent event) throws IOException {
+
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/benvenuto.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -112,11 +123,28 @@ public class BenvenutoContr {
         root = loader.load();
 
         HomeContr homeController = loader.getController();
-        homeController.displayName(utente);
+        homeController.displayName();
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    public void loginButtonOnAction(ActionEvent event) {
+        if (!remail.getText().isBlank() && !rpsw.getText().isBlank()) {
+            try {
+                String verifyTypeQuery = "SELECT client_type FROM utente WHERE email = ? AND psw = ?";
+                String verifyLoginQueryHome = "SELECT count(1) FROM utente WHERE email = ? AND psw = ?";
+
+                verifyLogin(verifyTypeQuery, verifyLoginQueryHome, "/com/example/medtaxi/utente/home.fxml", "/com/example/medtaxi/azienda/homeAz.fxml", "Login errato, riprova.", event);
+
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            errorReg.setText("Per favore, inserisci email e password!");
+        }
     }
 
     private void verifyLogin(String verifyType, String verifyLogin, String fxmlPathHome, String fxmlPathAzienda, String errorMessage, ActionEvent event) throws SQLException, IOException {
@@ -148,14 +176,16 @@ public class BenvenutoContr {
                                 root = loader.load();
 
                                 if ("2".equals(tipou)) {
-                                    Azienda azienda = new Azienda(emailValue);
+                                    // Utilizza initInstanceWithEmail per inizializzare l'istanza di Azienda
+                                    Azienda.initInstanceWithEmail(emailValue);
+                                    Azienda azienda = Azienda.getInstance();
                                     HomeAZContr homeAZContr = loader.getController();
-                                    homeAZContr.displayName(azienda);
+                                    homeAZContr.displayName();
                                 } else {
                                     User.initInstance(emailValue);
                                     User utente = User.getInstance();
                                     HomeContr homeController = loader.getController();
-                                    homeController.displayName(utente);
+                                    homeController.displayName();
                                 }
 
                                 stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -169,23 +199,6 @@ public class BenvenutoContr {
                     }
                 }
             }
-        }
-    }
-
-    @FXML
-    public void loginButtonOnAction(ActionEvent event) {
-        if (!remail.getText().isBlank() && !rpsw.getText().isBlank()) {
-            try {
-                String verifyTypeQuery = "SELECT client_type FROM utente WHERE email = ? AND psw = ?";
-                String verifyLoginQueryHome = "SELECT count(1) FROM utente WHERE email = ? AND psw = ?";
-
-                verifyLogin(verifyTypeQuery, verifyLoginQueryHome, "/com/example/medtaxi/utente/home.fxml", "/com/example/medtaxi/azienda/homeAz.fxml", "Login errato, riprova.", event);
-
-            } catch (SQLException | IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            errorReg.setText("Per favore, inserisci email e password!");
         }
     }
 }
