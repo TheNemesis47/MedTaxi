@@ -11,72 +11,71 @@ public class Client {
     private PrintWriter pr;
     private BufferedReader bf;
 
-    public Client() throws IOException {
-        // Costruttore rimane lo stesso
-    }
-
-    public List<String> inviaPrenotazione(String nome, String cognome, String email, String partenza, String arrivo, String giorno1, String orario, String cellulare) throws IOException {
-        List<String> ambulanzeDisponibili = new ArrayList<>();
+    public Client() {
         try {
             s = new Socket("localhost", 12346);
             pr = new PrintWriter(s.getOutputStream(), true);
             bf = new BufferedReader(new InputStreamReader(s.getInputStream()));
-
-
-            //dire che e un cliente
-            pr.println("cliente");
-            // Invia una richiesta di prenotazione al server
-            pr.println(nome);
-            pr.println(cognome);
-            pr.println(email);
-            pr.println(partenza);
-            pr.println(arrivo);
-            pr.println(giorno1);
-            pr.println(orario);
-            pr.println(cellulare);
-
-
-            // Leggi la risposta dal server
-            String risposta;
-            while ((risposta = bf.readLine()) != null) {
-                if (risposta.equals("END_OF_LIST")) { //  "END_OF_LIST"  il segnale di fine
-                    break;
-                }
-                ambulanzeDisponibili.add(risposta);
-            }
-
-        } catch (ConnectException e) {
-            System.out.println("Server not found");
-        } finally {
-            if (s != null) s.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    public void close() {
+        try {
+            if (bf != null) bf.close();
+            if (pr != null) pr.close();
+            if (s != null) s.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<String> inviaPrenotazione(String nome, String cognome, String email, String partenza, String arrivo, String giorno1, String orario, String cellulare, String codice) throws IOException {
+        List<String> ambulanzeDisponibili = new ArrayList<>();
+
+        //dire che e un cliente
+        pr.println("cliente");
+        // Invia una richiesta di prenotazione al server
+        pr.println(nome);
+        pr.println(cognome);
+        pr.println(email);
+        pr.println(partenza);
+        pr.println(arrivo);
+        pr.println(giorno1);
+        pr.println(orario);
+        pr.println(cellulare);
+        pr.println(codice);
+
+
+        // Leggi la risposta dal server
+        String risposta;
+        while ((risposta = bf.readLine()) != null) {
+            if (risposta.equals("END_OF_LIST")) { //  "END_OF_LIST"  il segnale di fine
+                break;
+            }
+            ambulanzeDisponibili.add(risposta);
+        }
+
         return ambulanzeDisponibili;
     }
-}
 
 
 
+    public void inviaAziendaScelta(String aziendaSelezionata) throws IOException {
 
+        // Invia un tipo di richiesta identificabile al server
+        //pr.println("SELEZIONE_AZIENDA");
+        System.out.println(aziendaSelezionata);
 
+        // Invia il nome dell'azienda scelta
+        pr.println(aziendaSelezionata);
+        pr.flush();
 
+        // Leggi la risposta dal server
+        String risposta = bf.readLine();
+        System.out.println(risposta);
 
-  /*  public static void main(String[] args) throws IOException{
-        try {
-            Socket s = new Socket("localhost", 12345);
-
-            PrintWriter pr = new PrintWriter(s.getOutputStream());
-            pr.println("is it working?");
-            pr.flush();
-
-            InputStreamReader in = new InputStreamReader(s.getInputStream());
-            BufferedReader bf = new BufferedReader(in);
-
-            String str = bf.readLine();
-            System.out.println("server: " + str);
-        }catch (ConnectException e){
-            System.out.println("Server not found");
-        }
-
+        this.close();
     }
 }
-*/
