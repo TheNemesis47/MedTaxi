@@ -53,6 +53,10 @@ public class Azienda {
         return instance;
     }
 
+    public void disconnect() {
+        instance = null;
+    }
+
     // Getter e Setter per le variabili di istanza
     public String getNome() {
         return nome;

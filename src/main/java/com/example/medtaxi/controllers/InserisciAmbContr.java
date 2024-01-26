@@ -48,7 +48,7 @@ public class InserisciAmbContr {
             Database db = Database.getInstance();
             try {
                 db.RegistrazioneAmbulanza(partita, nomeaz, targaAmbulanza);
-                Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/homeAz.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/parco_auto.fxml"));
                 stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 scene = new Scene(root);
                 stage.setScene(scene);

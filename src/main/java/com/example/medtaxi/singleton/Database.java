@@ -1,14 +1,11 @@
 package com.example.medtaxi.singleton;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.medtaxi.classi.Disponibilita;
 import com.example.medtaxi.classi.Prenotazione;
 
 public class Database {
@@ -237,4 +234,106 @@ public class Database {
             connection.close();
         }
     }
+
+    public List<Prenotazione> getPrenotazioniAziendaFinoOggi(String partitaIVA) throws SQLException {
+        List<Prenotazione> prenotazioni = new ArrayList<>();
+        LocalDate oggi = LocalDate.now();
+
+        String sql = "SELECT * FROM prenotazione WHERE giorno_trasporto <= ? AND p_iva = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setDate(1, java.sql.Date.valueOf(oggi));
+            statement.setString(2, partitaIVA);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    String nomeTrasportato = resultSet.getString("nome_trasportato");
+                    String cognomeTrasportato = resultSet.getString("cognome_trasportato");
+                    String indirizzoPartenza = resultSet.getString("indirizzo_partenza");
+                    String indirizzoArrivo = resultSet.getString("indirizzo_arrivo");
+                    LocalDate giornoTrasporto = resultSet.getDate("giorno_trasporto").toLocalDate();
+                    double numeroCellulare = resultSet.getDouble("numero_cellulare");
+                    String mattinaSera = resultSet.getString("mattina_sera");
+                    String codeTrack = resultSet.getString("code_track");
+
+                    Prenotazione prenotazione = new Prenotazione(
+                            nomeTrasportato, cognomeTrasportato, indirizzoPartenza, indirizzoArrivo,
+                            giornoTrasporto, numeroCellulare, mattinaSera, codeTrack, partitaIVA
+                    );
+                    prenotazioni.add(prenotazione);
+                }
+            }
+        }
+
+        return prenotazioni;
+    }
+
+    public List<Prenotazione> getPrenotazioniAziendaFuture(String partitaIVA) throws SQLException {
+        List<Prenotazione> prenotazioni = new ArrayList<>();
+        LocalDate oggi = LocalDate.now();
+
+        String sql = "SELECT * FROM prenotazione WHERE giorno_trasporto >= ? AND p_iva = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setDate(1, java.sql.Date.valueOf(oggi));
+            statement.setString(2, partitaIVA);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    String nomeTrasportato = resultSet.getString("nome_trasportato");
+                    String cognomeTrasportato = resultSet.getString("cognome_trasportato");
+                    String indirizzoPartenza = resultSet.getString("indirizzo_partenza");
+                    String indirizzoArrivo = resultSet.getString("indirizzo_arrivo");
+                    LocalDate giornoTrasporto = resultSet.getDate("giorno_trasporto").toLocalDate();
+                    double numeroCellulare = resultSet.getDouble("numero_cellulare");
+                    String mattinaSera = resultSet.getString("mattina_sera");
+                    String codeTrack = resultSet.getString("code_track");
+
+                    Prenotazione prenotazione = new Prenotazione(
+                            nomeTrasportato, cognomeTrasportato, indirizzoPartenza, indirizzoArrivo,
+                            giornoTrasporto, numeroCellulare, mattinaSera, codeTrack, partitaIVA
+                    );
+                    prenotazioni.add(prenotazione);
+                }
+            }
+        }
+
+        return prenotazioni;
+    }
+
+
+    public List<Disponibilita> getDisponibilita(String partitaIVA) throws SQLException {
+        List<Disponibilita> disponibilitaList = new ArrayList<>();
+
+        // Connessione al database
+        Connection connection = getConnection();
+
+        // Query SQL per ottenere le disponibilità
+        String query = "SELECT data, disp_mattina, disp_sera FROM disponibilita WHERE piva = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, partitaIVA);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                LocalDate data = resultSet.getDate("data").toLocalDate();
+                int dispMattina = resultSet.getInt("disp_mattina");
+                int dispSera = resultSet.getInt("disp_sera");
+
+                Disponibilita disponibilita = new Disponibilita(data, dispMattina, dispSera);
+                disponibilitaList.add(disponibilita);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            connection.close();
+        }
+
+        return disponibilitaList;
+    }
+
+
 }

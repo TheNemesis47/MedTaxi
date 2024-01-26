@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -62,7 +63,6 @@ public class PrenotaContr {
 
     @FXML
     public void initialize() {
-        // Popola la ComboBox con le fasce orarie
         popolaFasceOrarie();
     }
 

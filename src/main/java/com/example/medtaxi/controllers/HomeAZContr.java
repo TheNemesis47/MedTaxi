@@ -31,13 +31,16 @@ public class HomeAZContr {
         stage.show();
     }
 
-    public void switchBack (ActionEvent event) throws IOException {
+    @FXML
+    public void switchBack(ActionEvent event) throws IOException {
+        Azienda.getInstance().disconnect(); // Chiamata al metodo disconnect
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/login.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+
 
     public void SwitchToParcoAuto (ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/parco_auto.fxml"));
@@ -63,4 +66,8 @@ public class HomeAZContr {
         stage.show();
     }
 
+    public void displayName(String nomeAzienda) {
+        Azienda azienda = Azienda.getInstance();
+        helloTextAz.setText("Ciao " + (nomeAzienda != null ? nomeAzienda : "Nome non disponibile"));
+    }
 }
