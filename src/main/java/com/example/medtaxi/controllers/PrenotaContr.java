@@ -1,5 +1,6 @@
 package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.singleton.Azienda;
 import com.example.medtaxi.singleton.User;
 import com.example.medtaxi.reti.Client;
 import com.example.medtaxi.singleton.Database;
@@ -47,6 +48,22 @@ public class PrenotaContr {
 
     private Stage stage;
     private Scene scene;
+
+    @FXML
+    public void switchBack(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/home.fxml"));
+        Parent root = loader.load();
+        HomeContr homeContr = loader.getController();
+
+        String nomeUtente = User.getInstance().getNome();
+
+        homeContr.displayName(nomeUtente);
+
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 
     private String generateRandomString(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?#*";

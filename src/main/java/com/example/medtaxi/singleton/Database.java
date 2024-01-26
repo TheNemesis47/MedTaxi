@@ -209,6 +209,28 @@ public class Database {
     }
 
 
+    public List<String> getIndirizzi(String email) throws SQLException {
+        List<String> indirizzi = new ArrayList<>();
+        Connection connection = getConnection();
+
+        String sql = "SELECT indirizzo_utente FROM storico_indirizzi WHERE email_utente = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, email);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    String indirizzo = resultSet.getString("indirizzo_utente");
+                    indirizzi.add(indirizzo);
+                }
+            }
+        } finally {
+            connection.close();
+        }
+
+        return indirizzi;
+    }
+
+
     public void aggiungiDisponibilita(LocalDate data) throws SQLException {
         Connection connection = getConnection();
         String sql = "UPDATE disponibilita SET disp_mattina = disp_mattina + 1, disp_sera = disp_sera + 1 WHERE data = ?";
@@ -303,6 +325,41 @@ public class Database {
         return prenotazioni;
     }
 
+    public List<Prenotazione> getPrenotazioniUtente(String nome, String cognome, String cellulare) throws SQLException {
+        List<Prenotazione> prenotazioni = new ArrayList<>();
+        LocalDate oggi = LocalDate.now();
+
+        String sql = "SELECT * FROM prenotazione WHERE giorno_trasporto >= ? AND nome_trasportato = ? AND cognome_trasportato = ? AND numero_cellulare = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setDate(1, java.sql.Date.valueOf(oggi));
+            statement.setString(2, nome);
+            statement.setString(3,cognome);
+            statement.setString(4,cellulare);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    String nomeTrasportato = resultSet.getString("nome_trasportato");
+                    String cognomeTrasportato = resultSet.getString("cognome_trasportato");
+                    String indirizzoPartenza = resultSet.getString("indirizzo_partenza");
+                    String indirizzoArrivo = resultSet.getString("indirizzo_arrivo");
+                    LocalDate giornoTrasporto = resultSet.getDate("giorno_trasporto").toLocalDate();
+                    double numeroCellulare = resultSet.getDouble("numero_cellulare");
+                    String mattinaSera = resultSet.getString("mattina_sera");
+                    String codeTrack = resultSet.getString("code_track");
+
+                    Prenotazione prenotazione = new Prenotazione(
+                            nomeTrasportato, cognomeTrasportato, indirizzoPartenza, indirizzoArrivo,
+                            giornoTrasporto, numeroCellulare, mattinaSera, codeTrack);
+                    prenotazioni.add(prenotazione);
+                }
+            }
+        }
+
+        return prenotazioni;
+    }
+
 
     public List<Disponibilita> getDisponibilita(String partitaIVA) throws SQLException {
         List<Disponibilita> disponibilitaList = new ArrayList<>();
@@ -335,5 +392,18 @@ public class Database {
         return disponibilitaList;
     }
 
+    public void rimuoviPrenotazione(Prenotazione prenotazione, String codice) throws SQLException {
+        String sql = "DELETE FROM prenotazione WHERE nome_trasportato = ? AND cognome_trasportato = ? AND numero_cellulare = ? AND code_track = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, prenotazione.getNomeTrasportato());
+            statement.setString(2, prenotazione.getCognomeTrasportato());
+            statement.setDouble(3, prenotazione.getNumeroCellulare());
+            statement.setString(4, codice);
+
+            statement.executeUpdate();
+        }
+    }
 
 }
