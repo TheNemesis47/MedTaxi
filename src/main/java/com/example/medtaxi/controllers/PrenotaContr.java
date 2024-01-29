@@ -1,5 +1,6 @@
 package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.singleton.Azienda;
 import com.example.medtaxi.singleton.User;
 import com.example.medtaxi.reti.Client;
 import com.example.medtaxi.singleton.Database;
@@ -11,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -47,7 +49,21 @@ public class PrenotaContr {
     private Stage stage;
     private Scene scene;
 
+    @FXML
+    public void switchBack(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/home.fxml"));
+        Parent root = loader.load();
+        HomeContr homeContr = loader.getController();
 
+        String nomeUtente = User.getInstance().getNome();
+
+        homeContr.displayName(nomeUtente);
+
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 
     private String generateRandomString(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?#*";
@@ -61,6 +77,7 @@ public class PrenotaContr {
 
         return randomString.toString();
     }
+
     @FXML
     public void initialize() {
         // Popola la ComboBox con le fasce orarie
@@ -77,10 +94,51 @@ public class PrenotaContr {
         }
         fasceOrarieComboBox.getItems().addAll(fasceOrarie);
 
-        // valore predefinito
+        // Impostazione di un valore predefinito (può essere opzionale)
         fasceOrarieComboBox.setValue("00:00");
     }
 
+    @FXML
+    protected void prenotazione(ActionEvent event) {
+        try {
+            double numerox = Double.parseDouble(numero_cellulare.getText());
+            LocalDate localDate = data_trasporto.getValue();
+            String dataTrasportox = localDate != null ? localDate.toString() : null;
+            String nomex = nome_paziente.getText();
+            String cognomex = cognome_paziente.getText();
+            String indirizzox = indirizzo_partenza.getText();
+            String indirizzoxx = indirizzo_arrivo.getText();
+
+            // Recupera l'orario selezionato dalla ComboBox delle fasce orarie
+            String orarioSelezionato = fasceOrarieComboBox.getValue();
+
+            // Determina la fascia oraria (mattina o sera)
+            String fasciaOraria = determinaFasciaOraria(orarioSelezionato);
+
+            // Genera un codice casuale
+            String codice = generateRandomString(6);
+
+            // Carica la scena successiva
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/prenotazione_completata.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+            // Accesso al controller della scena successiva
+            PrenotaCContr prenotaCContr = loader.getController();
+            prenotaCContr.displayName(codice);
+
+            // Esegui la registrazione nel database
+            Database db = Database.getInstance();
+            db.RegistrazionePrenotazione(nomex, cognomex, numerox, dataTrasportox, indirizzox, indirizzoxx, fasciaOraria, codice);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();  // Gestire l'eccezione in modo specifico
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();  // Gestire l'eccezione in modo specifico
+        }
+    }
 
     public void switchToNextScene(ActionEvent event) throws IOException {
         Client client = new Client();
@@ -91,9 +149,8 @@ public class PrenotaContr {
         String fasciaOrariaSelezionata = fasceOrarieComboBox.getValue();
 
         String oraScelta = determinaFasciaOraria(fasceOrarieComboBox.getValue());
-        String codice = generateRandomString(6);
         ambulanzeDisponibili = client.inviaPrenotazione(nome_paziente.getText(), cognome_paziente.getText(), User.getInstance().getEmail(), indirizzo_partenza.getText(), indirizzo_arrivo.getText(),
-                dataSelezionata.toString(), fasciaOrariaSelezionata, oraScelta, numero_cellulare.getText(), codice);
+                dataSelezionata.toString(), oraScelta, numero_cellulare.getText());
         for (String ambulanza : ambulanzeDisponibili) {
             System.out.println(ambulanza);
         }
@@ -104,9 +161,7 @@ public class PrenotaContr {
 
         // Imposta la lista di ambulanze disponibili nel controller della nuova scena
         SelezionaContr selezionaContr = loader.getController();
-        selezionaContr.setRandomString(codice);
         selezionaContr.setAmbulanzeDisponibili(ambulanzeDisponibili);
-        selezionaContr.setClient(client);
 
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);

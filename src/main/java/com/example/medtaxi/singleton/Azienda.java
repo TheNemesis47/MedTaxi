@@ -1,7 +1,6 @@
-package com.example.medtaxi.classi;
+package com.example.medtaxi.singleton;
 
 import java.sql.SQLException;
-import com.example.medtaxi.singleton.Database;
 
 public class Azienda {
     private String nome;
@@ -15,9 +14,50 @@ public class Azienda {
     private String password;
     private int id;
 
+    private static Azienda instance;
+
     public Azienda() {
     }
 
+    // Metodo pubblico statico per inizializzare l'istanza con un'email specifica
+    public static Azienda initInstanceWithEmail(String email) {
+        if (instance == null) {
+            instance = new Azienda();
+            try {
+                Azienda aziendaFromDB = Database.getInstance().getAziendaByEmail(email);
+
+                if (aziendaFromDB != null) {
+                    instance.nome = aziendaFromDB.getNome();
+                    instance.piva = aziendaFromDB.getPiva();
+                    instance.telefono = aziendaFromDB.getTelefono();
+                    instance.indirizzo = aziendaFromDB.getIndirizzo();
+                    instance.comune = aziendaFromDB.getComune();
+                    instance.provincia = aziendaFromDB.getProvincia();
+                    instance.cap = aziendaFromDB.getCap();
+                    instance.email = aziendaFromDB.getEmail();
+                    instance.password = aziendaFromDB.getPassword();
+                    instance.id = aziendaFromDB.getId();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
+    }
+
+    // Metodo pubblico statico per ottenere l'istanza
+    public static Azienda getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("L'istanza di Azienda non è stata inizializzata.");
+        }
+        return instance;
+    }
+
+    public void disconnect() {
+        instance = null;
+    }
+
+    // Getter e Setter per le variabili di istanza
     public String getNome() {
         return nome;
     }
@@ -96,26 +136,5 @@ public class Azienda {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Azienda(String email) {
-        try {
-            Azienda aziendaFromDB = Database.getInstance().getAziendaByEmail(email);
-
-            if (aziendaFromDB != null) {
-                this.nome = aziendaFromDB.getNome();
-                this.piva = aziendaFromDB.getPiva();
-                this.telefono = aziendaFromDB.getTelefono();
-                this.indirizzo = aziendaFromDB.getIndirizzo();
-                this.comune = aziendaFromDB.getComune();
-                this.provincia = aziendaFromDB.getProvincia();
-                this.cap = aziendaFromDB.getCap();
-                this.email = aziendaFromDB.getEmail();
-                this.password = aziendaFromDB.getPassword();
-                this.id = aziendaFromDB.getId();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -28,6 +28,20 @@ public class Prenotazione {
         this.partitaIvaAzienda = pIva;
     }
 
+    public Prenotazione(String nomeTrasportato, String cognomeTrasportato, String indirizzoPartenza, String indirizzoArrivo,
+                        LocalDate giornoTrasporto, double numeroCellulare, String mattinaSera, String codeTrack) {
+        // Inizializza gli attributi della classe Prenotazione con i valori passati come argomenti
+        this.nomeTrasportato = nomeTrasportato;
+        this.cognomeTrasportato = cognomeTrasportato;
+        this.indirizzoPartenza = indirizzoPartenza;
+        this.indirizzoArrivo = indirizzoArrivo;
+        this.giornoTrasporto = giornoTrasporto;
+        this.numeroCellulare = numeroCellulare;
+        this.mattinaSera = mattinaSera;
+        this.codeTrack = codeTrack;
+    }
+
+
     public Prenotazione(String email) {
         try {
             Prenotazione prenotazioneFromDB = Database.getInstance().getPrenotazioneByEmail(email);

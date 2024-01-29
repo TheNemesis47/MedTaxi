@@ -6,49 +6,57 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="sfondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.medtaxi.controllers.HomeContr">
+<AnchorPane fx:id="sfondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.medtaxi.controllers.HomeContr">
    <children>
-      <Pane fx:id="banner" prefHeight="250.0" prefWidth="1920.0" stylesheets="@../style.css">
-         <children>
-            <Text fill="#d3d3d3b2" layoutX="39.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="cosa desideri fare?">
-               <font>
-                  <Font name="Arial" size="66.0" />
-               </font>
-            </Text>
-            <Label fx:id="helloText" layoutX="38.0" layoutY="41.0" textFill="WHITE">
-               <font>
-                  <Font name="Arial Bold" size="70.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
       <ImageView fitHeight="2817.0" fitWidth="1068.0" layoutX="476.0" layoutY="-746.0" preserveRatio="true" rotate="90.0">
          <image>
             <Image url="@../Images/Home/croci.png" />
          </image>
       </ImageView>
-      <Button layoutX="48.0" layoutY="400.0" mnemonicParsing="false" onAction="#SwitchToPrenotaScene" styleClass="SecondWhiteButton" text="Prenota">
+      <Text fill="#a4a2a2b2" layoutX="51.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="cosa desideri fare?">
+         <font>
+            <Font name="Arial" size="50.0" />
+         </font>
+      </Text>
+      <Label fx:id="helloText" layoutX="50.0" layoutY="-5.0" prefHeight="175.0" prefWidth="501.0">
+         <font>
+            <Font name="Arial Bold" size="50.0" />
+         </font>
+      </Label>
+      <Button layoutX="53.0" layoutY="197.0" mnemonicParsing="false" onAction="#SwitchToPrenotaScene" prefHeight="0.0" prefWidth="452.0" styleClass="SecondWhiteButton" text="Prenota">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Button>
+      <Button layoutX="53.0" layoutY="312.0" mnemonicParsing="false" onAction="#trackAmbulance" styleClass="SecondWhiteButton" text="Traccia ambulanza">
          <font>
             <Font size="31.0" />
          </font>
       </Button>
-      <Button layoutX="48.0" layoutY="556.0" mnemonicParsing="false" onAction="#trackAmbulance" styleClass="SecondWhiteButton" text="Traccia ambulanza">
+      <Button layoutX="55.0" layoutY="427.0" mnemonicParsing="false" onAction="#switchToAnnullaScene" styleClass="SecondWhiteButton" text="Annulla prenotazione">
          <font>
             <Font size="31.0" />
          </font>
       </Button>
-      <Button layoutX="50.0" layoutY="708.0" mnemonicParsing="false" styleClass="SecondWhiteButton" text="Annulla prenotazione">
+      <Button layoutX="56.0" layoutY="542.0" mnemonicParsing="false" onAction="#SwitchToStorico" styleClass="SecondWhiteButton" text="Storico indirizzi">
          <font>
             <Font size="31.0" />
          </font>
       </Button>
-      <Button layoutX="51.0" layoutY="852.0" mnemonicParsing="false" styleClass="SecondWhiteButton" text="Storico indirizzi">
-         <font>
-            <Font size="31.0" />
-         </font>
-      </Button>
+      <Pane fx:id="banner" layoutX="790.0" layoutY="-11.0" prefHeight="734.0" prefWidth="498.0" stylesheets="@../style.css">
+         <children>
+            <Circle fill="WHITE" layoutX="247.0" layoutY="394.0" radius="150.0" stroke="WHITE" strokeType="INSIDE" />
+            <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="147.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/MedTaxiLogo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Button layoutX="58.0" layoutY="661.0" mnemonicParsing="false" onAction="#switchBack" prefHeight="45.0" prefWidth="241.0" styleClass="indietroButton" text="Logout" />
    </children>
 </AnchorPane>

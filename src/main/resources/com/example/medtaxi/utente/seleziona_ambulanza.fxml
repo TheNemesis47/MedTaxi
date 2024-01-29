@@ -8,22 +8,25 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="sfondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.medtaxi.controllers.SelezionaContr">
+<AnchorPane fx:id="sfondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.medtaxi.controllers.SelezionaContr">
    <children>
-      <Pane fx:id="banner" prefHeight="250.0" prefWidth="1920.0" stylesheets="@../style.css" />
-      <Text fill="#ffffffb2" layoutX="377.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AMBULANZE DISPONIBILI">
-         <font>
-            <Font name="Arial Bold" size="90.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="DISAPPEAR" />
-         </cursor>
-      </Text>
-      <Button layoutX="711.0" layoutY="845.0" mnemonicParsing="false" onAction="#switchToNextScene" prefHeight="50.0" prefWidth="476.0" styleClass="blueButton" text="Prenota trasferimento">
+      <Pane fx:id="banner" layoutX="-22.0" prefHeight="160.0" prefWidth="1318.0" stylesheets="@../style.css">
+         <children>
+            <Text fill="#ffffffb2" layoutX="92.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AMBULANZE DISPONIBILI">
+               <font>
+                  <Font name="Arial Bold" size="90.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DISAPPEAR" />
+               </cursor>
+            </Text>
+         </children></Pane>
+      <Button layoutX="302.0" layoutY="578.0" mnemonicParsing="false" onAction="#switchToNextScene" prefHeight="86.0" prefWidth="881.0" styleClass="blueButton" text="Prenota trasferimento">
          <font>
             <Font name="System Bold" size="40.0" />
          </font>
       </Button>
-      <ListView fx:id="listAmb" layoutX="590.0" layoutY="300.0" prefHeight="522.0" prefWidth="713.0" />
+      <ListView fx:id="listAmb" layoutX="99.0" layoutY="211.0" prefHeight="336.0" prefWidth="1088.0" />
+      <Button layoutX="14.0" layoutY="619.0" mnemonicParsing="false" onAction="#switchBack" prefHeight="45.0" prefWidth="241.0" styleClass="indietroButton" text="Torna indietro" />
    </children>
 </AnchorPane>
