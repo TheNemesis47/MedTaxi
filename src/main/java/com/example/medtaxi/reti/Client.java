@@ -31,7 +31,7 @@ public class Client {
         }
     }
 
-    public List<String> inviaPrenotazione(String nome, String cognome, String email, String partenza, String arrivo, String giorno1, String orario, String cellulare, String codice) throws IOException {
+    public List<String> inviaPrenotazione(String nome, String cognome, String email, String partenza, String arrivo, String giorno1, String ora_precisa, String orario, String cellulare, String codice) throws IOException {
         List<String> ambulanzeDisponibili = new ArrayList<>();
 
         //dire che e un cliente
@@ -43,6 +43,7 @@ public class Client {
         pr.println(partenza);
         pr.println(arrivo);
         pr.println(giorno1);
+        pr.println(ora_precisa);
         pr.println(orario);
         pr.println(cellulare);
         pr.println(codice);
@@ -51,7 +52,7 @@ public class Client {
         // Leggi la risposta dal server
         String risposta;
         while ((risposta = bf.readLine()) != null) {
-            if (risposta.equals("END_OF_LIST")) { //  "END_OF_LIST"  il segnale di fine
+            if (risposta.equals("END_OF_LIST")) { // segnale di fine
                 break;
             }
             ambulanzeDisponibili.add(risposta);

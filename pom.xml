@@ -14,12 +14,20 @@
     <junit.version>5.9.2</junit.version>
   </properties>
 
+
+
   <dependencies>
     <!-- Dipendenze JavaFX -->
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
       <version>21-ea+24</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.maps</groupId>
+      <artifactId>google-maps-services</artifactId>
+      <version>0.2.10</version>
     </dependency>
 
     <dependency>

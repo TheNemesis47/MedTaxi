@@ -77,7 +77,7 @@ public class PrenotaContr {
         }
         fasceOrarieComboBox.getItems().addAll(fasceOrarie);
 
-        // Impostazione di un valore predefinito (può essere opzionale)
+        // valore predefinito
         fasceOrarieComboBox.setValue("00:00");
     }
 
@@ -93,7 +93,7 @@ public class PrenotaContr {
         String oraScelta = determinaFasciaOraria(fasceOrarieComboBox.getValue());
         String codice = generateRandomString(6);
         ambulanzeDisponibili = client.inviaPrenotazione(nome_paziente.getText(), cognome_paziente.getText(), User.getInstance().getEmail(), indirizzo_partenza.getText(), indirizzo_arrivo.getText(),
-                dataSelezionata.toString(), oraScelta, numero_cellulare.getText(), codice);
+                dataSelezionata.toString(), fasciaOrariaSelezionata, oraScelta, numero_cellulare.getText(), codice);
         for (String ambulanza : ambulanzeDisponibili) {
             System.out.println(ambulanza);
         }

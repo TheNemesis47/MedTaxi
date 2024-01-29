@@ -151,6 +151,7 @@ public class BenvenutoContr {
                                     Azienda azienda = new Azienda(emailValue);
                                     HomeAZContr homeAZContr = loader.getController();
                                     homeAZContr.displayName(azienda);
+                                    homeAZContr.startServerTask();
                                 } else {
                                     User.initInstance(emailValue);
                                     User utente = User.getInstance();
