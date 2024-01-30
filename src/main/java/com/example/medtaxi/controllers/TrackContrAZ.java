@@ -81,7 +81,7 @@ public class TrackContrAZ {
 
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/azienda/pre_trackAZ.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/azienda/pretrackAZ.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
