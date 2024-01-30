@@ -30,7 +30,6 @@ public class ServerUDP {
         LatLng origin = geocodeAddress(indirizzoPartenza);
         LatLng destination = geocodeAddress(indirizzoArrivo);
 
-        // Calcola la rotta tra l'origine e la destinazione
         routePoints = new RouteCalculator().getRoutePoints(origin, destination);
     }
 
