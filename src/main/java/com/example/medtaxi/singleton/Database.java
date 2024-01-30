@@ -406,4 +406,36 @@ public class Database {
         }
     }
 
+    public String getIndirizzoPartenzaByCodeTrack(String codeTrack) throws SQLException {
+        try (Connection connection = getConnection()) {
+            String sql = "SELECT indirizzo_partenza FROM prenotazione WHERE code_track = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, codeTrack);
+
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getString("indirizzo_partenza");
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getIndirizzoArrivoByCodeTrack(String codeTrack) throws SQLException {
+        try (Connection connection = getConnection()) {
+            String sql = "SELECT indirizzo_arrivo FROM prenotazione WHERE code_track = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, codeTrack);
+
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getString("indirizzo_arrivo");
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
 }

@@ -59,7 +59,7 @@ public class HomeContr {
     }
 
     public void trackAmbulance(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/track.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/pre_track.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);

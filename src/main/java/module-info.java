@@ -8,6 +8,8 @@ module com.example.medtaxi {
 
     requires com.dlsc.formsfx;
     requires javafx.web;
+    requires google.maps.services;
+    requires jdk.jsobject;
 
     opens com.example.medtaxi to javafx.fxml;
     exports com.example.medtaxi;

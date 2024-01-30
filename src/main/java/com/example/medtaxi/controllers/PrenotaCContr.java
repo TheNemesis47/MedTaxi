@@ -1,5 +1,6 @@
 package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.singleton.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +21,14 @@ public class PrenotaCContr {
     private Label trackCode;
 
     public void switchToHomeScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/home.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/home.fxml"));
+        Parent root = loader.load();
+        HomeContr homeContr = loader.getController();
+
+        String nomeUtente = User.getInstance().getNome();
+
+        homeContr.displayName(nomeUtente);
+
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

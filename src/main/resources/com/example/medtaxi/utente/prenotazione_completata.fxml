@@ -34,7 +34,7 @@
             <Cursor fx:constant="DISAPPEAR" />
          </cursor>
       </Text>
-      <Label fx:id="trackCode" layoutX="427.0" layoutY="376.0" prefHeight="80.0" prefWidth="430.0">
+      <Label fx:id="trackCode" layoutX="447.0" layoutY="376.0" prefHeight="80.0" prefWidth="430.0">
          <font>
             <Font name="Arial" size="80.0" />
          </font>
