@@ -1,5 +1,6 @@
 package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.classi.ServerUDP;
 import com.example.medtaxi.singleton.Database;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
@@ -35,6 +36,14 @@ public class TrackContrAZ {
 
     public void visualizzaRoute(String codeTrack) {
         this.codeTrack = codeTrack;
+
+        try {
+            ServerUDP serverUDP = new ServerUDP(codeTrack);
+            serverUDP.connetti();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         try {
             String indirizzoPartenza = Database.getInstance().getIndirizzoPartenzaByCodeTrack(codeTrack);

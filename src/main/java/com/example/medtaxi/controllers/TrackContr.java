@@ -1,11 +1,14 @@
 package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.classi.UtenteUDP;
 import com.example.medtaxi.singleton.Database;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
+import com.example.medtaxi.interfaces.CoordinateUpdateListener;
+import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,8 +21,9 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.SocketException;
 
-public class TrackContr {
+public class TrackContr implements CoordinateUpdateListener{
 
     @FXML
     private WebView mappa;
@@ -31,7 +35,17 @@ public class TrackContr {
     public void initialize() {
         webEngine = mappa.getEngine();
         webEngine.load(getClass().getResource("/com/example/medtaxi/Mappa/Mappa.html").toExternalForm());
+
+        UtenteUDP udpClient = null;
+        try {
+            udpClient = new UtenteUDP(5002, this);
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
+        udpClient.ascolta();
     }
+
+
 
     public void visualizzaRoute(String codeTrack) {
         this.codeTrack = codeTrack;
@@ -87,5 +101,25 @@ public class TrackContr {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @Override
+    public void onCoordinateUpdate(String coordinate) {
+        Platform.runLater(() -> {
+            String[] parts = coordinate.split(",");
+            double lat = Double.parseDouble(parts[0]);
+            double lng = Double.parseDouble(parts[1]);
+            webEngine.executeScript("updateMapWithNewCoordinate(" + lat + ", " + lng + ")");
+        });
+    }
+
+    public void startListeningForUpdates() {
+        UtenteUDP udpClient = null;
+        try {
+            udpClient = new UtenteUDP(5002, this);
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
+        udpClient.ascolta();
     }
 }

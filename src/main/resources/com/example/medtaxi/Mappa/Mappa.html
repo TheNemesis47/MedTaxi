@@ -7,6 +7,7 @@
         var map;
         var directionsService;
         var directionsRenderer;
+        var waypointMarker;
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
@@ -17,6 +18,14 @@
             directionsService = new google.maps.DirectionsService();
             directionsRenderer = new google.maps.DirectionsRenderer();
             directionsRenderer.setMap(map);
+
+            // Crea un waypoint vuoto all'inizio
+            waypointMarker = new google.maps.Marker({
+                position: { lat: 0, lng: 0 },
+                map: map,
+                icon: 'default-icon.png', // Imposta l'icona del waypoint
+                title: 'Waypoint'
+            });
 
             calculateAndDisplayRoute();
         }
@@ -38,8 +47,31 @@
         function setRouteCoordinates(latStart, lngStart, latEnd, lngEnd) {
             var start = new google.maps.LatLng(latStart, lngStart);
             var end = new google.maps.LatLng(latEnd, lngEnd);
+
+            // Aggiorna il waypoint con le nuove coordinate
+            waypointMarker.setPosition(start);
+
             calculateAndDisplayRoute(start, end);
         }
+
+        function updateMapWithNewCoordinate(lat, lng) {
+            // Assuming you have a marker or a way to display the new position on the map
+            var newLatLng = new google.maps.LatLng(lat, lng);
+            waypointMarker.setPosition(newLatLng); // Update the position of the marker
+
+            // Optionally, if you want to center the map on the new position:
+            map.setCenter(newLatLng);
+        }
+
+        function setWaypointCoordinates(lat, lng) {
+            var waypointMarker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: map,
+                icon: 'default-icon.png', // Imposta l'icona del waypoint
+                title: 'Waypoint'
+            });
+        }
+
     </script>
 </head>
 <body onload="initMap()">
