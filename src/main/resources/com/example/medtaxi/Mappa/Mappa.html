@@ -12,7 +12,8 @@
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: 0, lng: 0 },
-                zoom: 6
+                zoom: 6,
+                streetViewControl: false
             });
 
             directionsService = new google.maps.DirectionsService();
@@ -23,8 +24,11 @@
             waypointMarker = new google.maps.Marker({
                 position: { lat: 0, lng: 0 },
                 map: map,
-                icon: 'default-icon.png', // Imposta l'icona del waypoint
-                title: 'Waypoint'
+                icon: {
+                    url: '../Images/MedTaxiLogo.png', // Percorso dell'icona
+                    scaledSize: new google.maps.Size(35, 35) //
+                },
+                title: 'Waypoint',
             });
 
             calculateAndDisplayRoute();
@@ -59,8 +63,10 @@
             var newLatLng = new google.maps.LatLng(lat, lng);
             waypointMarker.setPosition(newLatLng); // Update the position of the marker
 
+
             // Optionally, if you want to center the map on the new position:
             map.setCenter(newLatLng);
+            map.setZoom(15);
         }
 
         function setWaypointCoordinates(lat, lng) {

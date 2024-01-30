@@ -37,8 +37,8 @@ public class RouteCalculator {
                 points.add(startLocation);
 
                 totalDistance += step.distance.inMeters;
-                while (totalDistance >= 500) {
-                    totalDistance -= 500;
+                while (totalDistance >= 200) {
+                    totalDistance -= 200;
                 }
             }
         }
