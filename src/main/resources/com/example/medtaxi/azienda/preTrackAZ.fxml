@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="sfondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.medtaxi.controllers.PreTrackContrAZ">
+    <children>
+        <Pane fx:id="banner" layoutX="-23.0" prefHeight="160.0" prefWidth="1326.0" stylesheets="@../style.css">
+            <children>
+                <Text fill="WHITE" layoutX="358.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tracciamento">
+                    <font>
+                        <Font name="Arial Bold" size="91.0" />
+                    </font>
+                </Text>
+            </children>
+        </Pane>
+        <Label layoutX="336.0" layoutY="350.0" text="Inserisci il codice di track">
+            <font>
+                <Font name="Arial Bold" size="50.0" />
+            </font>
+        </Label>
+        <Button layoutX="24.0" layoutY="647.0" mnemonicParsing="false" onAction="#switchBack" prefHeight="45.0" prefWidth="241.0" styleClass="indietroButton" text="Torna indietro" />
+        <TextField fx:id="code_track" layoutX="426.0" layoutY="408.0" styleClass="textfield-custom-inserimento-targa" />
+        <Button layoutX="1009.0" layoutY="647.0" mnemonicParsing="false" onAction="#SwitchRight" prefHeight="45.0" prefWidth="241.0" styleClass="blueButton" text="Traccia">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>

@@ -88,6 +88,14 @@ public class HomeAZContr {
         stage.show();
     }
 
+    public void SwitchToPreTrackAZ (ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/preTrackAZ.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public void displayName(String nomeAzienda) {
         Azienda azienda = Azienda.getInstance();
         helloTextAz.setText("Ciao " + (nomeAzienda != null ? nomeAzienda : "Nome non disponibile"));
