@@ -149,8 +149,9 @@ public class PrenotaContr {
         String fasciaOrariaSelezionata = fasceOrarieComboBox.getValue();
 
         String oraScelta = determinaFasciaOraria(fasceOrarieComboBox.getValue());
+        String codice = generateRandomString(6);
         ambulanzeDisponibili = client.inviaPrenotazione(nome_paziente.getText(), cognome_paziente.getText(), User.getInstance().getEmail(), indirizzo_partenza.getText(), indirizzo_arrivo.getText(),
-                dataSelezionata.toString(), oraScelta, numero_cellulare.getText());
+                dataSelezionata.toString(), fasciaOrariaSelezionata, oraScelta, numero_cellulare.getText(), codice);
         for (String ambulanza : ambulanzeDisponibili) {
             System.out.println(ambulanza);
         }
@@ -161,7 +162,9 @@ public class PrenotaContr {
 
         // Imposta la lista di ambulanze disponibili nel controller della nuova scena
         SelezionaContr selezionaContr = loader.getController();
+        selezionaContr.setRandomString(codice);
         selezionaContr.setAmbulanzeDisponibili(ambulanzeDisponibili);
+        selezionaContr.setClient(client);
 
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);

@@ -131,22 +131,7 @@ public class BenvenutoContr {
         stage.show();
     }
 
-    @FXML
-    public void loginButtonOnAction(ActionEvent event) {
-        if (!remail.getText().isBlank() && !rpsw.getText().isBlank()) {
-            try {
-                String verifyTypeQuery = "SELECT client_type FROM utente WHERE email = ? AND psw = ?";
-                String verifyLoginQueryHome = "SELECT count(1) FROM utente WHERE email = ? AND psw = ?";
 
-                verifyLogin(verifyTypeQuery, verifyLoginQueryHome, "/com/example/medtaxi/utente/home.fxml", "/com/example/medtaxi/azienda/homeAz.fxml", "Login errato, riprova.", event);
-
-            } catch (SQLException | IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            errorReg.setText("Per favore, inserisci email e password!");
-        }
-    }
 
     private void verifyLogin(String verifyType, String verifyLogin, String fxmlPathHome, String fxmlPathAzienda, String errorMessage, ActionEvent event) throws SQLException, IOException {
         Database connectNow = Database.getInstance();
@@ -181,7 +166,7 @@ public class BenvenutoContr {
                                     Azienda.initInstanceWithEmail(emailValue);
                                     Azienda azienda = Azienda.getInstance();
                                     HomeAZContr homeAZContr = loader.getController();
-                                    homeAZContr.displayName(azienda);
+                                    homeAZContr.displayName();
                                     homeAZContr.startServerTask();
                                 } else {
                                     User.initInstance(emailValue);
@@ -203,7 +188,6 @@ public class BenvenutoContr {
             }
         }
     }
-
     @FXML
     public void loginButtonOnAction(ActionEvent event) {
         if (!remail.getText().isBlank() && !rpsw.getText().isBlank()) {
