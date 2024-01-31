@@ -16,6 +16,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import com.example.medtaxi.singleton.Azienda;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import com.example.medtaxi.classi.MessageSender;
 
@@ -36,8 +37,6 @@ public class HomeAZContr {
     private Socket clientSocket;
     @FXML
     private Label helloTextAz;
-    @FXML
-    private TilePane alertPren;
     private Stage stage;
 
     public void displayName() {
@@ -125,13 +124,19 @@ public class HomeAZContr {
 
 
     private void handleClientSocket(Socket clientSocket) {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
-            String messaggioDalServer;
-            while ((messaggioDalServer = in.readLine()) != null) {
-                System.out.println("Messaggio ricevuto: " + messaggioDalServer);
-                String finalMessaggioDalServer = messaggioDalServer;
-                Platform.runLater(() -> alertPrenotazione(finalMessaggioDalServer, clientSocket));
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            StringBuilder messaggioCompleto = new StringBuilder();
+            String linea;
+            while ((linea = in.readLine()) != null) {
+                if (linea.equals("---FINE---")) {
+                    break; // Interrompe la lettura quando trova il delimitatore
+                }
+                messaggioCompleto.append(linea).append("\n");
             }
+            String messaggioDalServer = messaggioCompleto.toString();
+            System.out.println("Messaggio ricevuto: " + messaggioDalServer);
+            Platform.runLater(() -> alertPrenotazione(messaggioDalServer, clientSocket));
         } catch (IOException e) {
             System.err.println("Si è verificato un problema con la socket client: " + e.getMessage());
             e.printStackTrace();
@@ -141,14 +146,27 @@ public class HomeAZContr {
 
 
 
+
+
+
+
     private void alertPrenotazione(String message, Socket clientSocket) {
+        System.out.println("Messaggio da inviare: " + message);
         Platform.runLater(() -> {
-            // Configurazione allert
+            // Creazione di un nuovo alert
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Prenotazione");
             alert.setHeaderText("Nuova Prenotazione");
-            alert.setContentText(message);
 
+            // Configurazione del contenuto dell'alert
+            VBox content = new VBox();
+            content.setSpacing(10); // Imposta uno spazio tra i componenti
+
+            // Aggiunta del messaggio all'alert
+            Label messageLabel = new Label(message);
+            content.getChildren().add(messageLabel);
+
+            // Configurazione del ComboBox
             ComboBox<String> comboBox = new ComboBox<>();
             try {
                 List<String> targheAzienda = Database.getInstance().getTargheAzienda(Azienda.getInstance().getPiva());
@@ -156,22 +174,22 @@ public class HomeAZContr {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            content.getChildren().add(comboBox);
 
-            alert.getDialogPane().setContent(comboBox);
+            // Impostazione del contenuto personalizzato dell'alert
+            alert.getDialogPane().setContent(content);
 
+            // Visualizzazione dell'alert e attesa della risposta dell'utente
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 String selectedTarga = comboBox.getSelectionModel().getSelectedItem();
                 if (selectedTarga != null && !selectedTarga.isEmpty()) {
-                    MessageSender messageSender = new MessageSender();
                     MessageSender.sendMessageToServer(clientSocket, selectedTarga);
-
                 }
             }
-            Label messageLabel = new Label(message);
-            alertPren.getChildren().add(messageLabel);
         });
     }
+
 
 
     private void closeSockets() {

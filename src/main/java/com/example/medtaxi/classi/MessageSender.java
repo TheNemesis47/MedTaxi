@@ -8,6 +8,7 @@ public class MessageSender {
     private Socket clientSocket;
 
         public static void sendMessageToServer(Socket clientSocket, String message) {
+            System.out.println("Invio del messaggio al server: " + message);
             if (clientSocket != null && !clientSocket.isClosed()) {
                 try (PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
                     System.out.println("Invio del messaggio al server: " + message);
