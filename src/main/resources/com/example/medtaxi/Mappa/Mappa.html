@@ -2,14 +2,39 @@
 <html>
 <head>
     <title>Visualizza la Rotta</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-7VoL5g7xLox1cZA9KVYEAu6l34FZ-tQ&callback=initMap&libraries=maps,marker&v=beta"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-7VoL5g7xLox1cZA9KVYEAu6l34FZ-tQ&callback=initMap&libraries=maps,marker,geometry&v=beta"></script>
     <script>
         var map;
         var directionsService;
         var directionsRenderer;
         var waypointMarker;
+        var routeColor = 'green'; // Colore predefinito per la route
+        var previousLatLng = null; // Variabile per memorizzare le coordinate precedenti
+        var distanceThreshold = 0.5; // Distanza minima (in chilometri) per cambiare colore
+        var routeSegments = [
+            {
+                start: null, // Punto di partenza del segmento
+                end: null,   // Punto di arrivo del segmento
+                color: 'green' // Colore del segmento
+            }
+        ];
+        var startTime; // Variabile per il tempo di inizio del viaggio
+        var updateTimer; // Variabile per il timer di aggiornamento
+        var totalDistance = 0;
+        var previousLatLng = null;
+
+        function addRouteSegment(start, end, color) {
+            routeSegments.push({
+                start: start,
+                end: end,
+                color: color
+            });
+        }
+
 
         function initMap() {
+            startTime = new Date();
+            updateTimer = setInterval(updateRemainingTime, 1000); // Aggiorna l'ETA ogni secondo
             map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: 0, lng: 0 },
                 zoom: 6,
@@ -34,6 +59,39 @@
             calculateAndDisplayRoute();
         }
 
+        function changeRouteColor(color) {
+            routeColor = color;
+            calculateAndDisplayRoute();
+        }
+
+        function updateRemainingTime() {
+            if (!previousLatLng || !directionsRenderer.getDirections()) {
+                return; // Se non ci sono direzioni o coordinate precedenti, non fare nulla
+            }
+
+            var currentLatLng = waypointMarker.getPosition(); // Ottieni la posizione corrente
+            var destination = directionsRenderer.getDirections().routes[0].legs[0].end_location; // Ottieni la destinazione
+
+            // Ricalcola il percorso dalla posizione corrente alla destinazione
+            var request = {
+                origin: currentLatLng,
+                destination: destination,
+                travelMode: 'DRIVING'
+            };
+
+            directionsService.route(request, function(result, status) {
+                if (status == 'OK') {
+                    var newEta = result.routes[0].legs[0].duration.value; // Ottieni il nuovo ETA in secondi
+                    var distanceRemaining = result.routes[0].legs[0].distance.value; // Ottieni la distanza rimanente in metri
+
+                    // Converti il nuovo ETA in formato leggibile e visualizzalo
+                    var newEtaText = new Date(newEta * 1000).toISOString().substr(11, 8);
+                    var distanceRemainingKm = (distanceRemaining / 1000).toFixed(2); // Converti la distanza in chilometri
+                    document.getElementById('etaDisplay').innerText = 'Tempo rimanente: ' + newEtaText + ', Distanza rimanente: ' + distanceRemainingKm + ' km';
+                }
+            });
+        }
+
         function calculateAndDisplayRoute(start, end) {
             var request = {
                 origin: start,
@@ -44,9 +102,33 @@
             directionsService.route(request, function(result, status) {
                 if (status == 'OK') {
                     directionsRenderer.setDirections(result);
+
+                    var eta = result.routes[0].legs[0].duration.value; // Ottieni l'ETA in secondi
+                    var currentTime = new Date();
+                    var timeElapsed = (currentTime - startTime) / 1000; // Calcola il tempo trascorso in secondi
+                    var remainingTime = eta - timeElapsed; // Calcola il tempo rimanente
+
+                    // Converti il tempo rimanente in formato leggibile e visualizzalo
+                    var remainingTimeText = new Date(remainingTime * 1000).toISOString().substr(11, 8);
+                    document.getElementById('etaDisplay').innerText = 'Tempo rimanente: ' + remainingTimeText;
                 }
             });
         }
+
+
+
+        function onCoordinateUpdate(coordinate) {
+            var parts = coordinate.split(",");
+            var lat = parseFloat(parts[0]);
+            var lng = parseFloat(parts[1]);
+            var newLatLng = new google.maps.LatLng(lat, lng);
+
+            previousLatLng = newLatLng;
+            waypointMarker.setPosition(newLatLng); // Aggiorna la posizione dell'ambulanza
+
+            map.setCenter(newLatLng); // Centra la mappa sulla nuova posizione dell'ambulanza
+        }
+
 
         function setRouteCoordinates(latStart, lngStart, latEnd, lngEnd) {
             var start = new google.maps.LatLng(latStart, lngStart);
@@ -73,14 +155,34 @@
             var waypointMarker = new google.maps.Marker({
                 position: { lat: lat, lng: lng },
                 map: map,
-                icon: 'default-icon.png', // Imposta l'icona del waypoint
+                icon: 'default-icon.png',
                 title: 'Waypoint'
             });
         }
 
+        function createNewRouteSegment(lat, lng) {
+            var newLatLng = new google.maps.LatLng(lat, lng);
+
+            previousLatLng = newLatLng;
+            waypointMarker.setPosition(newLatLng); // Sposta l'icona dell'ambulanza
+        }
+
+
     </script>
+    <style>
+        #etaDisplay {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+    </style>
 </head>
 <body onload="initMap()">
 <div id="map" style="height: 400px;"></div>
+<div id="etaDisplay">ETA: </div>
 </body>
 </html>

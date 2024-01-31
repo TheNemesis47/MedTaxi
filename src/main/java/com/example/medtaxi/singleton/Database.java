@@ -1,12 +1,12 @@
 package com.example.medtaxi.singleton;
 
+import com.example.medtaxi.classi.Disponibilita;
+import com.example.medtaxi.classi.Prenotazione;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.medtaxi.classi.Disponibilita;
-import com.example.medtaxi.classi.Prenotazione;
 
 public class Database {
     private String host = "127.0.0.1";
@@ -408,6 +408,22 @@ public class Database {
 
     public String getIndirizzoPartenzaByCodeTrack(String codeTrack) throws SQLException {
         try (Connection connection = getConnection()) {
+            String sql = "SELECT indirizzo FROM azienda WHERE piva = (SELECT p_iva FROM prenotazione WHERE code_track = ?)";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, codeTrack);
+
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getString("indirizzo");
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getIndirizzoArrivoByCodeTrack(String codeTrack) throws SQLException {
+        try (Connection connection = getConnection()) {
             String sql = "SELECT indirizzo_partenza FROM prenotazione WHERE code_track = ?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setString(1, codeTrack);
@@ -421,21 +437,4 @@ public class Database {
         }
         return null;
     }
-
-    public String getIndirizzoArrivoByCodeTrack(String codeTrack) throws SQLException {
-        try (Connection connection = getConnection()) {
-            String sql = "SELECT indirizzo_arrivo FROM prenotazione WHERE code_track = ?";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setString(1, codeTrack);
-
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    if (resultSet.next()) {
-                        return resultSet.getString("indirizzo_arrivo");
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
 }
