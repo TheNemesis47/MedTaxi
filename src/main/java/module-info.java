@@ -10,6 +10,7 @@ module com.example.medtaxi {
     requires javafx.web;
     requires google.maps.services;
     requires jdk.jsobject;
+    requires org.json;
 
     opens com.example.medtaxi to javafx.fxml;
     exports com.example.medtaxi;

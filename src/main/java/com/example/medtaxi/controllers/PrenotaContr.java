@@ -15,6 +15,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -65,24 +67,13 @@ public class PrenotaContr {
         stage.show();
     }
 
-    private String generateRandomString(int length) {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!?#*";
-        StringBuilder randomString = new StringBuilder(length);
-        SecureRandom random = new SecureRandom();
-
-        for (int i = 0; i < length; i++) {
-            int randomIndex = random.nextInt(characters.length());
-            randomString.append(characters.charAt(randomIndex));
-        }
-
-        return randomString.toString();
-    }
 
     @FXML
     public void initialize() {
         // Popola la ComboBox con le fasce orarie
         popolaFasceOrarie();
     }
+
 
     private void popolaFasceOrarie() {
         List<String> fasceOrarie = new ArrayList<>();
@@ -98,10 +89,11 @@ public class PrenotaContr {
         fasceOrarieComboBox.setValue("00:00");
     }
 
+
     @FXML
     protected void prenotazione(ActionEvent event) {
         try {
-            double numerox = Double.parseDouble(numero_cellulare.getText());
+            String numerox = numero_cellulare.getText();
             LocalDate localDate = data_trasporto.getValue();
             String dataTrasportox = localDate != null ? localDate.toString() : null;
             String nomex = nome_paziente.getText();
@@ -115,9 +107,6 @@ public class PrenotaContr {
             // Determina la fascia oraria (mattina o sera)
             String fasciaOraria = determinaFasciaOraria(orarioSelezionato);
 
-            // Genera un codice casuale
-            String codice = generateRandomString(6);
-
             // Carica la scena successiva
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/prenotazione_completata.fxml"));
             Parent root = loader.load();
@@ -128,11 +117,11 @@ public class PrenotaContr {
 
             // Accesso al controller della scena successiva
             PrenotaCContr prenotaCContr = loader.getController();
-            prenotaCContr.displayName(codice);
+            //prenotaCContr.displayName(codice); ---------------------------------------------------------------------------------------------------------------------------------------------
 
             // Esegui la registrazione nel database
             Database db = Database.getInstance();
-            db.RegistrazionePrenotazione(nomex, cognomex, numerox, dataTrasportox, indirizzox, indirizzoxx, fasciaOraria, codice);
+            db.RegistrazionePrenotazione(nomex, cognomex, numerox, dataTrasportox, indirizzox, indirizzoxx, fasciaOraria);
         } catch (NumberFormatException e) {
             e.printStackTrace();  // Gestire l'eccezione in modo specifico
         } catch (SQLException | IOException e) {
@@ -141,30 +130,37 @@ public class PrenotaContr {
     }
 
     public void switchToNextScene(ActionEvent event) throws IOException {
-        Client client = new Client();
-        List<String> ambulanzeDisponibili = new ArrayList<>();
+        Client client = new Client(); // Assumiamo che Client sia adeguatamente aggiornato
+        JSONObject prenotazioneJson = new JSONObject();
 
-        //converto data
+        // Preparazione del JSON di prenotazione
         LocalDate dataSelezionata = data_trasporto.getValue();
-        String fasciaOrariaSelezionata = fasceOrarieComboBox.getValue();
+        prenotazioneJson.put("nome", nome_paziente.getText());
+        prenotazioneJson.put("cognome", cognome_paziente.getText());
+        prenotazioneJson.put("email", User.getInstance().getEmail()); // Assumiamo esista un singleton User
+        prenotazioneJson.put("partenza", indirizzo_partenza.getText());
+        prenotazioneJson.put("arrivo", indirizzo_arrivo.getText());
+        prenotazioneJson.put("data", dataSelezionata.toString());
+        prenotazioneJson.put("fasciaOraria", fasceOrarieComboBox.getValue());
+        prenotazioneJson.put("cellulare", numero_cellulare.getText());
 
-        String oraScelta = determinaFasciaOraria(fasceOrarieComboBox.getValue());
-        String codice = generateRandomString(6);
-        ambulanzeDisponibili = client.inviaPrenotazione(nome_paziente.getText(), cognome_paziente.getText(), User.getInstance().getEmail(), indirizzo_partenza.getText(), indirizzo_arrivo.getText(),
-                dataSelezionata.toString(), fasciaOrariaSelezionata, oraScelta, numero_cellulare.getText(), codice);
-        for (String ambulanza : ambulanzeDisponibili) {
-            System.out.println(ambulanza);
+        // Invio prenotazione e attesa risposta
+        JSONObject risposta = client.inviaPrenotazione(prenotazioneJson);
+
+        // Analisi della risposta per ottenere le aziende disponibili
+        JSONArray aziendeDisponibili = risposta.getJSONArray("aziendeDisponibili");
+        List<String> listaAziende = new ArrayList<>();
+        for (int i = 0; i < aziendeDisponibili.length(); i++) {
+            listaAziende.add(aziendeDisponibili.getString(i));
         }
 
-
+        // Passaggio alla scena di selezione dell'ambulanza/azienda
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/seleziona_ambulanza.fxml"));
         Parent root = loader.load();
 
-        // Imposta la lista di ambulanze disponibili nel controller della nuova scena
         SelezionaContr selezionaContr = loader.getController();
-        selezionaContr.setRandomString(codice);
-        selezionaContr.setAmbulanzeDisponibili(ambulanzeDisponibili);
-        selezionaContr.setClient(client);
+        selezionaContr.setAmbulanzeDisponibili(listaAziende);
+        selezionaContr.setClient(client); // Assumiamo che SelezionaContr abbia un metodo per impostare il client
 
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
