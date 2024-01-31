@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.medtaxi.classi.Disponibilita;
-import com.example.medtaxi.classi.Prenotazione;
+import com.example.medtaxi.factoryMethod.Prenotazione;
+import com.example.medtaxi.factoryMethod.PrenotazioneFactory;
+import com.example.medtaxi.factoryMethod.StandardPrenotazioneFactory;
 
 public class Database {
     private String host = "127.0.0.1";
@@ -130,8 +132,11 @@ public class Database {
         return azienda;
     }
 
+
+
     public Prenotazione getPrenotazioneByEmail(String email) throws SQLException {
         Connection connection = getConnection();
+        PrenotazioneFactory prenotazioneFactory = new StandardPrenotazioneFactory();
         Prenotazione prenotazione = null;
 
         String sql = "SELECT * FROM prenotazione WHERE email = ?";
@@ -140,17 +145,19 @@ public class Database {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    prenotazione = new Prenotazione(
-                            resultSet.getString("nome_trasportato"),
-                            resultSet.getString("cognome_trasportato"),
-                            resultSet.getString("indirizzo_partenza"),
-                            resultSet.getString("indirizzo_arrivo"),
-                            resultSet.getDate("giorno_trasporto").toLocalDate(),
-                            resultSet.getDouble("numero_cellulare"),
-                            resultSet.getString("mattina_sera"),
-                            resultSet.getString("code_track"),
-                            resultSet.getString("p_iva")
-                    );
+                    // Recupera i dati dal ResultSet
+                    String nomeTrasportato = resultSet.getString("nome_trasportato");
+                    String cognomeTrasportato = resultSet.getString("cognome_trasportato");
+                    String indirizzoPartenza = resultSet.getString("indirizzo_partenza");
+                    String indirizzoArrivo = resultSet.getString("indirizzo_arrivo");
+                    LocalDate giornoTrasporto = resultSet.getDate("giorno_trasporto").toLocalDate();
+                    double numeroCellulare = resultSet.getDouble("numero_cellulare");
+                    String mattinaSera = resultSet.getString("mattina_sera");
+                    String codeTrack = resultSet.getString("code_track");
+                    String pIva = resultSet.getString("p_iva");
+
+                    // Usa la factory method per creare l'oggetto Prenotazione
+                    prenotazione = prenotazioneFactory.createWithPartitaIva(nomeTrasportato, cognomeTrasportato, indirizzoPartenza, indirizzoArrivo, giornoTrasporto, numeroCellulare, mattinaSera, codeTrack, pIva);
                 }
             }
         } finally {
@@ -279,7 +286,8 @@ public class Database {
                     String mattinaSera = resultSet.getString("mattina_sera");
                     String codeTrack = resultSet.getString("code_track");
 
-                    Prenotazione prenotazione = new Prenotazione(
+                    PrenotazioneFactory factory = new StandardPrenotazioneFactory();
+                    Prenotazione prenotazione = factory.createWithPartitaIva(
                             nomeTrasportato, cognomeTrasportato, indirizzoPartenza, indirizzoArrivo,
                             giornoTrasporto, numeroCellulare, mattinaSera, codeTrack, partitaIVA
                     );
@@ -313,7 +321,8 @@ public class Database {
                     String mattinaSera = resultSet.getString("mattina_sera");
                     String codeTrack = resultSet.getString("code_track");
 
-                    Prenotazione prenotazione = new Prenotazione(
+                    PrenotazioneFactory factory = new StandardPrenotazioneFactory();
+                    Prenotazione prenotazione = factory.createWithPartitaIva(
                             nomeTrasportato, cognomeTrasportato, indirizzoPartenza, indirizzoArrivo,
                             giornoTrasporto, numeroCellulare, mattinaSera, codeTrack, partitaIVA
                     );
@@ -349,7 +358,9 @@ public class Database {
                     String mattinaSera = resultSet.getString("mattina_sera");
                     String codeTrack = resultSet.getString("code_track");
 
-                    Prenotazione prenotazione = new Prenotazione(
+
+                    PrenotazioneFactory factory = new StandardPrenotazioneFactory();
+                    Prenotazione prenotazione = factory.createWithoutPartitaIva(
                             nomeTrasportato, cognomeTrasportato, indirizzoPartenza, indirizzoArrivo,
                             giornoTrasporto, numeroCellulare, mattinaSera, codeTrack);
                     prenotazioni.add(prenotazione);

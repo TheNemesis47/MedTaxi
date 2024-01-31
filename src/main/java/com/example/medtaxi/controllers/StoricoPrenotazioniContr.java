@@ -1,6 +1,6 @@
 package com.example.medtaxi.controllers;
 
-import com.example.medtaxi.classi.Prenotazione;
+import com.example.medtaxi.factoryMethod.Prenotazione;
 import com.example.medtaxi.singleton.Azienda;
 import com.example.medtaxi.singleton.Database;
 import javafx.beans.property.SimpleObjectProperty;

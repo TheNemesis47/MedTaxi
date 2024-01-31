@@ -21,6 +21,8 @@ module com.example.medtaxi {
     opens com.example.medtaxi.classi to javafx.fxml;
     exports com.example.medtaxi.interfaces;
     opens com.example.medtaxi.interfaces to javafx.fxml;
+    exports com.example.medtaxi.factoryMethod;
+    opens com.example.medtaxi.factoryMethod to javafx.fxml;
 
 
 }
