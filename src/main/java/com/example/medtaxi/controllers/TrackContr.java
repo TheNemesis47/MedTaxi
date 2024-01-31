@@ -35,7 +35,6 @@ public class TrackContr implements CoordinateUpdateListener{
     public void initialize() {
         webEngine = mappa.getEngine();
         webEngine.load(getClass().getResource("/com/example/medtaxi/Mappa/Mappa.html").toExternalForm());
-
         UtenteUDP udpClient = null;
         try {
             udpClient = new UtenteUDP(5002, this);
@@ -109,9 +108,11 @@ public class TrackContr implements CoordinateUpdateListener{
             String[] parts = coordinate.split(",");
             double lat = Double.parseDouble(parts[0]);
             double lng = Double.parseDouble(parts[1]);
-            webEngine.executeScript("updateMapWithNewCoordinate(" + lat + ", " + lng + ")");
+            webEngine.executeScript("createNewRouteSegment(" + lat + ", " + lng + ")");
         });
     }
+
+
 
     public void startListeningForUpdates() {
         UtenteUDP udpClient = null;
