@@ -1,51 +1,55 @@
 package com.example.medtaxi.classi;
 
-import com.example.medtaxi.interfaces.CoordinateUpdateListener;
+import com.example.medtaxi.Observer.CoordinateUpdateListener;
+import com.example.medtaxi.Observer.Subject;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class UtenteUDP {
+public class UtenteUDP implements Subject {
     private DatagramSocket socket;
     private byte[] buffer = new byte[256];
-    private CoordinateUpdateListener listener;
+    private List<CoordinateUpdateListener> observers = new ArrayList<>();
 
-    public UtenteUDP(int porta, CoordinateUpdateListener listener) throws SocketException {
+    public UtenteUDP(int porta) throws SocketException {
         this.socket = new DatagramSocket(porta);
-        this.listener = listener;
+    }
+
+    @Override
+    public void addObserver(CoordinateUpdateListener o) {
+        if (!observers.contains(o)) {
+            observers.add(o);
+        }
+    }
+
+    @Override
+    public void removeObserver(CoordinateUpdateListener o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers(String coordinate) {
+        for (CoordinateUpdateListener observer : observers) {
+            observer.onCoordinateUpdate(coordinate);
+        }
     }
 
     public void ascolta() {
-        System.out.println("prima del thread");
         new Thread(() -> {
             while (true) {
                 try {
-                    System.out.println("prima del datagram");
                     DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                     socket.receive(packet);
                     String ricevuto = new String(packet.getData(), 0, packet.getLength());
-                    System.out.println("Coordinate ricevute: " + ricevuto);
-                    if (listener != null) {
-                        listener.onCoordinateUpdate(ricevuto);
-                    }
+                    notifyObservers(ricevuto); // Notifica gli osservatori
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }).start();
     }
-
-
-    public void inviaCoordinate(String coordinate) {
-        try {
-            DatagramPacket packet = new DatagramPacket(coordinate.getBytes(), coordinate.getBytes().length, InetAddress.getByName("localhost"), 5002);
-            socket.send(packet);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

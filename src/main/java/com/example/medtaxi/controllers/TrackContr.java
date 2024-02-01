@@ -1,5 +1,6 @@
 package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.Observer.CoordinateUpdateListener;
 import com.example.medtaxi.classi.UtenteUDP;
 import com.example.medtaxi.singleton.Database;
 import com.google.maps.GeoApiContext;
@@ -7,7 +8,6 @@ import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
-import com.example.medtaxi.interfaces.CoordinateUpdateListener;
 import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.SocketException;
 
-public class TrackContr implements CoordinateUpdateListener{
+public class TrackContr implements CoordinateUpdateListener {
 
     @FXML
     private WebView mappa;
@@ -35,14 +35,15 @@ public class TrackContr implements CoordinateUpdateListener{
     public void initialize() {
         webEngine = mappa.getEngine();
         webEngine.load(getClass().getResource("/com/example/medtaxi/Mappa/Mappa.html").toExternalForm());
-        UtenteUDP udpClient = null;
         try {
-            udpClient = new UtenteUDP(5002, this);
+            UtenteUDP udpClient = new UtenteUDP(5002);
+            udpClient.addObserver(this); // Usa addObserver qui
+            udpClient.ascolta();
         } catch (SocketException e) {
             throw new RuntimeException(e);
         }
-        udpClient.ascolta();
     }
+
 
 
 
@@ -117,7 +118,7 @@ public class TrackContr implements CoordinateUpdateListener{
     public void startListeningForUpdates() {
         UtenteUDP udpClient = null;
         try {
-            udpClient = new UtenteUDP(5002, this);
+            udpClient = new UtenteUDP(5002);
         } catch (SocketException e) {
             throw new RuntimeException(e);
         }
