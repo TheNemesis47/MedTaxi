@@ -28,11 +28,11 @@ public class Client {
         }
     }
 
-    public JSONObject inviaPrenotazione(JSONObject prenotazione) {
+    public String inviaPrenotazione(String prenotazione) {
         try {
             // Invia il JSON al server
             output.write(prenotazione.toString());
-            System.out.println("JSON inviato al server: " + prenotazione.toString());
+            System.out.println("JSON inviato al server: " + prenotazione);
             output.newLine();
             output.write("END");
             output.newLine();
@@ -41,24 +41,11 @@ public class Client {
             // Aspetta la risposta dal server con le aziende disponibili
             System.out.println("Aspetto la risposta dal server...");
             String response = input.readLine();
+
+            //presa del codice dal jsonObject
             JSONObject jsonResponse = new JSONObject(response);
 
-            // Aggiorna il file JSON con le aziende disponibili
-            JSONHandler.scriviJsonInFile(jsonResponse.toString(), this.fileJSON);
-
-            // Qui implementi la logica per far scegliere all'utente l'azienda
-            System.out.println("Aziende disponibili:");
-
-            // Dopo la scelta dell'utente, invia il JSON aggiornato al server
-            jsonResponse.put("azScelta", "AziendaSceltaDallUtente"); // Sostituisci con la scelta effettiva dell'utente
-            output.write(jsonResponse.toString());
-            output.newLine();
-            output.flush();
-
-            return jsonResponse;
-
-
-            // Potresti voler chiudere le risorse qui o aspettare la risposta del server
+            return response;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -66,15 +53,17 @@ public class Client {
     }
 
 
-    public void inviaAziendaScelta(String aziendaScelta) {
+    public void inviaAziendaScelta(String aziendaScelta, String JSONcod) {
         try {
             // Crea un JSONObject per inviare l'azienda scelta
-            JSONObject json = new JSONObject();
+            JSONObject json = new JSONObject(JSONcod);
             json.put("aziendaScelta", aziendaScelta);
 
             // Invia il JSON al server
             if(output != null) {
                 output.write(json.toString());
+                output.newLine();
+                output.write("END");
                 output.newLine();
                 output.flush();
             }

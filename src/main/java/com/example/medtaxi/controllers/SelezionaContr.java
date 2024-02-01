@@ -1,6 +1,7 @@
 package com.example.medtaxi.controllers;
 
 
+import com.example.medtaxi.classi.JSONHandler;
 import com.example.medtaxi.reti.Client;
 import com.example.medtaxi.singleton.User;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -21,9 +23,8 @@ public class SelezionaContr {
     public void setRandomString(String random) {
         this.randomString = random;
     }
-    private String getRandomString() {
-        return randomString;
-    }
+    private String codice;
+    private JSONObject JSONRisposta;
 
 
     @FXML
@@ -44,15 +45,15 @@ public class SelezionaContr {
     public void switchToNextScene(ActionEvent event) throws IOException {
         String aziendaSelezionata = listAmb.getSelectionModel().getSelectedItem();
 
-        if (aziendaSelezionata != null && !aziendaSelezionata.isEmpty()) {
-            client.inviaAziendaScelta(aziendaSelezionata);
 
+        if (aziendaSelezionata != null && !aziendaSelezionata.isEmpty()) {
+            client.inviaAziendaScelta(aziendaSelezionata, JSONRisposta.toString());
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/prenotazione_completata.fxml"));
             Parent root = loader.load();
 
             PrenotaCContr prenotaCContr = loader.getController();
-            prenotaCContr.displayName(randomString);
+            prenotaCContr.displayName(codice);
 
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
@@ -69,5 +70,12 @@ public class SelezionaContr {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void setCodice(String codice){
+        this.codice = codice;
+    }
+    public void setJSON(String json){
+        this.JSONRisposta = new JSONObject(json);
     }
 }

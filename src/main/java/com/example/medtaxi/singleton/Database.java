@@ -66,7 +66,7 @@ public class Database {
             statement.setString(4, indirizzo_arrivo);
             java.sql.Date sqlDate = java.sql.Date.valueOf(data);
             statement.setDate(5, sqlDate);
-            statement.setString(6, telefono);
+            statement.setDouble(6, Double.parseDouble(telefono));
             statement.setString(7, mattina_sera);
             statement.executeUpdate();
         } finally {

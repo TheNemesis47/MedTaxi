@@ -47,6 +47,7 @@ public class PrenotaContr {
 
     @FXML
     private TextField numero_cellulare;
+    private String codice;
 
     private Stage stage;
     private Scene scene;
@@ -90,6 +91,8 @@ public class PrenotaContr {
     }
 
 
+
+    /*
     @FXML
     protected void prenotazione(ActionEvent event) {
         try {
@@ -128,9 +131,12 @@ public class PrenotaContr {
             e.printStackTrace();  // Gestire l'eccezione in modo specifico
         }
     }
+*/
 
+
+    //dove la magia della prenotazione avviene ---------------------------------------------------------------------
     public void switchToNextScene(ActionEvent event) throws IOException {
-        Client client = new Client(); // Assumiamo che Client sia adeguatamente aggiornato
+        Client client = new Client();
         JSONObject prenotazioneJson = new JSONObject();
 
         // Preparazione del JSON di prenotazione
@@ -145,22 +151,30 @@ public class PrenotaContr {
         prenotazioneJson.put("cellulare", numero_cellulare.getText());
 
         // Invio prenotazione e attesa risposta
-        JSONObject risposta = client.inviaPrenotazione(prenotazioneJson);
+        String risposta = client.inviaPrenotazione(prenotazioneJson.toString());
+        JSONObject Jrisposta = new JSONObject(risposta);
 
         // Analisi della risposta per ottenere le aziende disponibili
-        JSONArray aziendeDisponibili = risposta.getJSONArray("aziendeDisponibili");
+        JSONArray aziendeDisponibili = Jrisposta.getJSONArray("aziendeDisponibili");
         List<String> listaAziende = new ArrayList<>();
         for (int i = 0; i < aziendeDisponibili.length(); i++) {
             listaAziende.add(aziendeDisponibili.getString(i));
         }
+        //presa del codice
+        this.codice = Jrisposta.getString("codice");
+
 
         // Passaggio alla scena di selezione dell'ambulanza/azienda
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/seleziona_ambulanza.fxml"));
         Parent root = loader.load();
 
+        //passiamo il tutto al controller successivo
         SelezionaContr selezionaContr = loader.getController();
+        selezionaContr.setCodice(codice);
+        selezionaContr.setJSON(risposta);
         selezionaContr.setAmbulanzeDisponibili(listaAziende);
-        selezionaContr.setClient(client); // Assumiamo che SelezionaContr abbia un metodo per impostare il client
+        selezionaContr.setClient(client);
+
 
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
