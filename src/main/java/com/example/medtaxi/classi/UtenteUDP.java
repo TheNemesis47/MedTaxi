@@ -1,7 +1,7 @@
 package com.example.medtaxi.classi;
 
-import com.example.medtaxi.observer.CoordinateUpdateListener;
-import com.example.medtaxi.observer.Subject;
+import com.example.medtaxi.design_patterns.observer.CoordinateUpdateListener;
+import com.example.medtaxi.design_patterns.observer.Subject;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

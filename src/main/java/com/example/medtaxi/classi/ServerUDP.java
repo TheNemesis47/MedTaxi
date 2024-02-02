@@ -1,6 +1,6 @@
 package com.example.medtaxi.classi;
 
-import com.example.medtaxi.singleton.Database;
+import com.example.medtaxi.design_patterns.singleton.Database;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;

@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 import java.util.Objects;
 
 public class MedTaxi extends Application {
-
     @Override
     public void start(Stage stage) {
         try {
