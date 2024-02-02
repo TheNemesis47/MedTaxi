@@ -1,5 +1,8 @@
 package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.command.ChangeSceneAndUpdateAziendaCommand;
+import com.example.medtaxi.command.Command;
+import com.example.medtaxi.command.CommandExecutor;
 import com.example.medtaxi.factoryMethod.Prenotazione;
 import com.example.medtaxi.singleton.Azienda;
 import com.example.medtaxi.singleton.Database;
@@ -47,18 +50,8 @@ public class StoricoPrenotazioniContr {
 
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/azienda/homeAz.fxml"));
-        Parent root = loader.load();
-        HomeAZContr homeAZContr = loader.getController();
-
-        String nomeAzienda = Azienda.getInstance().getNome();
-
-        homeAZContr.displayName(nomeAzienda);
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneAndUpdateAziendaCommand(event, "/com/example/medtaxi/azienda/homeAz.fxml");
+        CommandExecutor.executeCommand(command);
     }
 
     @FXML

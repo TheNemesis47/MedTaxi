@@ -1,5 +1,8 @@
 package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.command.ChangeSceneAndUpdateAziendaCommand;
+import com.example.medtaxi.command.Command;
+import com.example.medtaxi.command.CommandExecutor;
 import com.example.medtaxi.factoryMethod.Prenotazione;
 import com.example.medtaxi.singleton.Azienda;
 import com.example.medtaxi.singleton.Database;
@@ -8,9 +11,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -23,7 +23,6 @@ import java.util.List;
 public class PrenotazioniContr {
     private Stage stage;
     private Scene scene;
-
     @FXML
     private TableView<Prenotazione> futureTable;
     @FXML
@@ -44,22 +43,13 @@ public class PrenotazioniContr {
     private TableColumn<Prenotazione, String> colCodeTrack;
     @FXML
     private TableColumn<Prenotazione, String> colPartitaIvaAzienda;
-
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/azienda/homeAz.fxml"));
-        Parent root = loader.load();
-        HomeAZContr homeAZContr = loader.getController();
-
-        String nomeAzienda = Azienda.getInstance().getNome();
-
-        homeAZContr.displayName(nomeAzienda);
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneAndUpdateAziendaCommand(event, "/com/example/medtaxi/azienda/homeAz.fxml");
+        CommandExecutor.executeCommand(command);
     }
+
+
 
     @FXML
     public void initialize() {
@@ -80,8 +70,6 @@ public class PrenotazioniContr {
 
         try {
             List<Prenotazione> prenotazioni = db.getPrenotazioniAziendaFuture(partitaIVA);
-
-            // Popola la TableView con le prenotazioni
             futureTable.setItems(FXCollections.observableArrayList(prenotazioni));
         } catch (SQLException e) {
             e.printStackTrace();

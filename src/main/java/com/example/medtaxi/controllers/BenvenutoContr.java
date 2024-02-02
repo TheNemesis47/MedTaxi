@@ -1,7 +1,12 @@
 package com.example.medtaxi.controllers;
 
-import com.example.medtaxi.singleton.User;
+import com.example.medtaxi.command.ChangeSceneCommand;
+import com.example.medtaxi.command.Command;
+import com.example.medtaxi.command.CommandExecutor;
 import com.example.medtaxi.singleton.Database;
+import com.example.medtaxi.singleton.User;
+import com.example.medtaxi.state.UserState;
+import com.example.medtaxi.state.UtenteNonAutenticato;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,18 +20,11 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
-import com.example.medtaxi.singleton.Azienda;
-
-import javax.swing.text.html.ImageView;
 
 public class BenvenutoContr {
-
     @FXML
     private Label errorReg;
     @FXML
@@ -51,36 +49,51 @@ public class BenvenutoContr {
     private TextField remail;
     @FXML
     private TextField rpsw;
-
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private UserState currentState;
 
-    public void switchToLoginScene(ActionEvent event) throws IOException {
-
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/login.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    public BenvenutoContr() {
+        this.currentState = new UtenteNonAutenticato();
     }
+
+
+
+    public void switchToLoginScene(ActionEvent event) {
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/utente/login.fxml");
+        CommandExecutor.executeCommand(command);
+    }
+
+
+
+    public void switchToHomeScene(ActionEvent event) throws IOException {
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/utente/home.fxml");
+        CommandExecutor.executeCommand(command);
+    }
+
+
+
+    public void switchToAziendaHomeScene(ActionEvent event) throws IOException {
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/homeAz.fxml");
+        CommandExecutor.executeCommand(command);
+    }
+
+
 
     public void switchBack(ActionEvent event) throws IOException {
-        //indietro
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/benvenuto.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/benvenuto.fxml");
+        CommandExecutor.executeCommand(command);
     }
 
+
+
     public void switchToRegisterScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/register.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/utente/register.fxml");
+        CommandExecutor.executeCommand(command);
     }
+
+
 
     @FXML
     protected void registrazione(ActionEvent event) throws SQLException, IOException {
@@ -90,24 +103,19 @@ public class BenvenutoContr {
         String viau = via.getText();
         String comuneu = comune.getText();
         String cittau = citta.getText();
-
-        // Ottieni la data dal DatePicker come LocalDate
         LocalDate localDate = data.getValue();
-
-        // Converte LocalDate in una stringa nel formato "yyyy-MM-dd"
         String dataNascita = localDate != null ? localDate.toString() : null;
-
         LocalDate today = LocalDate.now();
         LocalDate dateOfBirth = localDate;
         int age = Period.between(dateOfBirth, today).getYears();
-
         String emailu = email.getText();
         String passu = psw.getText();
-
         String remailu = remail.getText();
         String rpswu = rpsw.getText();
 
+
         Database db = Database.getInstance();
+
 
         if (age < 18 || !passu.equals(rpswu) || !emailu.equals(remailu)) {
             errorReg.setText("Errore nella registrazione");
@@ -116,15 +124,19 @@ public class BenvenutoContr {
             db.RegistrazioneUtente(nomeu, cognomeu, telefonou, dataNascita, viau, comuneu, cittau, emailu, passu);
         }
 
+
         User.initInstance(emailu);
         User utente = User.getInstance();
 
-        System.out.println(utente.getNome());
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/home.fxml"));
         root = loader.load();
 
+
         HomeContr homeController = loader.getController();
         homeController.displayName();
+
+
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -133,75 +145,32 @@ public class BenvenutoContr {
 
 
 
-    private void verifyLogin(String verifyType, String verifyLogin, String fxmlPathHome, String fxmlPathAzienda, String errorMessage, ActionEvent event) throws SQLException, IOException {
-        Database connectNow = Database.getInstance();
-        Connection connectDB = connectNow.getConnection();
+    public void setState(UserState state) {
+        this.currentState = state;
+    }
 
+
+
+    public UserState getState() {
+        return this.currentState;
+    }
+
+
+
+    public void loginButtonOnAction(ActionEvent event) {
         String emailValue = remail.getText();
         String passwordValue = rpsw.getText();
-
-        try (PreparedStatement typeStatement = connectDB.prepareStatement(verifyType)) {
-            typeStatement.setString(1, emailValue);
-            typeStatement.setString(2, passwordValue);
-
-            try (ResultSet typeResult = typeStatement.executeQuery()) {
-                if (typeResult.next()) {
-                    String tipou = typeResult.getString("client_type");
-
-                    try (PreparedStatement loginStatement = connectDB.prepareStatement(verifyLogin)) {
-                        loginStatement.setString(1, emailValue);
-                        loginStatement.setString(2, passwordValue);
-
-                        try (ResultSet loginResult = loginStatement.executeQuery()) {
-                            if (loginResult.next() && loginResult.getInt(1) == 1) {
-                                errorReg.setText("Benvenuto!");
-
-                                FXMLLoader loader = new FXMLLoader();
-                                loader.setLocation(getClass().getResource("2".equals(tipou) ? fxmlPathAzienda : fxmlPathHome));
-
-                                root = loader.load();
-
-                                if ("2".equals(tipou)) {
-                                    // Utilizza initInstanceWithEmail per inizializzare l'istanza di Azienda
-                                    Azienda.initInstanceWithEmail(emailValue);
-                                    Azienda azienda = Azienda.getInstance();
-                                    HomeAZContr homeAZContr = loader.getController();
-                                    homeAZContr.displayName();
-                                    homeAZContr.startServerTask();
-                                } else {
-                                    User.initInstance(emailValue);
-                                    User utente = User.getInstance();
-                                    HomeContr homeController = loader.getController();
-                                    homeController.displayName();
-                                }
-
-                                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                                scene = new Scene(root);
-                                stage.setScene(scene);
-                                stage.show();
-                            } else {
-                                errorReg.setText(errorMessage);
-                            }
-                        }
-                    }
-                }
-            }
+        try {
+            this.currentState.handleLogin(this, event, emailValue, passwordValue);
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+            showError("Errore di sistema. Per favore, riprova più tardi.");
         }
     }
-    @FXML
-    public void loginButtonOnAction(ActionEvent event) {
-        if (!remail.getText().isBlank() && !rpsw.getText().isBlank()) {
-            try {
-                String verifyTypeQuery = "SELECT client_type FROM utente WHERE email = ? AND psw = ?";
-                String verifyLoginQueryHome = "SELECT count(1) FROM utente WHERE email = ? AND psw = ?";
 
-                verifyLogin(verifyTypeQuery, verifyLoginQueryHome, "/com/example/medtaxi/utente/home.fxml", "/com/example/medtaxi/azienda/homeAz.fxml", "Login errato, riprova.", event);
 
-            } catch (SQLException | IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            errorReg.setText("Per favore, inserisci email e password!");
-        }
+
+    public void showError(String message) {
+        System.out.print(message);
     }
 }

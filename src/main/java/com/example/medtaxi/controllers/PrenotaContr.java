@@ -1,9 +1,10 @@
 package com.example.medtaxi.controllers;
 
-import com.example.medtaxi.singleton.Azienda;
-import com.example.medtaxi.singleton.User;
+import com.example.medtaxi.command.ChangeSceneAndUpdateUserCommand;
+import com.example.medtaxi.command.Command;
+import com.example.medtaxi.command.CommandExecutor;
 import com.example.medtaxi.reti.Client;
-import com.example.medtaxi.singleton.Database;
+import com.example.medtaxi.singleton.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,68 +13,50 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.security.SecureRandom;
 
 public class PrenotaContr {
-
     @FXML
     private ComboBox<String> fasceOrarieComboBox;
-
     @FXML
     private TextField nome_paziente;
-
     @FXML
     private TextField cognome_paziente;
-
     @FXML
     private TextField indirizzo_partenza;
-
     @FXML
     private TextField indirizzo_arrivo;
-
     @FXML
     private DatePicker data_trasporto;
-
     @FXML
     private TextField numero_cellulare;
     private String codice;
-
     private Stage stage;
     private Scene scene;
 
+
+
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/home.fxml"));
-        Parent root = loader.load();
-        HomeContr homeContr = loader.getController();
-
-        String nomeUtente = User.getInstance().getNome();
-
-        homeContr.displayName(nomeUtente);
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneAndUpdateUserCommand(event, "/com/example/medtaxi/utente/home.fxml");
+        CommandExecutor.executeCommand(command);
     }
+
 
 
     @FXML
     public void initialize() {
-        // Popola la ComboBox con le fasce orarie
         popolaFasceOrarie();
     }
+
 
 
     private void popolaFasceOrarie() {
@@ -139,7 +122,6 @@ public class PrenotaContr {
         Client client = new Client();
         JSONObject prenotazioneJson = new JSONObject();
 
-        // Preparazione del JSON di prenotazione
         LocalDate dataSelezionata = data_trasporto.getValue();
         prenotazioneJson.put("nome", nome_paziente.getText());
         prenotazioneJson.put("cognome", cognome_paziente.getText());
@@ -181,6 +163,8 @@ public class PrenotaContr {
         stage.setScene(scene);
         stage.show();
     }
+
+
 
     private String determinaFasciaOraria(String orario) {
         // Esempio di logica per determinare se è mattina o sera

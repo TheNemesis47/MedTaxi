@@ -1,4 +1,4 @@
-package com.example.medtaxi.Observer;
+package com.example.medtaxi.observer;
 
 public interface Subject {
     void addObserver(CoordinateUpdateListener o);

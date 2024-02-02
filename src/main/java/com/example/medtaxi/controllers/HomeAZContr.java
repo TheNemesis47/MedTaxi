@@ -1,29 +1,26 @@
 package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.classi.MessageSender;
+import com.example.medtaxi.command.ChangeSceneCommand;
+import com.example.medtaxi.command.Command;
+import com.example.medtaxi.command.CommandExecutor;
+import com.example.medtaxi.singleton.Azienda;
 import com.example.medtaxi.singleton.Database;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import com.example.medtaxi.singleton.Azienda;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import com.example.medtaxi.classi.MessageSender;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -45,54 +42,36 @@ public class HomeAZContr {
     }
 
     public void SwitchToDisponibilita (ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/disponibilita.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/disponibilita.fxml");
+        CommandExecutor.executeCommand(command);
     }
 
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
         Azienda.getInstance().disconnect(); // Chiamata al metodo disconnect
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/utente/login.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/utente/login.fxml");
+        CommandExecutor.executeCommand(command);
     }
 
 
     public void SwitchToParcoAuto (ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/parco_auto.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/parco_auto.fxml");
+        CommandExecutor.executeCommand(command);
     }
 
     public void SwitchToPrenotazioni (ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/prenotazioni.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/prenotazioni.fxml");
+        CommandExecutor.executeCommand(command);
     }
 
     public void SwitchToStoricoPrenotazioni (ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/storico_prenotazioni.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/storico_prenotazioni.fxml");
+        CommandExecutor.executeCommand(command);
     }
 
     public void SwitchToPreTrackAZ (ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/preTrackAZ.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/preTrackAZ.fxml");
+        CommandExecutor.executeCommand(command);
     }
 
     public void displayName(String nomeAzienda) {
@@ -125,6 +104,7 @@ public class HomeAZContr {
 
     private void handleClientSocket(Socket clientSocket) {
         try {
+            System.out.print("prova");
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             StringBuilder messaggioCompleto = new StringBuilder();
             String linea;

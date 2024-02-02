@@ -1,6 +1,9 @@
 package com.example.medtaxi.controllers;
 
 import com.example.medtaxi.classi.ServerUDP;
+import com.example.medtaxi.command.ChangeSceneCommand;
+import com.example.medtaxi.command.Command;
+import com.example.medtaxi.command.CommandExecutor;
 import com.example.medtaxi.singleton.Database;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
@@ -10,9 +13,6 @@ import com.google.maps.model.LatLng;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -90,11 +90,7 @@ public class TrackContrAZ {
 
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/azienda/pretrackAZ.fxml"));
-        Parent root = loader.load();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/preTrackAZ.fxml");
+        CommandExecutor.executeCommand(command);
     }
 }

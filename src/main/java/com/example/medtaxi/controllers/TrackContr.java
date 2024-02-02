@@ -1,7 +1,10 @@
 package com.example.medtaxi.controllers;
 
-import com.example.medtaxi.Observer.CoordinateUpdateListener;
 import com.example.medtaxi.classi.UtenteUDP;
+import com.example.medtaxi.command.ChangeSceneCommand;
+import com.example.medtaxi.command.Command;
+import com.example.medtaxi.command.CommandExecutor;
+import com.example.medtaxi.observer.CoordinateUpdateListener;
 import com.example.medtaxi.singleton.Database;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
@@ -12,9 +15,6 @@ import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -37,7 +37,7 @@ public class TrackContr implements CoordinateUpdateListener {
         webEngine.load(getClass().getResource("/com/example/medtaxi/Mappa/Mappa.html").toExternalForm());
         try {
             UtenteUDP udpClient = new UtenteUDP(5002);
-            udpClient.addObserver(this); // Usa addObserver qui
+            udpClient.addObserver(this);
             udpClient.ascolta();
         } catch (SocketException e) {
             throw new RuntimeException(e);
@@ -95,12 +95,8 @@ public class TrackContr implements CoordinateUpdateListener {
 
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/pre_track.fxml"));
-        Parent root = loader.load();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/utente/pre_track.fxml");
+        CommandExecutor.executeCommand(command);
     }
 
     @Override

@@ -1,17 +1,16 @@
 package com.example.medtaxi.controllers;
 
 import com.example.medtaxi.classi.Disponibilita;
+import com.example.medtaxi.command.ChangeSceneAndUpdateAziendaCommand;
+import com.example.medtaxi.command.Command;
+import com.example.medtaxi.command.CommandExecutor;
 import com.example.medtaxi.singleton.Azienda;
 import com.example.medtaxi.singleton.Database;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import java.time.LocalDate;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -51,18 +50,8 @@ public class DisponibilitaContr {
 
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/azienda/homeAz.fxml"));
-        Parent root = loader.load();
-        HomeAZContr homeAZContr = loader.getController();
-
-        String nomeAzienda = Azienda.getInstance().getNome();
-
-        homeAZContr.displayName(nomeAzienda);
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneAndUpdateAziendaCommand(event, "/com/example/medtaxi/azienda/homeAz.fxml");
+        CommandExecutor.executeCommand(command);
     }
 
     @FXML
@@ -78,11 +67,7 @@ public class DisponibilitaContr {
 
         try {
             List<Disponibilita> disponibilita = db.getDisponibilita(partitaIVA);
-
-            // Popola la ObservableList con le disponibilità
             disponibilitaList.addAll(disponibilita);
-
-            // Collega la ObservableList alla TableView
             dispTable.setItems(disponibilitaList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -96,14 +81,11 @@ public class DisponibilitaContr {
             try {
                 Database.getInstance().rimuoviDisponibilita(selectedDate);
                 advice.setText("Rimosso!");
-
-                // Trova la disponibilità nella lista e aggiorna i dati
                 for (Disponibilita d : disponibilitaList) {
                     if (d.getData().equals(selectedDate)) {
                         int dispMattina = d.getDispMattina();
                         int dispSera = d.getDispSera();
 
-                        // Rimuovi 1 dalla disponibilità
                         if (dispMattina > 0) {
                             dispMattina--;
                         }
@@ -112,14 +94,11 @@ public class DisponibilitaContr {
                             dispSera--;
                         }
 
-                        // Aggiorna i dati nella lista
                         d.setDispMattina(dispMattina);
                         d.setDispSera(dispSera);
                         break;
                     }
                 }
-
-                // Aggiorna la TableView
                 dispTable.refresh();
             } catch (SQLException e) {
                 e.printStackTrace();

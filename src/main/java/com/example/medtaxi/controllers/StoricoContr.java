@@ -1,13 +1,12 @@
 package com.example.medtaxi.controllers;
 
-import com.example.medtaxi.singleton.Azienda;
+import com.example.medtaxi.command.ChangeSceneAndUpdateUserCommand;
+import com.example.medtaxi.command.Command;
+import com.example.medtaxi.command.CommandExecutor;
 import com.example.medtaxi.singleton.Database;
 import com.example.medtaxi.singleton.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
@@ -40,18 +39,8 @@ public class StoricoContr {
 
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/home.fxml"));
-        Parent root = loader.load();
-        HomeContr homeContr = loader.getController();
-
-        String nomeUtente = User.getInstance().getNome();
-
-        homeContr.displayName(nomeUtente);
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneAndUpdateUserCommand(event, "/com/example/medtaxi/utente/home.fxml");
+        CommandExecutor.executeCommand(command);
     }
 
 }

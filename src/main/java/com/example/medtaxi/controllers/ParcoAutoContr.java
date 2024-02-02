@@ -1,13 +1,13 @@
 package com.example.medtaxi.controllers;
 
+import com.example.medtaxi.command.ChangeSceneAndUpdateAziendaCommand;
+import com.example.medtaxi.command.ChangeSceneCommand;
+import com.example.medtaxi.command.Command;
+import com.example.medtaxi.command.CommandExecutor;
 import com.example.medtaxi.singleton.Azienda;
 import com.example.medtaxi.singleton.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
@@ -16,8 +16,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ParcoAutoContr {
+    private Stage stage;
     @FXML
     private ListView<String> targheAmbulanze;
+
+
 
     @FXML
     public void initialize() {
@@ -34,37 +37,26 @@ public class ParcoAutoContr {
         }
     }
 
-    private Stage stage;
+
+
     public void SwitchToInserisciAmb (ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/inserisci_amb.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/inserisci_amb.fxml");
+        CommandExecutor.executeCommand(command);
     }
+
+
 
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/azienda/homeAz.fxml"));
-        Parent root = loader.load();
-        HomeAZContr homeAZContr = loader.getController();
-
-        String nomeAzienda = Azienda.getInstance().getNome();
-
-        homeAZContr.displayName(nomeAzienda);
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneAndUpdateAziendaCommand(event, "/com/example/medtaxi/azienda/homeAz.fxml");
+        CommandExecutor.executeCommand(command);
     }
 
+
+
     public void SwitchToRimuoviAmb (ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/medtaxi/azienda/rimuovi_amb.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/rimuovi_amb.fxml");
+        CommandExecutor.executeCommand(command);
     }
 
 
