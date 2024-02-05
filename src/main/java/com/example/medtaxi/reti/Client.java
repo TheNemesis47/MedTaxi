@@ -34,6 +34,7 @@ public class Client {
             // Aspetta la risposta dal server con le aziende disponibili
             System.out.println("Aspetto la risposta dal server...");
             String response = input.readLine();
+            System.out.println(response);
 
             //presa del codice dal jsonObject
             JSONObject jsonResponse = new JSONObject(response);

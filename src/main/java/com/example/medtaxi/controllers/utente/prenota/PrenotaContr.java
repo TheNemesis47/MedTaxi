@@ -79,6 +79,7 @@ public class PrenotaContr {
     public void switchToNextScene(ActionEvent event) throws IOException {
         Client client = new Client();
         JSONObject prenotazioneJson = new JSONObject();
+        prenotazioneJson.clear();
 
         LocalDate dataSelezionata = data_trasporto.getValue();
         prenotazioneJson.put("nome", nome_paziente.getText());
@@ -89,6 +90,8 @@ public class PrenotaContr {
         prenotazioneJson.put("data", dataSelezionata.toString());
         prenotazioneJson.put("fasciaOraria", fasceOrarieComboBox.getValue());
         prenotazioneJson.put("cellulare", numero_cellulare.getText());
+
+        System.out.println(prenotazioneJson.toString());
 
         // Invio prenotazione e attesa risposta
         String risposta = client.inviaPrenotazione(prenotazioneJson.toString());
