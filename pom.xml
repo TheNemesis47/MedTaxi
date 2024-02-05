@@ -24,7 +24,7 @@
       <version>17.0.1</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/com.google.maps/google-maps-servicesss-->
+    <!-- https://mvnrepository.com/artifact/com.google.maps/google-maps-servicessAM-->
     <dependency>
       <groupId>com.google.maps</groupId>
       <artifactId>google-maps-services</artifactId>
