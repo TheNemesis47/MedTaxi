@@ -436,6 +436,27 @@ public class Database {
     //Metodo per ottenere l'indirizzo di partenza tramite codeTrack.
     public String getIndirizzoPartenzaByCodeTrack(String codeTrack) throws SQLException {
         try (Connection connection = getConnection()) {
+            // Modificata la query per unire le tabelle prenotazione e azienda
+            String sql = "SELECT a.indirizzo FROM prenotazione p " +
+                    "JOIN azienda a ON p.p_iva = a.piva " +
+                    "WHERE p.code_track = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, codeTrack);
+
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        // Restituisce l'indirizzo dell'azienda
+                        return resultSet.getString("indirizzo");
+                    }
+                }
+            }
+        }
+        return null; // Restituisce null se non trova corrispondenze
+    }
+
+    //Metodo per ottenere l'indirizzo d'arrivo tramite codeTrack.
+    public String getIndirizzoArrivoByCodeTrack(String codeTrack) throws SQLException {
+        try (Connection connection = getConnection()) {
             String sql = "SELECT indirizzo_partenza FROM prenotazione WHERE code_track = ?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setString(1, codeTrack);
@@ -443,23 +464,6 @@ public class Database {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         return resultSet.getString("indirizzo_partenza");
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    //Metodo per ottenere l'indirizzo d'arrivo tramite codeTrack.
-    public String getIndirizzoArrivoByCodeTrack(String codeTrack) throws SQLException {
-        try (Connection connection = getConnection()) {
-            String sql = "SELECT indirizzo_arrivo FROM prenotazione WHERE code_track = ?";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setString(1, codeTrack);
-
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    if (resultSet.next()) {
-                        return resultSet.getString("indirizzo_arrivo");
                     }
                 }
             }
