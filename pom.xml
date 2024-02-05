@@ -24,7 +24,7 @@
       <version>21-ea+24</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/com.google.maps/google-maps-servicesss-->
+    <!-- https://mvnrepository.com/artifact/com.google.maps/google-maps-servicess-->
     <dependency>
       <groupId>com.google.maps</groupId>
       <artifactId>google-maps-services</artifactId>
