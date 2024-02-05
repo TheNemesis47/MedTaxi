@@ -32,6 +32,9 @@ public class TrackContr implements CoordinateUpdateListener {
     private Scene scene;
     private String codeTrack;
 
+
+
+    //Inizializzazione del controller.
     public void initialize() {
         webEngine = mappa.getEngine();
         webEngine.load(getClass().getResource("/com/example/medtaxi/Mappa/Mappa.html").toExternalForm());
@@ -46,7 +49,7 @@ public class TrackContr implements CoordinateUpdateListener {
 
 
 
-
+    //Visualizza la route (percorso) sulla mappa
     public void visualizzaRoute(String codeTrack) {
         this.codeTrack = codeTrack;
 
@@ -64,6 +67,8 @@ public class TrackContr implements CoordinateUpdateListener {
     }
 
 
+
+    //Effettua la geocodifica di un indirizzo
     public LatLng geocodeAddress(String address) throws ApiException, InterruptedException, IOException {
 
         String apiKey = "AIzaSyB-7VoL5g7xLox1cZA9KVYEAu6l34FZ-tQ";
@@ -83,6 +88,9 @@ public class TrackContr implements CoordinateUpdateListener {
         return null;
     }
 
+
+
+    //Disegna la route sulla mappa
     public void drawRouteOnMap(LatLng startLatLng, LatLng endLatLng) {
         WebEngine webEngine = mappa.getEngine();
 
@@ -93,12 +101,18 @@ public class TrackContr implements CoordinateUpdateListener {
         });
     }
 
+
+
+    //Torna alla schermata precedente
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/utente/track_ambulanza_utente/pre_track.fxml");
         CommandExecutor.executeCommand(command);
     }
 
+
+
+    //Aggiorna le coordinate
     @Override
     public void onCoordinateUpdate(String coordinate) {
         Platform.runLater(() -> {
@@ -111,6 +125,7 @@ public class TrackContr implements CoordinateUpdateListener {
 
 
 
+    // Questo metodo avvia l'ascolto per gli aggiornamenti delle coordinate
     public void startListeningForUpdates() {
         UtenteUDP udpClient = null;
         try {

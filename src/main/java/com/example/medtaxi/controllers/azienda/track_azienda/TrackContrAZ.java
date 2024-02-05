@@ -17,11 +17,9 @@ import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class TrackContrAZ {
-
     @FXML
     private WebView mappa;
     private WebEngine webEngine;
@@ -29,11 +27,17 @@ public class TrackContrAZ {
     private Scene scene;
     private String codeTrack;
 
+
+
+    // Metodo di inizializzazione
     public void initialize() {
         webEngine = mappa.getEngine();
         webEngine.load(getClass().getResource("/com/example/medtaxi/Mappa/Mappa.html").toExternalForm());
     }
 
+
+
+    // Visualizza la route sulla mappa
     public void visualizzaRoute(String codeTrack) {
         this.codeTrack = codeTrack;
 
@@ -43,8 +47,6 @@ public class TrackContrAZ {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         try {
             String indirizzoPartenza = Database.getInstance().getIndirizzoPartenzaByCodeTrack(codeTrack);
             String indirizzoArrivo = Database.getInstance().getIndirizzoArrivoByCodeTrack(codeTrack);
@@ -59,6 +61,8 @@ public class TrackContrAZ {
     }
 
 
+
+    // Ottiene le coordinate geografiche da un indirizzo
     public LatLng geocodeAddress(String address) throws ApiException, InterruptedException, IOException {
 
         String apiKey = "AIzaSyB-7VoL5g7xLox1cZA9KVYEAu6l34FZ-tQ";
@@ -78,6 +82,9 @@ public class TrackContrAZ {
         return null;
     }
 
+
+
+    // Disegna la route (percorso) sulla mappa
     public void drawRouteOnMap(LatLng startLatLng, LatLng endLatLng) {
         WebEngine webEngine = mappa.getEngine();
 
@@ -88,6 +95,9 @@ public class TrackContrAZ {
         });
     }
 
+
+
+    // Metodo per tornare alla schermata precedente
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/track_azienda/preTrackAZ.fxml");

@@ -10,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -22,6 +21,7 @@ public class ParcoAutoContr {
 
 
 
+    // Metodo di inizializzazione
     @FXML
     public void initialize() {
         Azienda azienda = Azienda.getInstance();
@@ -39,6 +39,7 @@ public class ParcoAutoContr {
 
 
 
+    // Metodo per passare alla schermata di inserimento di un'ambulanza
     public void SwitchToInserisciAmb (ActionEvent event) throws IOException {
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/parco_auto/inserisci_amb.fxml");
         CommandExecutor.executeCommand(command);
@@ -46,6 +47,7 @@ public class ParcoAutoContr {
 
 
 
+    // Metodo per tornare alla schermata principale dell'azienda
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
         Command command = new ChangeSceneAndUpdateAziendaCommand(event, "/com/example/medtaxi/azienda/homeAz.fxml");
@@ -54,10 +56,9 @@ public class ParcoAutoContr {
 
 
 
+    // Metodo per passare alla schermata di rimozione di un'ambulanza
     public void SwitchToRimuoviAmb (ActionEvent event) throws IOException {
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/parco_auto/rimuovi_amb.fxml");
         CommandExecutor.executeCommand(command);
     }
-
-
 }

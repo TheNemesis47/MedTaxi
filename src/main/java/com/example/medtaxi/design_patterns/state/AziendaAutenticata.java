@@ -6,6 +6,9 @@ import javafx.event.ActionEvent;
 import java.io.IOException;
 
 public class AziendaAutenticata implements UserState {
+
+
+
     @Override
     public void handleLogin(BenvenutoContr context, ActionEvent event, String email, String password) {
         try {

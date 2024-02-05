@@ -44,6 +44,7 @@ public class PrenotaContr {
 
 
 
+    // Metodo per tornare alla schermata principale
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
         Command command = new ChangeSceneAndUpdateUserCommand(event, "/com/example/medtaxi/utente/home.fxml");
@@ -52,6 +53,7 @@ public class PrenotaContr {
 
 
 
+    // Metodo di inizializzazione della schermata
     @FXML
     public void initialize() {
         popolaFasceOrarie();
@@ -59,6 +61,7 @@ public class PrenotaContr {
 
 
 
+    // Metodo per popolare la ComboBox con le fasce orarie
     private void popolaFasceOrarie() {
         List<String> fasceOrarie = new ArrayList<>();
         for (int ora = 0; ora <= 23; ora++) {
@@ -68,14 +71,13 @@ public class PrenotaContr {
             }
         }
         fasceOrarieComboBox.getItems().addAll(fasceOrarie);
-
-        // Impostazione di un valore predefinito (può essere opzionale)
         fasceOrarieComboBox.setValue("00:00");
     }
 
 
 
-    //dove la magia della prenotazione avviene ---------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
+    // Metodo per passare alla schermata successiva
     public void switchToNextScene(ActionEvent event) throws IOException {
         Client client = new Client();
         JSONObject prenotazioneJson = new JSONObject();
@@ -84,7 +86,7 @@ public class PrenotaContr {
         LocalDate dataSelezionata = data_trasporto.getValue();
         prenotazioneJson.put("nome", nome_paziente.getText());
         prenotazioneJson.put("cognome", cognome_paziente.getText());
-        prenotazioneJson.put("email", User.getInstance().getEmail()); // Assumiamo esista un singleton User
+        prenotazioneJson.put("email", User.getInstance().getEmail());
         prenotazioneJson.put("partenza", indirizzo_partenza.getText());
         prenotazioneJson.put("arrivo", indirizzo_arrivo.getText());
         prenotazioneJson.put("data", dataSelezionata.toString());
@@ -93,7 +95,7 @@ public class PrenotaContr {
 
         System.out.println(prenotazioneJson.toString());
 
-        // Invio prenotazione e attesa risposta
+        // Invio della prenotazione e attesa della risposta
         String risposta = client.inviaPrenotazione(prenotazioneJson.toString());
         JSONObject Jrisposta = new JSONObject(risposta);
 
@@ -103,21 +105,19 @@ public class PrenotaContr {
         for (int i = 0; i < aziendeDisponibili.length(); i++) {
             listaAziende.add(aziendeDisponibili.getString(i));
         }
-        //presa del codice
+        // Ottenimento del codice
         this.codice = Jrisposta.getString("codice");
 
-
-        // Passaggio alla scena di selezione dell'ambulanza/azienda
+        // Passaggio alla schermata di selezione dell'ambulanza/azienda
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/prenota/seleziona_ambulanza.fxml"));
         Parent root = loader.load();
 
-        //passiamo il tutto al controller successivo
+        // Passaggio delle informazioni al controller successivo
         SelezionaContr selezionaContr = loader.getController();
         selezionaContr.setCodice(codice);
         selezionaContr.setJSON(risposta);
         selezionaContr.setAmbulanzeDisponibili(listaAziende);
         selezionaContr.setClient(client);
-
 
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -127,11 +127,10 @@ public class PrenotaContr {
 
 
 
+    // Metodo per determinare la fascia oraria
     private String determinaFasciaOraria(String orario) {
-        // Esempio di logica per determinare se è mattina o sera
         String[] orarioArray = orario.split(":");
         int ora = Integer.parseInt(orarioArray[0]);
-
         if (ora >= 6 && ora < 18) {
             return "mattina";
         } else {

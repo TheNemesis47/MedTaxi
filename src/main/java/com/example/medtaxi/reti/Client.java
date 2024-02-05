@@ -7,12 +7,17 @@ import java.io.*;
 import java.net.Socket;
 
 public class Client {
+    // Dichiarazione delle variabili di istanza per il socket, input, output e il percorso del file JSON.
     private Socket socket;
     private BufferedReader input;
     private BufferedWriter output;
     private final String fileJSON = "src/main/java/com/example/medtaxi/classi/Prenotazione.json";
+
+
+
     public Client() {
         try {
+            // Tentativo di connessione al server sulla porta 12346 e inizializzazione degli stream di input e output.
             socket = new Socket("localhost", 12346);
             input = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
             output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"));
@@ -21,24 +26,29 @@ public class Client {
         }
     }
 
+
+
+    // Metodo per inviare una prenotazione al server.
     public String inviaPrenotazione(String prenotazione) {
         try {
-            // Invia il JSON al server
+            // Invio del JSON al server.
             output.write(prenotazione.toString());
             System.out.println("JSON inviato al server: " + prenotazione);
+            // Segnalazione della fine del messaggio.
             output.newLine();
             output.write("END");
             output.newLine();
             output.flush();
 
-            // Aspetta la risposta dal server con le aziende disponibili
+            // Attesa della risposta dal server.
             System.out.println("Aspetto la risposta dal server...");
             String response = input.readLine();
             System.out.println(response);
 
-            //presa del codice dal jsonObject
+            // Conversione della risposta in JSONObject (non utilizzato nel metodo).
             JSONObject jsonResponse = new JSONObject(response);
 
+            // Ritorno della risposta del server.
             return response;
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,13 +57,15 @@ public class Client {
     }
 
 
+
+    // Metodo per inviare al server l'azienda scelta dall'utente.
     public void inviaAziendaScelta(String aziendaScelta, String JSONcod) {
         try {
-            // Crea un JSONObject per inviare l'azienda scelta
+            // Creazione di un JSONObject con l'azienda scelta e invio al server.
             JSONObject json = new JSONObject(JSONcod);
             json.put("aziendaScelta", aziendaScelta);
 
-            // Invia il JSON al server
+            // Invio del JSON modificato al server.
             if(output != null) {
                 output.write(json.toString());
                 output.newLine();
@@ -66,8 +78,12 @@ public class Client {
         }
     }
 
+
+
+    // Metodo per chiudere le risorse di rete e gli stream.
     public void close() {
         try {
+            // Chiusura degli stream e del socket.
             if (input != null) input.close();
             if (output != null) output.close();
             if (socket != null) socket.close();
@@ -75,111 +91,4 @@ public class Client {
             e.printStackTrace();
         }
     }
-
 }
-
-
-
-
-/*
-import org.json.JSONObject;
-import java.io.*;
-import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-
-public class Client {
-    private Socket s;
-    private BufferedReader input;
-    private BufferedWriter output;
-    private final String fileJSON = "src/main/java/com/example/medtaxi/classi/Prenotazione.json";
-
-    public Client() {
-        try {
-            s = new Socket("localhost", 12346);
-            input = new BufferedReader(new InputStreamReader(s.getInputStream(), "UTF-8"));
-            output = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), "UTF-8"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void close() {
-        try {
-            if (input != null) input.close();
-            if (output != null) output.close();
-            if (s != null) s.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public List<String> inviaPrenotazione(String nome, String cognome, String email, String partenza, String arrivo, String giorno1, String ora_precisa, String orario, String cellulare) throws IOException {
-        List<String> ambulanzeDisponibili = new ArrayList<>();
-
-        JSONObject prenotazioneJson = new JSONObject();
-        prenotazioneJson.put("tipo", "cliente");
-        prenotazioneJson.put("nome", nome);
-        prenotazioneJson.put("cognome", cognome);
-        prenotazioneJson.put("email", email);
-        prenotazioneJson.put("partenza", partenza);
-        prenotazioneJson.put("arrivo", arrivo);
-        prenotazioneJson.put("giorno", giorno1);
-        prenotazioneJson.put("ora_precisa", ora_precisa);
-        prenotazioneJson.put("orario", orario);
-        prenotazioneJson.put("cellulare", cellulare);
-
-        // Scrivi il JSON nel file
-        scriviJsonInFile(prenotazioneJson, fileJSON);
-
-        // Invia il contenuto del file JSON al server
-        String jsonContent = new String(Files.readAllBytes(Paths.get(fileJSON)));
-        output.write(jsonContent);
-        output.newLine();
-        output.flush();
-
-        // Leggi la risposta dal server e salvala nel file JSON
-        String risposta;
-        while ((risposta = input.readLine()) != null) {
-            if (risposta.equals("END_OF_LIST")) {
-                break;
-            }
-            ambulanzeDisponibili.add(risposta);
-        }
-
-        // Aggiorna il file JSON con le risposte ricevute
-        JSONObject responseJson = new JSONObject();
-        responseJson.put("ambulanzeDisponibili", ambulanzeDisponibili);
-        scriviJsonInFile(responseJson, fileJSON);
-
-        return ambulanzeDisponibili;
-    }
-
-    private void scriviJsonInFile(JSONObject jsonObject, String filePath) {
-        try (FileWriter file = new FileWriter(filePath)) {
-            file.write(jsonObject.toString(4)); // Indentazione per una migliore leggibilità
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void inviaAziendaScelta(String aziendaSelezionata) throws IOException {
-        output.write(aziendaSelezionata);
-        output.newLine();
-        output.flush();
-
-        // Leggi la risposta dal server e aggiorna il file JSON
-        String risposta = input.readLine();
-        System.out.println(risposta);
-
-        JSONObject responseJson = new JSONObject();
-        responseJson.put("aziendaScelta", aziendaSelezionata);
-        responseJson.put("rispostaServer", risposta);
-        scriviJsonInFile(responseJson, fileJSON);
-
-        this.close();
-    }
-}
-*/

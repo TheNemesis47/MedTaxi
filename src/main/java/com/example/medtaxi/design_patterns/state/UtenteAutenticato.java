@@ -8,6 +8,9 @@ import java.io.IOException;
 
 public class UtenteAutenticato implements UserState {
     private Parent root;
+
+
+
     @Override
     public void handleLogin(BenvenutoContr context, ActionEvent event, String email, String password) {
         try {

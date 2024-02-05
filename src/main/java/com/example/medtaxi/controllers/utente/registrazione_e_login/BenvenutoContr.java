@@ -19,7 +19,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -55,12 +54,16 @@ public class BenvenutoContr {
     private Parent root;
     private UserState currentState;
 
+
+
+    // Costruttore, imposta lo stato iniziale come UtenteNonAutenticato
     public BenvenutoContr() {
         this.currentState = new UtenteNonAutenticato();
     }
 
 
 
+    // Metodo per passare alla schermata di login
     public void switchToLoginScene(ActionEvent event) {
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/utente/registrazione_e_login/login.fxml");
         CommandExecutor.executeCommand(command);
@@ -68,6 +71,7 @@ public class BenvenutoContr {
 
 
 
+    // Metodo per passare alla schermata principale
     public void switchToHomeScene(ActionEvent event) throws IOException {
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/utente/home.fxml");
         CommandExecutor.executeCommand(command);
@@ -75,6 +79,7 @@ public class BenvenutoContr {
 
 
 
+    // Metodo per passare alla schermata principale dell'azienda
     public void switchToAziendaHomeScene(ActionEvent event) throws IOException {
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/homeAz.fxml");
         CommandExecutor.executeCommand(command);
@@ -82,6 +87,7 @@ public class BenvenutoContr {
 
 
 
+    // Metodo per tornare indietro
     public void switchBack(ActionEvent event) throws IOException {
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/benvenuto.fxml");
         CommandExecutor.executeCommand(command);
@@ -89,6 +95,7 @@ public class BenvenutoContr {
 
 
 
+    // Metodo per passare alla schermata di registrazione
     public void switchToRegisterScene(ActionEvent event) throws IOException {
         this.currentState=null;
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/utente/registrazione_e_login/register.fxml");
@@ -97,8 +104,10 @@ public class BenvenutoContr {
 
 
 
+    // Metodo per gestire la registrazione dell'utente
     @FXML
     protected void registrazione(ActionEvent event) {
+        // Recupera i dati inseriti dall'utente
         String nomeu = nome.getText();
         String cognomeu = cognome.getText();
         String telefonouText = telefono.getText();
@@ -115,6 +124,7 @@ public class BenvenutoContr {
         String remailu = remail.getText();
         String rpswu = rpsw.getText();
 
+        // Validazione dei dati inseriti
         if (!emailu.equals(remailu) || !passu.equals(rpswu) || age < 18 || !isNumeric(telefonouText)) {
             errorReg.setText("Errore nella registrazione: controlla i dati inseriti.");
             return;
@@ -122,13 +132,16 @@ public class BenvenutoContr {
 
         double telefonou = Double.parseDouble(telefonouText);
         try {
+            // Registra l'utente nel database
             Database db = Database.getInstance();
             db.RegistrazioneUtente(nomeu, cognomeu, telefonou, dataNascita, viau, comuneu, cittau, emailu, passu);
             errorReg.setText("Registrazione avvenuta con successo");
 
+            // Inizializza l'istanza dell'utente con l'email
             User.initInstance(emailu);
             User utente = User.getInstance();
 
+            // Carica la schermata principale
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/home.fxml"));
             root = loader.load();
             HomeContr homeController = loader.getController();
@@ -143,6 +156,9 @@ public class BenvenutoContr {
         }
     }
 
+
+
+    // Metodo per verificare se una stringa è numerica
     private boolean isNumeric(String strNum) {
         try {
             double d = Double.parseDouble(strNum);
@@ -154,19 +170,21 @@ public class BenvenutoContr {
 
 
 
-
+    // Metodo per impostare lo stato corrente
     public void setState(UserState state) {
         this.currentState = state;
     }
 
 
 
+    // Metodo per ottenere lo stato corrente
     public UserState getState() {
         return this.currentState;
     }
 
 
 
+    // Metodo per gestire il login dell'utente
     public void loginButtonOnAction(ActionEvent event) {
         String emailValue = remail.getText();
         String passwordValue = rpsw.getText();
@@ -180,6 +198,7 @@ public class BenvenutoContr {
 
 
 
+    // Metodo per mostrare un messaggio di errore
     public void showError(String message) {
         System.out.print(message);
     }

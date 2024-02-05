@@ -23,7 +23,6 @@ import java.util.List;
 public class annulla_prenotazione {
     private Stage stage;
     private Scene scene;
-
     @FXML
     private TableView<Prenotazione> prenotazionitable;
     @FXML
@@ -45,21 +44,25 @@ public class annulla_prenotazione {
     @FXML
     private TableColumn<Prenotazione, String> colPartitaIvaAzienda;
 
+
+
     @FXML
     public void switchBack(ActionEvent event) {
         Command command = new ChangeSceneAndUpdateUserCommand(event, "/com/example/medtaxi/utente/home.fxml");
         CommandExecutor.executeCommand(command);
     }
 
+
+
     @FXML
     public void initialize() {
+        // Inizializzazione della tabella delle prenotazioni quando si carica la pagina
         User utente = User.getInstance();
         String nomeutente = utente.getNome();
         String cognomeutente = utente.getCognome();
         String cellulare = String.valueOf(utente.getTelefono());
-
         Database db = Database.getInstance();
-
+        // Imposta le colonne della tabella con i dati delle prenotazioni
         colNomeTrasportato.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomeTrasportato()));
         colCognomeTrasportato.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCognomeTrasportato()));
         colIndirizzoPartenza.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIndirizzoPartenza()));
@@ -69,33 +72,38 @@ public class annulla_prenotazione {
         colMattinaSera.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMattinaSera()));
         colCodeTrack.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCodeTrack()));
         colPartitaIvaAzienda.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPartitaIvaAzienda()));
-
         try {
+            // Recupera le prenotazioni dall'utente dal database
             List<Prenotazione> prenotazioni = db.getPrenotazioniUtente(nomeutente, cognomeutente, cellulare);
 
+            // Imposta i dati della tabella con le prenotazioni ottenute
             prenotazionitable.setItems(FXCollections.observableArrayList(prenotazioni));
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+
+
+    // Rimuove la prenotazione selezionata quando si preme il pulsante "Rimuovi Selezione"
     @FXML
     public void rimuoviselezione(ActionEvent event) {
-        // Ottieni la selezione dalla TableView
         Prenotazione prenotazioneSelezionata = prenotazionitable.getSelectionModel().getSelectedItem();
         String codice = prenotazioneSelezionata.getCodeTrack();
 
         if (prenotazioneSelezionata != null) {
             try {
+                // Rimuove la prenotazione dal database
                 Database.getInstance().rimuoviPrenotazione(prenotazioneSelezionata, codice);
+                // Rimuove la prenotazione dalla tabella
                 prenotazionitable.getItems().remove(prenotazioneSelezionata);
+                // Torna alla schermata di annullamento delle prenotazioni
                 Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/utente/annulla_prenotazione/annulla_prenotazione.fxml");
                 CommandExecutor.executeCommand(command);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            // Nessuna selezione è stata effettuata, gestisci di conseguenza
             System.out.println("Nessuna selezione effettuata.");
         }
     }

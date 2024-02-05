@@ -11,18 +11,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 public class PrenotazioniContr {
-    private Stage stage;
-    private Scene scene;
     @FXML
     private TableView<Prenotazione> futureTable;
     @FXML
@@ -43,6 +39,10 @@ public class PrenotazioniContr {
     private TableColumn<Prenotazione, String> colCodeTrack;
     @FXML
     private TableColumn<Prenotazione, String> colPartitaIvaAzienda;
+
+
+
+    // Metodo per tornare alla schermata principale dell'azienda
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
         Command command = new ChangeSceneAndUpdateAziendaCommand(event, "/com/example/medtaxi/azienda/homeAz.fxml");
@@ -51,13 +51,13 @@ public class PrenotazioniContr {
 
 
 
+    // Metodo di inizializzazione
     @FXML
     public void initialize() {
         Azienda azienda = Azienda.getInstance();
         String partitaIVA = azienda.getPiva();
-
         Database db = Database.getInstance();
-
+        // Imposta le colonne della tabella per visualizzare le informazioni delle prenotazioni
         colNomeTrasportato.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomeTrasportato()));
         colCognomeTrasportato.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCognomeTrasportato()));
         colIndirizzoPartenza.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIndirizzoPartenza()));
@@ -67,13 +67,12 @@ public class PrenotazioniContr {
         colMattinaSera.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMattinaSera()));
         colCodeTrack.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCodeTrack()));
         colPartitaIvaAzienda.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPartitaIvaAzienda()));
-
         try {
+            // Ottieni le prenotazioni future dell'azienda e popola la tabella
             List<Prenotazione> prenotazioni = db.getPrenotazioniAziendaFuture(partitaIVA);
             futureTable.setItems(FXCollections.observableArrayList(prenotazioni));
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
 }

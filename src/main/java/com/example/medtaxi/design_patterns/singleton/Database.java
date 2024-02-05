@@ -1,27 +1,32 @@
 package com.example.medtaxi.design_patterns.singleton;
 
-import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.example.medtaxi.classi.Disponibilita;
 import com.example.medtaxi.design_patterns.factoryMethod.Prenotazione;
 import com.example.medtaxi.design_patterns.factoryMethod.PrenotazioneFactory;
 import com.example.medtaxi.design_patterns.factoryMethod.StandardPrenotazioneFactory;
 
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+//Dichiarazione della classe "Database" che implementa il pattern Singleton.
 public class Database {
+    //Variabili per la connessione al database.
     private String host = "127.0.0.1";
     private int port = 3306;
     private String database = "test";
     private String username = "root";
     private String password = "";
 
+    //Variabile statica per l'istanza del Singleton.
     private static Database instance;
 
+    //Costruttore.
     private Database() {
     }
 
+    //Metodo sincronizzato per ottenere l'istanza del Singleton da più Thread.
     public static synchronized Database getInstance() {
         if (instance == null) {
             instance = new Database();
@@ -29,11 +34,13 @@ public class Database {
         return instance;
     }
 
+    //Metodo per ottenere una connessione al database.
     public Connection getConnection() throws SQLException {
         String url = "jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=false";
         return DriverManager.getConnection(url, username, password);
     }
 
+    //Metodo per registrare un nuovo utente nel database.
     public void RegistrazioneUtente(String nome, String cognome, double telefono, String data, String via, String comune, String citta, String email, String psw) throws SQLException {
         Connection connection = getConnection();
 
@@ -55,6 +62,7 @@ public class Database {
         }
     }
 
+    //Metodo per registrare una nuova prenotazione nel database.
     public void RegistrazionePrenotazione(String nome, String cognome, String telefono, String data, String indirizzo_part, String indirizzo_arrivo, String mattina_sera) throws SQLException {
         Connection connection = getConnection();
 
@@ -74,6 +82,7 @@ public class Database {
         }
     }
 
+    //Metodo per ottenere un utente dal database tramite email.
     public User getUtenteByEmail(String email) throws SQLException {
         try (Connection connection = getConnection()) {
             String sql = "SELECT * FROM utente WHERE email = ?";
@@ -101,6 +110,7 @@ public class Database {
         return null;
     }
 
+    //Metodo per ottenere un'azienda dal database tramite email.
     public Azienda getAziendaByEmail(String email) throws SQLException {
         Connection connection = getConnection();
         Azienda azienda = null;
@@ -131,8 +141,7 @@ public class Database {
         return azienda;
     }
 
-
-
+    //Metodo per ottenere una prenotazione dal database tramite email
     public Prenotazione getPrenotazioneByEmail(String email) throws SQLException {
         Connection connection = getConnection();
         PrenotazioneFactory prenotazioneFactory = new StandardPrenotazioneFactory();
@@ -166,6 +175,7 @@ public class Database {
         return prenotazione;
     }
 
+    //Metodo per registrare una nuova ambulanza nel database.
     public void RegistrazioneAmbulanza(String partitaIVA, String nomeAzienda, String targa) throws SQLException {
         Connection connection = getConnection();
         String sql = "INSERT INTO parco_auto (partitaiva, nome_azienda, targa) VALUES (?, ?, ?)";
@@ -180,6 +190,7 @@ public class Database {
         }
     }
 
+    //Metodo per rimuovere un'ambulanza dal database.
     public void RimuoviAmbulanza(String targaAmbulanza, String partitaivaaziendaloggata) throws SQLException {
         Connection connection = getConnection();
         String sql = "DELETE FROM parco_auto WHERE targa = ? AND partitaiva = ?";
@@ -193,6 +204,7 @@ public class Database {
         }
     }
 
+    //Metodo per ottenere le targhe associate all'azienda.
     public List<String> getTargheAzienda(String partitaIVA) throws SQLException {
         List<String> targheAzienda = new ArrayList<>();
         Connection connection = getConnection();
@@ -214,7 +226,7 @@ public class Database {
         return targheAzienda;
     }
 
-
+    //Metodo per ottenere gli indirizzi associati all'utente.
     public List<String> getIndirizzi(String email) throws SQLException {
         List<String> indirizzi = new ArrayList<>();
         Connection connection = getConnection();
@@ -236,7 +248,7 @@ public class Database {
         return indirizzi;
     }
 
-
+    //Metodo per aggiungere disponibilità al proprio parco auto per l'azienda.
     public void aggiungiDisponibilita(LocalDate data) throws SQLException {
         Connection connection = getConnection();
         String sql = "UPDATE disponibilita SET disp_mattina = disp_mattina + 1, disp_sera = disp_sera + 1 WHERE data = ?";
@@ -250,6 +262,7 @@ public class Database {
         }
     }
 
+    //Metodo per rimuovere disponiblità al proprio parco auto per l'azienda.
     public void rimuoviDisponibilita(LocalDate data) throws SQLException {
         Connection connection = getConnection();
         String sql = "UPDATE disponibilita SET disp_mattina = disp_mattina - 1, disp_sera = disp_sera - 1 WHERE data = ?";
@@ -263,6 +276,7 @@ public class Database {
         }
     }
 
+    //Metodo per ottenere le prenotazioni associate all'azienda storiche.
     public List<Prenotazione> getPrenotazioniAziendaFinoOggi(String partitaIVA) throws SQLException {
         List<Prenotazione> prenotazioni = new ArrayList<>();
         LocalDate oggi = LocalDate.now();
@@ -298,6 +312,7 @@ public class Database {
         return prenotazioni;
     }
 
+    //Metodo per ottenere le prenotazioni associate all'azienda future.
     public List<Prenotazione> getPrenotazioniAziendaFuture(String partitaIVA) throws SQLException {
         List<Prenotazione> prenotazioni = new ArrayList<>();
         LocalDate oggi = LocalDate.now();
@@ -333,6 +348,7 @@ public class Database {
         return prenotazioni;
     }
 
+    //Metodo per ottenere le prenotazioni dell'utente.
     public List<Prenotazione> getPrenotazioniUtente(String nome, String cognome, String cellulare) throws SQLException {
         List<Prenotazione> prenotazioni = new ArrayList<>();
         LocalDate oggi = LocalDate.now();
@@ -370,7 +386,7 @@ public class Database {
         return prenotazioni;
     }
 
-
+    //Metodo per ottenere la lista delle disponibilità dell'azienda.
     public List<Disponibilita> getDisponibilita(String partitaIVA) throws SQLException {
         List<Disponibilita> disponibilitaList = new ArrayList<>();
 
@@ -402,6 +418,7 @@ public class Database {
         return disponibilitaList;
     }
 
+    //Metodo per rimuovere una prenotazione.
     public void rimuoviPrenotazione(Prenotazione prenotazione, String codice) throws SQLException {
         String sql = "DELETE FROM prenotazione WHERE nome_trasportato = ? AND cognome_trasportato = ? AND numero_cellulare = ? AND code_track = ?";
 
@@ -416,6 +433,7 @@ public class Database {
         }
     }
 
+    //Metodo per ottenere l'indirizzo di partenza tramite codeTrack.
     public String getIndirizzoPartenzaByCodeTrack(String codeTrack) throws SQLException {
         try (Connection connection = getConnection()) {
             String sql = "SELECT indirizzo_partenza FROM prenotazione WHERE code_track = ?";
@@ -432,6 +450,7 @@ public class Database {
         return null;
     }
 
+    //Metodo per ottenere l'indirizzo d'arrivo tramite codeTrack.
     public String getIndirizzoArrivoByCodeTrack(String codeTrack) throws SQLException {
         try (Connection connection = getConnection()) {
             String sql = "SELECT indirizzo_arrivo FROM prenotazione WHERE code_track = ?";
@@ -447,5 +466,4 @@ public class Database {
         }
         return null;
     }
-
 }

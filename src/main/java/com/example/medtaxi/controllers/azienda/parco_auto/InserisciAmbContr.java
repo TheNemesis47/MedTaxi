@@ -1,6 +1,5 @@
 package com.example.medtaxi.controllers.azienda.parco_auto;
 
-import com.example.medtaxi.design_patterns.command.ChangeSceneAndUpdateAziendaCommand;
 import com.example.medtaxi.design_patterns.command.ChangeSceneCommand;
 import com.example.medtaxi.design_patterns.command.Command;
 import com.example.medtaxi.design_patterns.command.CommandExecutor;
@@ -25,17 +24,22 @@ public class InserisciAmbContr {
     private TextField targa;
     private Stage stage;
     private Scene scene;
+
+
+
     Azienda azienda = Azienda.getInstance();
 
 
 
+    // Metodo per tornare alla schermata del parco auto
     public void switchBack (ActionEvent event) throws IOException {
-        Command command = new ChangeSceneAndUpdateAziendaCommand(event, "/com/example/medtaxi/azienda/parco_auto/parco_auto.fxml");
+        Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/parco_auto/parco_auto.fxml");
         CommandExecutor.executeCommand(command);
     }
 
 
 
+    // Metodo per registrare un'ambulanza nel database
     @FXML
     private void registraAmbulanzaonDB(ActionEvent event) throws IOException {
         String targaAmbulanza = insert_targa.getText();

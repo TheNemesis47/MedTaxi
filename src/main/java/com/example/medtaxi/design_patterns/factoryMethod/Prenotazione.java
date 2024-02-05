@@ -1,8 +1,9 @@
 package com.example.medtaxi.design_patterns.factoryMethod;
 
-import java.time.LocalDate;
-import java.sql.SQLException;
 import com.example.medtaxi.design_patterns.singleton.Database;
+
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class Prenotazione {
     private String nomeTrasportato;
@@ -15,6 +16,9 @@ public class Prenotazione {
     private String codeTrack;
     private String partitaIvaAzienda;
 
+
+
+    // Costruttore protetto utilizzato dalla factory method con Partita Iva
     protected Prenotazione(String nomeTrasportato, String cognomeTrasportato, String indirizzoPartenza, String indirizzoArrivo, LocalDate localDate, double numeroCellulare, String mattinaSera, String codeTrack, String pIva) {
         this.nomeTrasportato = nomeTrasportato;
         this.cognomeTrasportato = cognomeTrasportato;
@@ -27,9 +31,11 @@ public class Prenotazione {
         this.partitaIvaAzienda = pIva;
     }
 
+
+
+    // Costruttore protetto utilizzato dalla factory method senza Partita Iva
     protected Prenotazione(String nomeTrasportato, String cognomeTrasportato, String indirizzoPartenza, String indirizzoArrivo,
                         LocalDate giornoTrasporto, double numeroCellulare, String mattinaSera, String codeTrack) {
-        // Inizializza gli attributi della classe Prenotazione con i valori passati come argomenti
         this.nomeTrasportato = nomeTrasportato;
         this.cognomeTrasportato = cognomeTrasportato;
         this.indirizzoPartenza = indirizzoPartenza;
@@ -41,6 +47,8 @@ public class Prenotazione {
     }
 
 
+
+    // Costruttore protetto utilizzato dalla factory method per creare una prenotazione da email
     protected Prenotazione(String email) {
         try {
             Prenotazione prenotazioneFromDB = Database.getInstance().getPrenotazioneByEmail(email);
@@ -61,90 +69,141 @@ public class Prenotazione {
         }
     }
 
-    // Metodi statici per la creazione di Prenotazione
+
+
+    // Factory method per creare una prenotazione con Partita Iva
     public static Prenotazione createWithPartitaIva(String nomeTrasportato, String cognomeTrasportato, String indirizzoPartenza, String indirizzoArrivo,
                                              LocalDate giornoTrasporto, double numeroCellulare, String mattinaSera, String codeTrack, String pIva) {
         return new Prenotazione(nomeTrasportato, cognomeTrasportato, indirizzoPartenza, indirizzoArrivo, giornoTrasporto, numeroCellulare, mattinaSera, codeTrack, pIva);
     }
+
+
+
+    // Factory method per creare una prenotazione senza Partita Iva
     public static Prenotazione createWithoutPartitaIva(String nomeTrasportato, String cognomeTrasportato, String indirizzoPartenza, String indirizzoArrivo,
                                                 LocalDate giornoTrasporto, double numeroCellulare, String mattinaSera, String codeTrack) {
         return new Prenotazione(nomeTrasportato, cognomeTrasportato, indirizzoPartenza, indirizzoArrivo, giornoTrasporto, numeroCellulare, mattinaSera, codeTrack);
     }
+
+
+
+    // Factory method per creare una prenotazione da email
     public static Prenotazione createFromEmail(String email) {
-        // Implementa la creazione di Prenotazione da email se necessario
         return new Prenotazione(email);
     }
 
 
-    // Metodi getter e setter per le variabili di istanza
 
+    // Restituisce il nome del paziente trasportato
     public String getNomeTrasportato() {
         return nomeTrasportato;
     }
 
+
+
+    // Imposta il nome del paziente trasportato
     public void setNomeTrasportato(String nomeTrasportato) {
         this.nomeTrasportato = nomeTrasportato;
     }
 
+
+
+    // Restituisce il cognome del paziente trasportato
     public String getCognomeTrasportato() {
         return cognomeTrasportato;
     }
 
+
+
+    // Imposta il cognome del paziente trasportato
     public void setCognomeTrasportato(String cognomeTrasportato) {
         this.cognomeTrasportato = cognomeTrasportato;
     }
 
+
+
+    // Restituisce l'indirizzo del paziente trasportato
     public String getIndirizzoPartenza() {
         return indirizzoPartenza;
     }
 
+
+
+    // Imposta l'indirizzo del paziente trasportato
     public void setIndirizzoPartenza(String indirizzoPartenza) {
         this.indirizzoPartenza = indirizzoPartenza;
     }
 
+
+
+    // Restituisce l'indirizzo d'arrivo del paziente trasportato
     public String getIndirizzoArrivo() {
         return indirizzoArrivo;
     }
 
+
+
+    // Imposta l'indirizzo d'arrivo del paziente trasportato
     public void setIndirizzoArrivo(String indirizzoArrivo) {
         this.indirizzoArrivo = indirizzoArrivo;
     }
 
+
+
+    // Altri metodi getter e setter...
     public LocalDate getGiornoTrasporto() {
         return giornoTrasporto;
     }
+
+
 
     public void setGiornoTrasporto(LocalDate giornoTrasporto) {
         this.giornoTrasporto = giornoTrasporto;
     }
 
+
+
     public double getNumeroCellulare() {
         return numeroCellulare;
     }
+
+
 
     public void setNumeroCellulare(double numeroCellulare) {
         this.numeroCellulare = numeroCellulare;
     }
 
+
+
     public String getMattinaSera() {
         return mattinaSera;
     }
+
+
 
     public void setMattinaSera(String mattinaSera) {
         this.mattinaSera = mattinaSera;
     }
 
+
+
     public String getCodeTrack() {
         return codeTrack;
     }
+
+
 
     public void setCodeTrack(String codeTrack) {
         this.codeTrack = codeTrack;
     }
 
+
+
     public String getPartitaIvaAzienda() {
         return partitaIvaAzienda;
     }
+
+
 
     public void setPartitaIvaAzienda(String partitaIvaAzienda) {
         this.partitaIvaAzienda = partitaIvaAzienda;

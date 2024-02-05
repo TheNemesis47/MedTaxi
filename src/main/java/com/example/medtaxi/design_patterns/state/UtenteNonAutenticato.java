@@ -12,7 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +21,9 @@ import java.sql.SQLException;
 public class UtenteNonAutenticato implements UserState {
     private static final String CLIENTE_AZIENDALE = "2";
     private Parent root;
+
+
+
     @Override
     public void handleLogin(BenvenutoContr context, ActionEvent event, String emailValue, String passwordValue) throws IOException, SQLException {
         Database connectNow = Database.getInstance();

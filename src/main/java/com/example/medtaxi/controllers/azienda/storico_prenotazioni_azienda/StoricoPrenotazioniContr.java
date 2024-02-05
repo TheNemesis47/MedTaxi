@@ -11,19 +11,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 public class StoricoPrenotazioniContr {
-    private Stage stage;
-    private Scene scene;
-
     @FXML
     private TableView<Prenotazione> storicoTable;
     @FXML
@@ -45,12 +40,18 @@ public class StoricoPrenotazioniContr {
     @FXML
     private TableColumn<Prenotazione, String> colPartitaIvaAzienda;
 
+
+
+    // Metodo per tornare alla schermata principale dell'azienda
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
         Command command = new ChangeSceneAndUpdateAziendaCommand(event, "/com/example/medtaxi/azienda/homeAz.fxml");
         CommandExecutor.executeCommand(command);
     }
 
+
+
+    // Metodo di inizializzazione
     @FXML
     public void initialize() {
         Azienda azienda = Azienda.getInstance();
@@ -70,8 +71,6 @@ public class StoricoPrenotazioniContr {
 
         try {
             List<Prenotazione> prenotazioni = db.getPrenotazioniAziendaFinoOggi(partitaIVA);
-
-            // Popola la TableView con le prenotazioni
             storicoTable.setItems(FXCollections.observableArrayList(prenotazioni));
         } catch (SQLException e) {
             e.printStackTrace();

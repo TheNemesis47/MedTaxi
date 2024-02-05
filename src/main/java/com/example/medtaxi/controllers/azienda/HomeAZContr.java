@@ -29,23 +29,31 @@ import java.util.Optional;
 
 
 public class HomeAZContr {
-
     private ServerSocket serverSocket;
     private Socket clientSocket;
     @FXML
     private Label helloTextAz;
     private Stage stage;
 
+
+
+    // Mostra il nome dell'azienda nella label
     public void displayName() {
         Azienda azienda = Azienda.getInstance();
         helloTextAz.setText("Ciao " + (azienda.getNome() != null ? azienda.getNome() : "Nome non disponibile"));
     }
 
+
+
+    // Cambia alla schermata di modifica disponibilità
     public void SwitchToDisponibilita (ActionEvent event) throws IOException {
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/modifica_disponibilita/disponibilita.fxml");
         CommandExecutor.executeCommand(command);
     }
 
+
+
+    // Ritorna alla schermata di login per l'azienda e disconnette
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
         Azienda.getInstance().disconnect();
@@ -54,31 +62,48 @@ public class HomeAZContr {
     }
 
 
+
+    // Cambia alla schermata del parco auto
     public void SwitchToParcoAuto (ActionEvent event) throws IOException {
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/parco_auto/parco_auto.fxml");
         CommandExecutor.executeCommand(command);
     }
 
+
+
+    // Cambia alla schermata delle prenotazioni
     public void SwitchToPrenotazioni (ActionEvent event) throws IOException {
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/prenotazioni_azienda/prenotazioni.fxml");
         CommandExecutor.executeCommand(command);
     }
 
+
+
+    // Cambia alla schermata dello storico delle prenotazioni
     public void SwitchToStoricoPrenotazioni (ActionEvent event) throws IOException {
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/storico_prenotazioni_azienda/storico_prenotazioni.fxml");
         CommandExecutor.executeCommand(command);
     }
 
+
+
+    // Cambia alla schermata per il tracciamento delle prenotazioni dell'azienda
     public void SwitchToPreTrackAZ (ActionEvent event) throws IOException {
         Command command = new ChangeSceneCommand(event, "/com/example/medtaxi/azienda/track_azienda/preTrackAZ.fxml");
         CommandExecutor.executeCommand(command);
     }
 
+
+
+    // Mostra il nome dell'azienda (con parametro nomeAzienda)
     public void displayName(String nomeAzienda) {
         Azienda azienda = Azienda.getInstance();
         helloTextAz.setText("Ciao " + (nomeAzienda != null ? nomeAzienda : "Nome non disponibile"));
     }
 
+
+
+    // Inizia il task del server per la ricezione delle prenotazioni
     public void startServerTask() {
         Task<Void> serverTask = new Task<Void>() {
             @Override
@@ -95,13 +120,14 @@ public class HomeAZContr {
                 return null;
             }
         };
-
         Thread serverThread = new Thread(serverTask);
         serverThread.setDaemon(true);
         serverThread.start();
     }
 
 
+
+    // Gestisce il socket client e mostra un alert per una nuova prenotazione
     private void handleClientSocket(Socket clientSocket) {
         try {
             System.out.print("prova");
@@ -110,7 +136,7 @@ public class HomeAZContr {
             String linea;
             while ((linea = in.readLine()) != null) {
                 if (linea.equals("---FINE---")) {
-                    break; // Interrompe la lettura quando trova il delimitatore
+                    break;
                 }
                 messaggioCompleto.append(linea).append("\n");
             }
@@ -125,28 +151,20 @@ public class HomeAZContr {
 
 
 
-
-
-
-
-
+    //Crea un alert per gestire le prenotazioni
     private void alertPrenotazione(String message, Socket clientSocket) {
         System.out.println("Messaggio da inviare: " + message);
         Platform.runLater(() -> {
-            // Creazione di un nuovo alert
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Prenotazione");
             alert.setHeaderText("Nuova Prenotazione");
 
-            // Configurazione del contenuto dell'alert
             VBox content = new VBox();
             content.setSpacing(10); // Imposta uno spazio tra i componenti
 
-            // Aggiunta del messaggio all'alert
             Label messageLabel = new Label(message);
             content.getChildren().add(messageLabel);
 
-            // Configurazione del ComboBox
             ComboBox<String> comboBox = new ComboBox<>();
             try {
                 List<String> targheAzienda = Database.getInstance().getTargheAzienda(Azienda.getInstance().getPiva());
@@ -156,10 +174,8 @@ public class HomeAZContr {
             }
             content.getChildren().add(comboBox);
 
-            // Impostazione del contenuto personalizzato dell'alert
             alert.getDialogPane().setContent(content);
 
-            // Visualizzazione dell'alert e attesa della risposta dell'utente
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 String selectedTarga = comboBox.getSelectionModel().getSelectedItem();
@@ -172,6 +188,7 @@ public class HomeAZContr {
 
 
 
+    //Chiude la socket
     private void closeSockets() {
         try {
             if (clientSocket != null && !clientSocket.isClosed()) {

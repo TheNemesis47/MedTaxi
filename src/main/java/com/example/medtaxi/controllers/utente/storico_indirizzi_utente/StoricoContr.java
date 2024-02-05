@@ -18,25 +18,35 @@ import java.util.List;
 public class StoricoContr {
     private Stage stage;
     private Scene scene;
-
     @FXML
     private ListView<String> lista_indirizzi;
 
+
+
+    //Inizializzazione della schermata
     @FXML
     public void initialize() {
+        // Ottiene l'istanza dell'utente loggato
         User utente = User.getInstance();
+        // Ottiene l'email dell'utente
         String emailuser = utente.getEmail();
 
+        // Ottiene l'istanza del database
         Database db = Database.getInstance();
         try {
+            // Ottiene una lista di indirizzi associati all'email dell'utente
             List<String> indirizzi = db.getIndirizzi(emailuser);
 
+            // Aggiunge gli indirizzi alla ListView nella schermata
             lista_indirizzi.getItems().addAll(indirizzi);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+
+
+    //Torna alla schermata principale
     @FXML
     public void switchBack(ActionEvent event) throws IOException {
         Command command = new ChangeSceneAndUpdateUserCommand(event, "/com/example/medtaxi/utente/home.fxml");
