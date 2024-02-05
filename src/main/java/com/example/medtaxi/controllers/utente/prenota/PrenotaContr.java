@@ -75,48 +75,6 @@ public class PrenotaContr {
 
 
 
-    /*
-    @FXML
-    protected void prenotazione(ActionEvent event) {
-        try {
-            String numerox = numero_cellulare.getText();
-            LocalDate localDate = data_trasporto.getValue();
-            String dataTrasportox = localDate != null ? localDate.toString() : null;
-            String nomex = nome_paziente.getText();
-            String cognomex = cognome_paziente.getText();
-            String indirizzox = indirizzo_partenza.getText();
-            String indirizzoxx = indirizzo_arrivo.getText();
-
-            // Recupera l'orario selezionato dalla ComboBox delle fasce orarie
-            String orarioSelezionato = fasceOrarieComboBox.getValue();
-
-            // Determina la fascia oraria (mattina o sera)
-            String fasciaOraria = determinaFasciaOraria(orarioSelezionato);
-
-            // Carica la scena successiva
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/prenotazione_completata.fxml"));
-            Parent root = loader.load();
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-
-            // Accesso al controller della scena successiva
-            PrenotaCContr prenotaCContr = loader.getController();
-            //prenotaCContr.displayName(codice); ---------------------------------------------------------------------------------------------------------------------------------------------
-
-            // Esegui la registrazione nel database
-            Database db = Database.getInstance();
-            db.RegistrazionePrenotazione(nomex, cognomex, numerox, dataTrasportox, indirizzox, indirizzoxx, fasciaOraria);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();  // Gestire l'eccezione in modo specifico
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();  // Gestire l'eccezione in modo specifico
-        }
-    }
-*/
-
-
     //dove la magia della prenotazione avviene ---------------------------------------------------------------------
     public void switchToNextScene(ActionEvent event) throws IOException {
         Client client = new Client();

@@ -20,7 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UtenteNonAutenticato implements UserState {
-
+    private static final String CLIENTE_AZIENDALE = "2";
     private Parent root;
     @Override
     public void handleLogin(BenvenutoContr context, ActionEvent event, String emailValue, String passwordValue) throws IOException, SQLException {
@@ -53,7 +53,7 @@ public class UtenteNonAutenticato implements UserState {
                                 loader.setLocation(getClass().getResource("2".equals(tipou) ? fxmlPathAzienda : fxmlPathHome));
                                 Parent root = loader.load();
 
-                                if ("2".equals(tipou)) {
+                                if (CLIENTE_AZIENDALE.equals(tipou)) {
                                     Azienda.initInstanceWithEmail(emailValue);
                                     Azienda azienda = Azienda.getInstance();
                                     HomeAZContr homeAzContr = loader.getController();

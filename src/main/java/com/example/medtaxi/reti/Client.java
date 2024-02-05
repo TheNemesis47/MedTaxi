@@ -1,26 +1,19 @@
 package com.example.medtaxi.reti;
 
 
-import com.example.medtaxi.classi.JSONHandler;
 import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+
+import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class Client {
     private Socket socket;
     private BufferedReader input;
     private BufferedWriter output;
-    private final String fileJSON = "src/main/java/com/example/medtaxi/classi/Prenotazione.json"; // Aggiusta il percorso
-
+    private final String fileJSON = "src/main/java/com/example/medtaxi/classi/Prenotazione.json";
     public Client() {
         try {
-            socket = new Socket("localhost", 12346); // Assicurati che la porta corrisponda a quella del server
+            socket = new Socket("localhost", 12346);
             input = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
             output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"));
         } catch (IOException e) {

@@ -98,10 +98,10 @@ public class BenvenutoContr {
 
 
     @FXML
-    protected void registrazione(ActionEvent event) throws SQLException, IOException {
+    protected void registrazione(ActionEvent event) {
         String nomeu = nome.getText();
         String cognomeu = cognome.getText();
-        double telefonou = Double.parseDouble(telefono.getText());
+        String telefonouText = telefono.getText();
         String viau = via.getText();
         String comuneu = comune.getText();
         String cittau = citta.getText();
@@ -115,35 +115,43 @@ public class BenvenutoContr {
         String remailu = remail.getText();
         String rpswu = rpsw.getText();
 
-
-        Database db = Database.getInstance();
-
-
-        if (age < 18 || !passu.equals(rpswu) || !emailu.equals(remailu)) {
-            errorReg.setText("Errore nella registrazione");
+        if (!emailu.equals(remailu) || !passu.equals(rpswu) || age < 18 || !isNumeric(telefonouText)) {
+            errorReg.setText("Errore nella registrazione: controlla i dati inseriti.");
+            return;
         }
-        else {
-            errorReg.setText("Registrazione avvenuta con successo");
+
+        double telefonou = Double.parseDouble(telefonouText);
+        try {
+            Database db = Database.getInstance();
             db.RegistrazioneUtente(nomeu, cognomeu, telefonou, dataNascita, viau, comuneu, cittau, emailu, passu);
+            errorReg.setText("Registrazione avvenuta con successo");
+
+            User.initInstance(emailu);
+            User utente = User.getInstance();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/home.fxml"));
+            root = loader.load();
+            HomeContr homeController = loader.getController();
+            homeController.displayName();
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+            showError("Errore di sistema. Per favore, riprova più tardi.");
         }
-
-        User.initInstance(emailu);
-        User utente = User.getInstance();
-
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/utente/home.fxml"));
-        root = loader.load();
-
-
-        HomeContr homeController = loader.getController();
-        homeController.displayName();
-
-
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
+
+    private boolean isNumeric(String strNum) {
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException | NullPointerException nfe) {
+            return false;
+        }
+        return true;
+    }
+
 
 
 
