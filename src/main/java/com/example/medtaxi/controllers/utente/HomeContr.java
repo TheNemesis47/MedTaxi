@@ -11,15 +11,18 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**home page dell utente dove puo eseguire tutte le operazioni di prenotazione, annulla prenotazione, storico prenotazione e track ambulance*/
 public class HomeContr {
+
     @FXML
     private Label helloText;
     private Stage stage;
 
 
 
-    //Imposta il testo di benvenuto con il nome dell'utente loggato
+    /**mostra sulla GUI il nome associato all utente*/
     public void displayName() {
+
         User utente = User.getInstance();
         helloText.setText("Ciao " + (utente.getNome() != null ? utente.getNome() : "Nome non disponibile"));
     }
@@ -38,8 +41,9 @@ public class HomeContr {
 
 
 
-    //Imposta il testo di benvenuto con un nome utente specifico
+    /**mostra sulla GUI il nome associato all utente*/
     public void displayName(String nomeUtente) {
+
         User utente = User.getInstance();
         helloText.setText("Ciao " + (nomeUtente != null ? nomeUtente : "Nome non disponibile"));
     }

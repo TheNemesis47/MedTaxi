@@ -22,9 +22,10 @@ public class RimuoviAmbContr {
 
 
 
-    // Metodo di inizializzazione
+    /**Mostra tutte le targhe delle ambulanze dell'azienda loggata*/
     @FXML
     public void initialize() {
+
         Azienda azienda = Azienda.getInstance();
         String partitaivaaziendaloggata = azienda.getPiva();
         Database db = Database.getInstance();
@@ -47,9 +48,11 @@ public class RimuoviAmbContr {
 
 
 
-    // Metodo per cancellare un'ambulanza dal database
+    /**Metodo per rimuovere un'ambulanza nel database con targa corrispondente alla selezione, partita iva e nome azienda derivati invece grazie al Singleton*/
     @FXML
     private void cancellaAmbulanzeondb(ActionEvent event) throws IOException {
+
+
         String targaAmbulanza = listaTarghe.getSelectionModel().getSelectedItem();
 
         Azienda azienda = Azienda.getInstance();

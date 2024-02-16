@@ -23,9 +23,10 @@ public class StoricoContr {
 
 
 
-    //Inizializzazione della schermata
+    /**esegue query per inserire all interno di un array gli indirizzi inseriti nel corso del tempo dall/ i-esimo utente loggato*/
     @FXML
     public void initialize() {
+
         // Ottiene l'istanza dell'utente loggato
         User utente = User.getInstance();
         // Ottiene l'email dell'utente

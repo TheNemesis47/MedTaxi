@@ -37,8 +37,9 @@ public class TrackContrAZ {
 
 
 
-    // Visualizza la route sulla mappa
+    /**Metodo che permette di visualizzare la route che l'ambulanza deve seguire*/
     public void visualizzaRoute(String codeTrack) {
+
         this.codeTrack = codeTrack;
 
         try {
@@ -62,8 +63,9 @@ public class TrackContrAZ {
 
 
 
-    // Ottiene le coordinate geografiche da un indirizzo
+    /**Metodo per ottenere le coordinate geografiche da un indirizzo*/
     public LatLng geocodeAddress(String address) throws ApiException, InterruptedException, IOException {
+
 
         String apiKey = "AIzaSyB-7VoL5g7xLox1cZA9KVYEAu6l34FZ-tQ";
 
@@ -84,8 +86,9 @@ public class TrackContrAZ {
 
 
 
-    // Disegna la route (percorso) sulla mappa
+    /**Metodo per disegnare sulla mappa la Route calcolata prima*/
     public void drawRouteOnMap(LatLng startLatLng, LatLng endLatLng) {
+
         WebEngine webEngine = mappa.getEngine();
 
         webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {

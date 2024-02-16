@@ -6,8 +6,10 @@ import org.json.JSONObject;
 import java.io.*;
 import java.net.Socket;
 
+
+/** Dichiarazione delle variabili di istanza per il socket, input, output e il percorso del file JSON.*/
 public class Client {
-    // Dichiarazione delle variabili di istanza per il socket, input, output e il percorso del file JSON.
+
     private Socket socket;
     private BufferedReader input;
     private BufferedWriter output;
@@ -15,6 +17,7 @@ public class Client {
 
 
 
+    /**si connette al server sulla porta 12346 e inizializza gli stream di input e output*/
     public Client() {
         try {
             // Tentativo di connessione al server sulla porta 12346 e inizializzazione degli stream di input e output.

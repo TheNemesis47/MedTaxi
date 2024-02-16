@@ -39,9 +39,10 @@ public class InserisciAmbContr {
 
 
 
-    // Metodo per registrare un'ambulanza nel database
+    /**Metodo per inserire un'ambulanza nel database con targa corrispondente al campo inserito, partita iva e nome azienda derivati invece grazie al Singleton*/
     @FXML
     private void registraAmbulanzaonDB(ActionEvent event) throws IOException {
+
         String targaAmbulanza = insert_targa.getText();
         String partita = azienda.getPiva();
         String nomeaz = azienda.getNome();

@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class MessageSender {
     private Socket clientSocket;
-    // Metodo per inviare un messaggio al server tramite una socket
+    /** risponde al server con l accetto della prenotazione o no*/
     public static void sendMessageToServer(Socket clientSocket, String message) {
             System.out.println("Invio del messaggio al server: " + message);
             if (clientSocket != null && !clientSocket.isClosed()) {

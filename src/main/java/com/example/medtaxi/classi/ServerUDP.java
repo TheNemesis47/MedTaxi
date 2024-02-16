@@ -22,7 +22,9 @@ public class ServerUDP {
 
 
     // Costruttore che accetta un codice di tracciamento e inizializza il socket e i punti della route
+    /** prende il code track, inizializza la socket e stabilisce la route*/
     public ServerUDP(String codice_track) throws Exception {
+
         datagramSocket = new DatagramSocket(5001);
 
         // Ottiene gli indirizzi di partenza e arrivo dal database
@@ -39,8 +41,10 @@ public class ServerUDP {
 
 
 
-    // Metodo per connettersi e inviare i dati sulla posizione dell'ambulanza
+
+    /** Metodo per connettersi e inviare i dati sulla posizione dell'ambulanza*/
     public void connetti() throws IOException {
+
         new Thread(() -> {
             while (currentStep < routePoints.size()) {
                 // Ottiene la posizione corrente dell'ambulanza come byte[]

@@ -6,8 +6,9 @@ import com.google.maps.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Metodo per ottenere i punti di percorso tra origine e destinazione*/
 public class RouteCalculator {
-    // Metodo per ottenere i punti di percorso tra origine e destinazione
+
     public List<LatLng> getRoutePoints(LatLng origin, LatLng destination) throws Exception {
         // Crea un contesto API per Google Maps
         GeoApiContext context = new GeoApiContext.Builder()

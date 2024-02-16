@@ -51,9 +51,10 @@ public class PrenotazioniContr {
 
 
 
-    // Metodo di inizializzazione
+    /**Metodo per visualizzare all'interno di una TableView le prenotazioni future dell'azienda*/
     @FXML
     public void initialize() {
+
         Azienda azienda = Azienda.getInstance();
         String partitaIVA = azienda.getPiva();
         Database db = Database.getInstance();

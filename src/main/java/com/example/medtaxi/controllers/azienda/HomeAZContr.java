@@ -103,8 +103,10 @@ public class HomeAZContr {
 
 
 
-    // Inizia il task del server per la ricezione delle prenotazioni
+
+    /**Avvia un Thread che accetterà una nuova connessione e la gestirà*/
     public void startServerTask() {
+
         Task<Void> serverTask = new Task<Void>() {
             @Override
             protected Void call() {
@@ -127,8 +129,9 @@ public class HomeAZContr {
 
 
 
-    // Gestisce il socket client e mostra un alert per una nuova prenotazione
+    /**Gestisce il socket client e mostra un alert per una nuova prenotazione*/
     private void handleClientSocket(Socket clientSocket) {
+
         try {
             System.out.print("prova");
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -151,8 +154,9 @@ public class HomeAZContr {
 
 
 
-    //Crea un alert per gestire le prenotazioni
+    /**Crea un alert per gestire le prenotazioni*/
     private void alertPrenotazione(String message, Socket clientSocket) {
+
         System.out.println("Messaggio da inviare: " + message);
         Platform.runLater(() -> {
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -188,8 +192,9 @@ public class HomeAZContr {
 
 
 
-    //Chiude la socket
+    /**Chiude la socket*/
     private void closeSockets() {
+
         try {
             if (clientSocket != null && !clientSocket.isClosed()) {
                 clientSocket.close();

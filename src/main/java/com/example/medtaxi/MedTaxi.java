@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.util.Objects;
 
+/**il main di MedTaxi che runna la gui*/
 public class MedTaxi extends Application {
     @Override
     public void start(Stage stage) {

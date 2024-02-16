@@ -24,7 +24,10 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
 
+
+/**questa classe si occupa di effettuare il login/registrazione da parte dell'utente*/
 public class BenvenutoContr {
+
     @FXML
     private Label errorReg;
     @FXML
@@ -159,7 +162,9 @@ public class BenvenutoContr {
 
 
     // Metodo per verificare se una stringa è numerica
+    /**usato per il numero di telefono*/
     private boolean isNumeric(String strNum) {
+
         try {
             double d = Double.parseDouble(strNum);
         } catch (NumberFormatException | NullPointerException nfe) {

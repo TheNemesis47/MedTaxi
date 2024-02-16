@@ -5,7 +5,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**gestore del json per estrarre o inserire chiave/valore */
 public class JSONHandler {
+
     private JSONObject jsonObject;
 
 

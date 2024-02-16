@@ -29,9 +29,10 @@ public class PreTrackContrAZ {
 
 
 
-    // Metodo per passare alla schermata di tracciamento
+    /**Metodo che collega a TrackAz inviando tramite il metodo visualizzaRoute() il codice di track*/
     @FXML
     public void SwitchRight(ActionEvent event) throws IOException {
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/medtaxi/azienda/track_azienda/trackAZ.fxml"));
         Parent root = loader.load();
         TrackContrAZ trackContr = loader.getController();

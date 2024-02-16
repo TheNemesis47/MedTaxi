@@ -55,8 +55,10 @@ public class UtenteUDP implements Subject {
 
 
 
-    // Metodo per avviare l'ascolto dei dati in ingresso tramite il socket UDP
+
+    /** Metodo per avviare l'ascolto dei dati in ingresso tramite il socket UDP*/
     public void ascolta() {
+
         // Avvia un nuovo thread per l'ascolto
         new Thread(() -> {
             while (true) {  // Ciclo infinito per ascoltare continuamente

@@ -29,13 +29,6 @@ public class SelezionaContr {
 
 
 
-    // Metodo per impostare la stringa casuale
-    public void setRandomString(String random) {
-        this.randomString = random;
-    }
-
-
-
     // Metodo per impostare il client
     public void setClient(Client client) {
         this.client = client;

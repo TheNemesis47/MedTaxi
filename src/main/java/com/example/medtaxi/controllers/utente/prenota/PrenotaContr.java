@@ -54,8 +54,10 @@ public class PrenotaContr {
 
 
     // Metodo di inizializzazione della schermata
+    /**inserisce gli orari nel combobox*/
     @FXML
     public void initialize() {
+
         popolaFasceOrarie();
     }
 
@@ -78,7 +80,9 @@ public class PrenotaContr {
 
     //------------------------------------------------------------------------------------------------------------------
     // Metodo per passare alla schermata successiva
+    /**oltre a cambiare scena si occupa di instaurare una connessione client-server prendendo le info dai textfield di jfx, le inserisce in un json e le manda tramite socket*/
     public void switchToNextScene(ActionEvent event) throws IOException {
+
         Client client = new Client();
         JSONObject prenotazioneJson = new JSONObject();
         prenotazioneJson.clear();

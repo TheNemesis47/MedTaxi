@@ -54,8 +54,10 @@ public class annulla_prenotazione {
 
 
 
+    /**riempie la tabella con le prenotazioni future da fare eseguendo delle query nel db in base alla data*/
     @FXML
     public void initialize() {
+
         // Inizializzazione della tabella delle prenotazioni quando si carica la pagina
         User utente = User.getInstance();
         String nomeutente = utente.getNome();
@@ -86,8 +88,10 @@ public class annulla_prenotazione {
 
 
     // Rimuove la prenotazione selezionata quando si preme il pulsante "Rimuovi Selezione"
+    /**prende l elemento selezionato dalla table view e la rimuove dal db*/
     @FXML
     public void rimuoviselezione(ActionEvent event) {
+
         Prenotazione prenotazioneSelezionata = prenotazionitable.getSelectionModel().getSelectedItem();
         String codice = prenotazioneSelezionata.getCodeTrack();
 

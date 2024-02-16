@@ -23,7 +23,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.SocketException;
 
+
+/**questa classe si occupa di vedere gli spostamenti, mostrare la route effettuare le nuove operazioni di geocoding con le API di maps*/
 public class TrackContr implements CoordinateUpdateListener {
+
 
     @FXML
     private WebView mappa;
@@ -34,8 +37,9 @@ public class TrackContr implements CoordinateUpdateListener {
 
 
 
-    //Inizializzazione del controller.
+    /**istanzia utenteUDP per ascoltare sempre il cambiamento dell ambulanza*/
     public void initialize() {
+
         webEngine = mappa.getEngine();
         webEngine.load(getClass().getResource("/com/example/medtaxi/Mappa/Mappa.html").toExternalForm());
         try {

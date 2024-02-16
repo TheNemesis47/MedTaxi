@@ -47,9 +47,10 @@ public class DisponibilitaContr {
 
 
 
-    // Metodo di inizializzazione
+    /**Metodo che mostra le disponibilità di ogni azienda di trasporto sanitario identificata tramite partita IVA*/
     @FXML
     public void initialize() {
+
         Azienda azienda = Azienda.getInstance();
         String partitaIVA = azienda.getPiva();
 
@@ -70,9 +71,10 @@ public class DisponibilitaContr {
 
 
 
-    // Metodo per rimuovere disponibilità
+    /**Rimuove di 1 la disponibilità nel giorno selezionato dal DatePicker*/
     @FXML
     public void rimuovidisponibilita() {
+
         LocalDate selectedDate = data.getValue();
         if (selectedDate != null) {
             try {
@@ -107,9 +109,10 @@ public class DisponibilitaContr {
 
 
 
-    // Metodo per aggiungere disponibilità
+    /**Aggiunge di 1 la disponibilità nel giorno selezionato dal DatePicker*/
     @FXML
     public void aggiungidisponibilita() {
+
         LocalDate selectedDate = data.getValue();
         if (selectedDate != null) {
             try {

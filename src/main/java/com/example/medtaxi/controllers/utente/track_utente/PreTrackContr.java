@@ -14,7 +14,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
+/**qui viene inserito il codice che poi se esiste nel db mostrera' il tracciamento*/
 public class PreTrackContr {
+
     private Stage stage;
     @FXML
     private TextField code_track;
