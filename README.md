@@ -72,7 +72,7 @@ dell'azienda e l'assegnazione dell'ambulanza la prenotazione viene salvata a dat
 ### Repository
 
 - **Frontend / Client (app JavaFX):** <https://github.com/TheNemesis47/MedTaxi>
-- **Backend / Server centrale:** `ServerMedTaxi`
+- **Backend / Server centrale:** <https://github.com/TheNemesis47/ServerMedTaxi>
 
 ---
 
@@ -99,10 +99,10 @@ Per eseguire il progetto servono:
 mkdir MedTaxi-progetto && cd MedTaxi-progetto
 
 # Client (questa repo — contiene avvia.sh e README)
-git clone <URL-repo-client> MedTaxi
+git clone https://github.com/TheNemesis47/MedTaxi.git MedTaxi
 
 # Server centrale (repo separata, OBBLIGATORIA)
-git clone <URL-repo-server> ServerMedTaxi
+git clone https://github.com/TheNemesis47/ServerMedTaxi.git ServerMedTaxi
 ```
 
 La struttura risultante deve essere:
