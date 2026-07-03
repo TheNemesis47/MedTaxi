@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="sfondo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.medtaxi.controllers.utente.registrazione_e_login.BenvenutoContr">
+   <children>
+      <Text layoutX="870.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I tuoi dati">
+         <font>
+            <Font name="Arial Bold" size="89.0" />
+         </font>
+      </Text>
+      <Button fx:id="entraBTN" layoutX="957.0" layoutY="626.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="45.0" prefWidth="288.0" styleClass="blueButton" text="Entra" textAlignment="CENTER" textFill="#1c8eff">
+         <font>
+            <Font name="Arial Bold" size="34.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </Button>
+      <TextField fx:id="remail" layoutX="741.0" layoutY="284.0" prefHeight="50.0" prefWidth="518.0" promptText="Inserisci l'email">
+         <font>
+            <Font name="Arial" size="28.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="rpsw" layoutX="741.0" layoutY="362.0" prefHeight="8.0" prefWidth="520.0" promptText="Inserisci la password">
+         <font>
+            <Font name="Arial" size="28.0" />
+         </font>
+      </TextField>
+      <Hyperlink layoutX="733.0" layoutY="635.0" onAction="#switchToRegisterScene" text="Non sei registrato?">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Hyperlink>
+      <Label fx:id="errorReg" layoutX="1473.0" layoutY="906.0">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <Pane fx:id="banner" layoutX="-6.0" prefHeight="720.0" prefWidth="518.0" stylesheets="@../../style.css">
+         <children>
+            <Circle fill="WHITE" layoutX="255.0" layoutY="278.0" radius="150.0" stroke="WHITE" strokeType="INSIDE" />
+            <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="145.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Images/MedTaxiLogo.png" />
+               </image>
+            </ImageView>
+            <Text fill="WHITE" layoutX="61.0" layoutY="499.0" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Bentornato!">
+               <font>
+                  <Font name="Arial Bold" size="70.0" />
+               </font>
+            </Text>
+            <Text fill="#ffffffb2" layoutX="139.0" layoutY="543.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inserisci i tuoi dati">
+               <font>
+                  <Font name="Arial" size="30.0" />
+               </font>
+            </Text>
+            <Text fill="#ffffffb2" layoutX="78.0" layoutY="580.0" strokeType="OUTSIDE" strokeWidth="0.0" text="per avanzare in questa fase.">
+               <font>
+                  <Font name="Arial" size="30.0" />
+               </font>
+            </Text>
+            <Button layoutX="26.0" layoutY="653.0" mnemonicParsing="false" onAction="#switchBack" prefHeight="45.0" prefWidth="241.0" styleClass="indietroButton" text="Torna indietro" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
